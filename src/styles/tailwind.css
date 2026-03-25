@@ -1,0 +1,13 @@
+@import 'tailwindcss' source(none);
+@source '../**/*.{js,ts,jsx,tsx}';
+
+@import 'tw-animate-css';
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-180px);
+  }
+  100% {
+    transform: translateX(430px);
+  }
+}

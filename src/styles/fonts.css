@@ -1,0 +1,33 @@
+/* Google Font Imports for custom font fallbacks */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,300;0,400;1,400&display=swap');
+
+/* Global font family overrides to fix underscore font names */
+[class*="Simplon_Norm"],
+[class*="Simplon Norm"],
+[style*="Simplon_Norm"],
+[style*="Simplon Norm"] {
+  font-family: 'Inter', sans-serif !important;
+}
+
+[class*="Simplon_Mono"],
+[class*="Simplon Mono"],
+[style*="Simplon_Mono"],
+[style*="Simplon Mono"] {
+  font-family: 'JetBrains Mono', monospace !important;
+}
+
+[class*="Saol_Text"],
+[class*="Saol Text"],
+[style*="Saol_Text"],
+[style*="Saol Text"] {
+  font-family: 'Noto Serif', serif !important;
+}
+
+[class*="DM_Mono"],
+[class*="DM Mono"],
+[style*="DM_Mono"],
+[style*="DM Mono"] {
+  font-family: 'JetBrains Mono', monospace !important;
+}

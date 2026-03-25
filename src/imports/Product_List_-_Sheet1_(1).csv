@@ -1,0 +1,61 @@
+Name,Price,Discounted,Category,Size,Short description,Full description,Goal tags,Recommended,Recommended Frequency
+Custom Shampoo,35,true,haircare,8.5 fl oz,"A gentle, clarifying shampoo, personalized to meet your unique hair and scalp cleansing needs.","From rebalancing roots to gently hydrating lengths, Prose Custom Shampoo is specifically formulated to target multiple concerns, including oily hair, dry scalps, and more. Used consistently, it’s proven to increase hair strength and reduce breakage.* 
+
+
+*Instrumental test of Prose Shampoo and Conditioner vs. non-conditioning shampoo","Reduced damage, Stronger growth, Less irration",true,4 weeks
+Custom Conditioner,35,true,haircare,8.5 fl oz,"A nourishing, personalized conditioner to soften, smooth, and target your unique hair concerns.","From restoring ends to strengthening lengths, Prose Custom Conditioner is custom-formulated to hydrate your specific hair type and texture — including fine, curly, and colored — without ever weighing it down.
+
+
+From restoring ends to strengthening lengths, Prose Custom Conditioner is custom-formulated to hydrate your specific hair type and texture — including fine, curly, and colored — without ever weighing it down.
+
+
+*Instrumental efficacy test of Prose Custom Shampoo, Conditioner & Hair Mask vs. non-conditioning shampo","Improved hydration, Silky softness, Reduced damage",true,4 weeks
+Custom Scalp Mask,49,true,haircare,8.5 fl oz,"A gentle, exfoliating scalp mask to soothe, rebalance, and target your specific scalp needs.","An intensive scalp mask personalized with targeted ingredients and micro-exfoliating jojoba beads to help restore balance to all scalp types, even sensitive. Whether you need soothing repair or a gentle detox, Prose Custom Scalp Mask supports hair and scalp health at the root.","Improved hydration, Stronger growth",true,4 weeks
+Custom Leave-In Conditioner,32,true,haircare,5.1 fl oz ,A personalized leave-in conditioner that primes and protects your hair for daily styling.,"Prose Custom Leave-In Conditioner is a hydrating, made-to-order formula that detangles, smooths flyaways, and leaves strands soft, polished, and manageable. It also acts as a heat protectant spray, protecting hair from heat damage up to 450°F.* 
+
+
+*Instrumental efficacy test of Prose Custom Leave-in Conditioner vs. non-treated hair.","Improved hydration, Silky softness",false,8 weeks
+Custom Dry Shampoo,32,true,haircare,1.3 fl oz,"A personalized, powder dry shampoo to refresh roots, boost volume, and extend hairstyles.","Prose Custom Dry Shampoo is made just for you to help maintain a clean, balanced scalp, while adding volume and body in between washes. The translucent powder formula is free from butane, isobutane, and propane — harmful propellants commonly found in off-the-shelf alternatives.","Reduced damage, Less irration",false,8 weeks
+Custom Hair Oil,49,true,haircare,1.7 fl oz,"A multi-tasking, personalized hair oil that can be used as a treatment, styler, or finishing oil.","Prose Custom Hair Oil is tailored to your unique hair type, texture, and styling preferences to help tame flyaways, smooth unwanted frizz, and lock in hydration. Use it as a nurturing treatment before washing, a styling primer, or a finishing touch.
+
+
+*Instrumental efficacy test of Prose Custom Hair Oil vs. non-treated hair.","Reduced damage, Stronger growth, Improved hydration",false,12 weeks
+Custom Scalp Serum,56,true,haircare,1.7 fl oz,"A lightweight, personalized serum for optimal scalp health and fuller, denser-looking hair.
+","Prose Custom Scalp Serum is a fast-absorbing formula tailored to your unique needs — from restoring balance to itchy, oily, and dry scalps to soothing sensitivities. Used daily, it promotes a healthier scalp and stronger hair in 4 weeks.*
+
+
+*Results of a 4-week external use test performed on 97 subjects","Reduced damage, Stronger growth, Less irration",false,12 weeks
+Custom Curl Cream,32,true,haircare,5.1 fl oz,"A nourishing curl cream, personalized to your unique curl pattern, hair texture, and porosity.","Prose Custom Curl Cream is designed to define your natural texture, hydrate strands, and control unwanted frizz for up to 24 hours.* Whether your hair is wavy, curly, coily, fine, or thick it can be used as a daily styler or for touch-ups on the go.
+
+
+Prose Custom Curl Cream is designed to define your natural texture, hydrate strands, and control unwanted frizz for up to 24 hours.* Whether your hair is wavy, curly, coily, fine, or thick it can be used as a daily styler or for touch-ups on the go.
+
+
+*Instrumental efficacy test of Prose Curl Cream in high-humidity conditions.","Stronger growth, Improved hydration, Silky softness",false,4 weeks
+Custom Styling Gel,32,true,haircare,8.5 fl oz,"
+A do-it-all styling gel, tailored to your unique hair type, texture, curl pattern, and more.","
+Prose Custom Styling Gel gives curls, coils, waves, and slicked-back styles true staying power without crunch or residue. No matter your style, it provides a personalized amount of hold and definition while controlling frizz and shrinkage — even in humid weather.
+
+
+Prose Custom Styling Gel gives curls, coils, waves, and slicked-back styles true staying power without crunch or residue. No matter your style, it provides a personalized amount of hold and definition while controlling frizz and shrinkage — even in humid weather.
+
+
+*Results of Prose Custom Styling Gel use test performed on 104 subjects with hair type 2C to 4C after 15 days of use (somewhat agree to strongly agree).",,false,12 weeks
+Custom Hair Mask,49,true,haircare,8.5 fl oz,"A deeply hydrating, personalized hair mask that restores + strengthens hair from lengths to ends.","Prose Custom Hair Mask is an intensive pre-shampoo treatment personalized to your unique hair goals. Concentrated and conditioning, it smooths, repairs, and provides up to 3x stronger hair and less breakage after just one use.*
+
+
+*Instrumental efficacy test of Prose Custom Shampoo, Conditioner & Hair Mask vs. non-conditioning shampoo.","Reduced damage, Improved hydration, Stronger growth",false,8 weeks
+Custom Root Source® Hair Supplements,64,true,supplements,One month supply,"Personalized supplements to promote hair growth, thickness, and density — in 2 daily capsules.","Powered by 99% natural ingredients, Prose Custom Root Source Hair Supplements are formulated with PureCatalyst™ — our clinically tested, proprietary growth complex. The targeted, 2-capsule system helps boost hair growth and address individual needs — from stress-related hair shedding to scalp sensitivity, excess oiliness, and more.
+
+
+Powered by 99% natural ingredients, Prose Custom Root Source Hair Supplements are formulated with PureCatalyst™ — our clinically tested, proprietary growth complex. The targeted, 2-capsule system helps boost hair growth and address individual needs — from stress-related hair shedding to scalp sensitivity, excess oiliness, and more.",Stronger growth,false,4 weeks
+Hair Towel,35,false,accessory,23” x 37” in,"Fast-drying hair towel for reducing unwanted frizz and preserving hair’s natural texture. Made from 100% recycled microfiber derived from plastic bottles.
+
+Designed for all textures and lengths","Fast-drying hair towel for reducing unwanted frizz and preserving hair’s natural texture. Made from 100% recycled microfiber derived from plastic bottles.
+
+Designed for all textures and lengths",,false,Buy Once
+Corsica Candle,52,false,accessory,8.6 oz,"Sustainably crafted, paraffin-free candles featuring 3 of our fan-favorite fragrances. Includes protective dust cover.","Sustainably crafted, paraffin-free candles featuring 3 of our fan-favorite fragrances. Includes protective dust cover.
+Up to 50 hours burn time",,false,Buy Once
+Prelude Candle,52,false,accessory,8.6 oz,"Sustainably crafted, paraffin-free candles featuring 3 of our fan-favorite fragrances. Includes protective dust cover.","Sustainably crafted, paraffin-free candles featuring 3 of our fan-favorite fragrances. Includes protective dust cover.",,false,Buy Once
+Arcadia Candle,52,false,accessory,8.6 oz,"Sustainably crafted, paraffin-free candles featuring 3 of our fan-favorite fragrances. Includes protective dust cover.","Sustainably crafted, paraffin-free candles featuring 3 of our fan-favorite fragrances. Includes protective dust cover.",,false,Buy Once
+Boar Brush,72,false,brush,8.75” x 2.5” x 1.5”,Handcrafted with 100% boar bristle. Made with only the root of the bristle for an ultra-luxurious feel.,Handcrafted with 100% boar bristle. Made with only the root of the bristle for an ultra-luxurious feel.,,false,Buy Once
