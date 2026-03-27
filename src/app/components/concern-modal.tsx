@@ -15,24 +15,24 @@ export interface ConcernDetail {
 }
 
 export const concernDataMap: Record<string, ConcernDetail> = {
-  "Reduced Damage": {
-    label: "Reduced Damage",
+  "Damage": {
+    label: "Damage",
     severityDots: 3,
     severityLabel: "Very Damaged",
     description:
       "We'll strengthen your hair and help repair what we can by adding ingredients to your products that help with hair health, fiber repair, and nourishment.",
     basedOn: ["You heat-style 3–4x/week", "Your hair is color-treated"],
   },
-  "Improved Hydration": {
-    label: "Improved Hydration",
+  "Dryness": {
+    label: "Dryness",
     severityDots: 3,
     severityLabel: "Very Dry",
     description:
       "Your hair needs deep moisture restoration. We've selected humectants and emollients that penetrate the hair shaft to lock in hydration without weighing your curls down.",
     basedOn: ["Your hair feels dry or brittle", "You live in a dry climate"],
   },
-  "Stronger Growth": {
-    label: "Stronger Growth",
+  "Stressors": {
+    label: "Stressors",
     severityDots: 2,
     severityLabel: "Moderate Thinning",
     description:
@@ -42,8 +42,8 @@ export const concernDataMap: Record<string, ConcernDetail> = {
       "Your hair grows slowly",
     ],
   },
-  "Silky Softness": {
-    label: "Silky Softness",
+  "Oiliness": {
+    label: "Oiliness",
     severityDots: 2,
     severityLabel: "Moderate Roughness",
     description:
@@ -53,8 +53,8 @@ export const concernDataMap: Record<string, ConcernDetail> = {
       "You want smoother, shinier hair",
     ],
   },
-  "Less Irritation": {
-    label: "Less Irritation",
+  "Sensitivity": {
+    label: "Sensitivity",
     severityDots: 1,
     severityLabel: "Low Irritation",
     description:

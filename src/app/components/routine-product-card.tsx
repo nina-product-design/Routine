@@ -422,7 +422,7 @@ export function RoutineProductCard({
           {/* Targeted Concerns */}
           {concerns && concerns.length > 0 && (
             <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-full">
-              <p className="font-['Simplon Mono','JetBrains Mono',monospace] font-medium leading-[14.4px] relative shrink-0 text-[#4d523c] text-[12px] tracking-[0.96px] uppercase whitespace-nowrap">YOUR TARGETED CONCERNS</p>
+              <p className="font-['Simplon Mono','JetBrains Mono',monospace] font-medium leading-[14.4px] relative shrink-0 text-[#4d523c] text-[12px] tracking-[0.96px] uppercase whitespace-nowrap">THIS PRODUCT TARGETS</p>
               <div className="content-start flex flex-wrap gap-[8px] items-start relative shrink-0">
                 {concerns.map((concern, i) => (
                   <GoalPill key={i} text={concern} onClick={() => setActiveConcern(concern)} />

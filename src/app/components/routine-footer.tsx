@@ -83,43 +83,55 @@ export default function RoutineFooter({ cartItems, onContinueToCart, onRemoveIte
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.25, ease: "easeInOut" }}
-              className="overflow-hidden"
+              className="overflow-x-visible overflow-y-clip"
               onClick={() => setExpanded(false)}
             >
               <div className="flex flex-col gap-[4px] pb-[16px]">
                 {/* GWP Tracker */}
                 {subscriptionCount < 3 ? (
-                  // Not eligible yet - show SomeSub or NonSub variant
-                  <div className="bg-[#f9f7f2] flex flex-col items-center overflow-clip rounded-[10px] mb-[12px]">
-                    <div className="bg-[#e2d9c2] h-[27px] w-full flex items-center justify-center">
-                      <p className="font-['Simplon_Mono',monospace] text-[10px] text-[#161716] text-center tracking-[0.8px] uppercase leading-[1.2]">
-                        Subscribe to 3 products for your free gift
+                  // Not eligible yet - dark banner with progress dots + gift preview
+                  <div className="bg-[#f9f7f2] flex flex-col items-center overflow-clip mb-[12px] -mx-[24px]">
+                    <div className="bg-[#4d523c] h-[40px] w-full flex items-center justify-center gap-[8px] px-[16px]">
+                      <p className="font-['Simplon_Norm',sans-serif] font-medium text-[12px] text-white tracking-[0.24px] leading-[1.2] whitespace-nowrap">
+                        Subscribe to <span className="font-bold">{3 - subscriptionCount} more item{3 - subscriptionCount !== 1 ? 's' : ''}</span> to get your free gift
                       </p>
+                      <div className="flex gap-[4px] items-center shrink-0">
+                        {[1, 2, 3].map((step) => (
+                          <div
+                            key={step}
+                            className={`size-[16px] rounded-full flex items-center justify-center text-[10px] font-['Simplon_Norm',sans-serif] font-medium leading-none ${
+                              step <= subscriptionCount
+                                ? "bg-[#ecff92] text-[#161716]"
+                                : "border border-white/50 text-white/50"
+                            }`}
+                          >
+                            {step}
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                    <div className="flex gap-[16px] items-center px-[16px] py-[8px] w-full">
-                      <div className="opacity-50 shrink-0 size-[56px] relative">
-                        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                          <img src={imgImage12} alt="Free Toiletry Bag" className="absolute h-[111.54%] left-[-0.19%] max-w-none top-[-3.85%] w-[100.38%]" />
+                    <div className="flex gap-[12px] items-center px-[24px] py-[12px] w-full">
+                      <div className="w-[64px] h-[64px] shrink-0 rounded-[6px] overflow-hidden relative">
+                        <img src={imgImage12} alt="Free Toiletry Bag" className="size-full object-cover" />
+                        <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[18px] flex items-center justify-center" style={{ backgroundColor: 'rgba(249, 247, 242, 0.75)' }}>
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M16.3202 11.0399H15.3602V9.11993C15.3602 7.24793 13.8722 5.75993 12.0002 5.75993C10.1282 5.75993 8.64018 7.24793 8.64018 9.11993V11.0399H7.68018V9.11993C7.68018 6.71993 9.60018 4.79993 12.0002 4.79993C14.4002 4.79993 16.3202 6.71993 16.3202 9.11993V11.0399Z" fill="#161716"/>
+                            <path d="M15.8402 19.2002H8.16021C7.34421 19.2002 6.72021 18.5762 6.72021 17.7602V12.0002C6.72021 11.1842 7.34421 10.5602 8.16021 10.5602H15.8402C16.6562 10.5602 17.2802 11.1842 17.2802 12.0002V17.7602C17.2802 18.5762 16.6562 19.2002 15.8402 19.2002ZM8.16021 11.5202C7.87221 11.5202 7.68021 11.7122 7.68021 12.0002V17.7602C7.68021 18.0482 7.87221 18.2402 8.16021 18.2402H15.8402C16.1282 18.2402 16.3202 18.0482 16.3202 17.7602V12.0002C16.3202 11.7122 16.1282 11.5202 15.8402 11.5202H8.16021Z" fill="#161716"/>
+                            <path d="M11.9996 14.4C12.5297 14.4 12.9596 13.9702 12.9596 13.44C12.9596 12.9098 12.5297 12.48 11.9996 12.48C11.4694 12.48 11.0396 12.9098 11.0396 13.44C11.0396 13.9702 11.4694 14.4 11.9996 14.4Z" fill="#161716"/>
+                            <path d="M12.2398 13.4398H11.7598L11.2798 16.3198H12.7198L12.2398 13.4398Z" fill="#161716"/>
+                          </svg>
                         </div>
                       </div>
-                      <div className="flex flex-1 flex-col gap-[4px] items-start">
-                        <p className="font-['Simplon_Norm',sans-serif] text-[12px] text-[#161716] tracking-[0.24px] leading-[1.5] w-full">
-                          <span className="font-medium">{`You have subscribed to ${subscriptionCount} of 3 items `}</span>
-                          <span className="text-[#6c6c6c]">
-                            <br />
-                            FREE Toiletry bag - $30 value
-                          </span>
-                        </p>
-                      </div>
+                      <p className="flex-1 font-['Simplon_Norm',sans-serif] italic text-[10px] text-[#6c6c6c] tracking-[0.2px] leading-[1.5]">
+                        FREE travel-friendly toiletry bag — 100% recycled cotton ($30 value)
+                      </p>
                     </div>
                   </div>
                 ) : (
-                  // State 2: Eligible - show compact green badge only
-                  <div className="bg-[#ecff92] flex items-center justify-center overflow-clip rounded-[4px] h-[27px] mb-[12px]">
-                    <p className="font-['Simplon_Mono',monospace] text-[12px] text-[#161716] text-center tracking-[0.96px] uppercase leading-[1.2]">
-                      <span>We've</span>
-                      <span className="font-['Simplon_Mono',monospace] font-medium"> added your free gift</span>
-                      <span> to cart!</span>
+                  // State 2: Eligible - compact green banner
+                  <div className="bg-[#ecff92] flex items-center justify-center overflow-clip rounded-[4px] h-[40px] mb-[12px]">
+                    <p className="font-['Simplon_Norm',sans-serif] font-medium text-[12px] text-[#161716] text-center tracking-[0.24px] leading-[1.2]">
+                      We've added your free gift to cart!
                     </p>
                   </div>
                 )}

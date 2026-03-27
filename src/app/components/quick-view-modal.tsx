@@ -276,7 +276,7 @@ export default function QuickViewModal({ isOpen, onClose, product }: QuickViewMo
 
   // Goal-based reviews mapped to product concerns
   const goalReviews: Record<string, ReviewData[]> = {
-    "Improved Hydration": [
+    "Dryness": [
       {
         name: "Kathy S.",
         location: "New York, NY",
@@ -299,7 +299,7 @@ export default function QuickViewModal({ isOpen, onClose, product }: QuickViewMo
         body: "My hair has never retained moisture like this before. I live in a really dry climate and my hair always felt like it was begging for water no matter what I did. After two weeks with Prose, my curls are bouncy, hydrated, and I don't have to reapply product mid-day anymore. My wash-and-go lasts three full days now.",
       },
     ],
-    "Reduced Damage": [
+    "Damage": [
       {
         name: "Priya M.",
         location: "San Francisco, CA",
@@ -322,7 +322,7 @@ export default function QuickViewModal({ isOpen, onClose, product }: QuickViewMo
         body: "I was really skeptical because I've tried so many 'repair' products that did nothing. But after a month with Prose my hair genuinely feels stronger. I used to lose clumps in the shower and now it's barely anything. The breakage around my hairline has improved so much that I'm actually wearing my hair up again without worrying.",
       },
     ],
-    "Silky Softness": [
+    "Oiliness": [
       {
         name: "Jasmine T.",
         location: "Miami, FL",
@@ -345,7 +345,7 @@ export default function QuickViewModal({ isOpen, onClose, product }: QuickViewMo
         body: "The softness is real. I used to rely on heavy serums and oils to get any kind of smoothness but now my hair feels naturally soft right out of the shower. It drapes so nicely and has this healthy, touchable quality I've never achieved before. Friends keep asking me what salon treatment I got — nope, just Prose!",
       },
     ],
-    "Stronger Growth": [
+    "Stressors": [
       {
         name: "Amara W.",
         location: "Atlanta, GA",
@@ -368,7 +368,7 @@ export default function QuickViewModal({ isOpen, onClose, product }: QuickViewMo
         body: "I've struggled with thin, fine hair my whole life and always wanted it to look fuller. After using Prose consistently for 2 months I'm seeing new growth that I haven't seen in years. My braid is noticeably thicker and my hairstylist confirmed she can feel more density. It takes patience but the results speak for themselves.",
       },
     ],
-    "Less Irritation": [
+    "Sensitivity": [
       {
         name: "Sophie R.",
         location: "Philadelphia, PA",
