@@ -34,7 +34,7 @@ export const concernDataMap: Record<string, ConcernDetail> = {
   "Stressors": {
     label: "Stressors",
     severityDots: 2,
-    severityLabel: "Moderate Thinning",
+    severityLabel: "Moderate Stress",
     description:
       "We'll target your scalp health and hair density with stimulating actives and strengthening proteins designed to promote thicker, more resilient growth from root to tip.",
     basedOn: [
@@ -44,8 +44,8 @@ export const concernDataMap: Record<string, ConcernDetail> = {
   },
   "Oiliness": {
     label: "Oiliness",
-    severityDots: 2,
-    severityLabel: "Moderate Roughness",
+    severityDots: 1,
+    severityLabel: "Low Oiliness",
     description:
       "Your custom blend includes cuticle-smoothing agents and lightweight oils to coat each strand and restore the soft, defined texture you're after.",
     basedOn: [
@@ -56,7 +56,7 @@ export const concernDataMap: Record<string, ConcernDetail> = {
   "Sensitivity": {
     label: "Sensitivity",
     severityDots: 1,
-    severityLabel: "Low Irritation",
+    severityLabel: "Low Sensitivity",
     description:
       "We've included calming botanicals and gentle exfoliants to address sensitivity, reduce redness, and keep your scalp balanced throughout your routine.",
     basedOn: [
@@ -119,7 +119,7 @@ export default function ConcernModal({
               <div className="flex flex-col items-start px-[12px] py-[4px] relative rounded-[20px]">
                 <div
                   aria-hidden="true"
-                  className="absolute border border-[#f69371] border-solid inset-0 pointer-events-none rounded-[20px]"
+                  className="absolute border border-[#e2d9c2] border-solid inset-0 pointer-events-none rounded-[20px]"
                 />
                 <p className="font-['Simplon Norm','Inter',sans-serif] leading-[1.5] text-[#323429] text-[12px] tracking-[0.24px] whitespace-nowrap">
                   {data.label}

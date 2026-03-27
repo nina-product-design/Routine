@@ -31,7 +31,7 @@ function Star({ filled }: { filled: boolean }) {
 
 export default function ReviewCard({ review }: ReviewCardProps) {
   return (
-    <div className="bg-white flex flex-col gap-[16px] p-[16px] rounded-[10px] border border-[#f1ece0] min-w-[334px] w-[334px] shrink-0">
+    <div className="bg-white flex flex-col gap-[16px] p-[16px] rounded-[10px] border border-[#f1ece0] min-w-[270px] w-[270px] shrink-0">
       {/* Name, Location, Date & Stars */}
       <div className="flex flex-col gap-[8px]">
         <div className="flex flex-col font-['Simplon Norm','Inter',sans-serif] text-[#4d523c] text-[12px] leading-[1.5] tracking-[0.24px]">

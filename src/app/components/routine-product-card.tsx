@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 // ─── Component imports ────────────────────────────────────
 import FrequencyDropdown, { FrequencyOption } from "./frequency-dropdown";
 import ConcernModal from "./concern-modal";
+import ScoringModal from "./scoring-modal";
 
 // ─── SVG imports from Figma ───────────────────────────────
 import svgPaths from "../../imports/svg-g4omtyf4b6";
@@ -379,6 +380,7 @@ export function RoutineProductCard({
   const isSubscription = frequency !== "One-time purchase" && frequency !== "Buy Once";
   const [isFrequencyOpen, setIsFrequencyOpen] = useState(false);
   const [activeConcern, setActiveConcern] = useState<string | null>(null);
+  const [isScoringOpen, setIsScoringOpen] = useState(false);
 
   return (
     <div className="bg-white content-stretch flex flex-col gap-[24px] items-center relative rounded-[10px] w-[327px] pb-[24px]">
@@ -405,7 +407,7 @@ export function RoutineProductCard({
           {/* Product Info */}
           <div className="content-stretch flex flex-col gap-[8px] items-start text-[#4d523c] relative shrink-0 w-full">
             <p className="font-['Saol Text',serif] font-light leading-[1.1] min-w-full relative shrink-0 text-[32px] tracking-[-0.96px] w-[min-content]">{productName}</p>
-            <p className="font-['Simplon Norm','Inter',sans-serif] leading-[1.5] min-w-full relative shrink-0 text-[14px] tracking-[0.28px] w-[min-content]">{description}</p>
+            <p className="font-['Simplon Norm','Inter',sans-serif] leading-[1.5] min-w-full relative shrink-0 text-[14px] tracking-[0.28px] w-[min-content] line-clamp-2">{description}</p>
             <div className="content-stretch flex font-['Simplon Norm','Inter',sans-serif] gap-[24px] items-start leading-[1.5] relative shrink-0 text-[12px] tracking-[0.24px] whitespace-nowrap">
               <p className="relative shrink-0">{size}</p>
               {onQuickView && (
@@ -421,14 +423,17 @@ export function RoutineProductCard({
 
           {/* Targeted Concerns */}
           {concerns && concerns.length > 0 && (
-            <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-full">
+            <button
+              onClick={() => setIsScoringOpen(true)}
+              className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-full cursor-pointer text-left"
+            >
               <p className="font-['Simplon Mono','JetBrains Mono',monospace] font-medium leading-[14.4px] relative shrink-0 text-[#4d523c] text-[12px] tracking-[0.96px] uppercase whitespace-nowrap">THIS PRODUCT TARGETS</p>
               <div className="content-start flex flex-wrap gap-[8px] items-start relative shrink-0">
                 {concerns.map((concern, i) => (
-                  <GoalPill key={i} text={concern} onClick={() => setActiveConcern(concern)} />
+                  <GoalPill key={i} text={concern} onClick={() => setIsScoringOpen(true)} />
                 ))}
               </div>
-            </div>
+            </button>
           )}
 
           {/* Key Ingredients */}
@@ -479,6 +484,15 @@ export function RoutineProductCard({
         concern={activeConcern}
         isOpen={activeConcern !== null}
         onClose={() => setActiveConcern(null)}
+      />
+
+      {/* Scoring Modal */}
+      <ScoringModal
+        isOpen={isScoringOpen}
+        onClose={() => setIsScoringOpen(false)}
+        productName={productName}
+        concerns={concerns}
+        ingredients={ingredients}
       />
     </div>
   );

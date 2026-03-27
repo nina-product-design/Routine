@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from "motion/react";
 import { X, ChevronDown } from "lucide-react";
 import type { CatalogProduct } from "../data/product-catalog";
 import type { Ingredient } from "./routine-product-card";
-import { products } from "../data/products";
 
 // Import Shampoo images (kept for shampoo-specific use)
 import imgImageProseCustomShampooBottle from "figma:asset/a06595e028cff15a1e5b4ea40ed381ee3209aad7.png";
@@ -253,24 +252,6 @@ export default function QuickViewModal({ isOpen, onClose, product }: QuickViewMo
 
   const allIngredientsText = allIngredientsMap[product.id] || "";
 
-  // Look up the full product data from products.ts (handle catalog→products ID mapping)
-  const catalogToProductId: Record<string, string> = {
-    "hair-oil": "custom-hair-oil",
-    "scalp-serum": "custom-scalp-serum",
-    "curl-cream": "custom-curl-cream",
-    "leave-in-conditioner": "custom-leave-in-conditioner",
-    "dry-shampoo": "custom-dry-shampoo",
-    "styling-gel": "custom-styling-gel",
-    "hair-mask": "custom-hair-mask",
-  };
-  const productLookupId = catalogToProductId[product.id] || product.id;
-  const productData = products.find((p) => p.id === productLookupId);
-  
-  // Parse fullDescription into body paragraphs and footnote
-  const fullDescParts = (productData?.fullDescription || "").split(/\n\n\*/);
-  const fullDescBody = fullDescParts[0] || "";
-  const fullDescFootnote = fullDescParts[1] ? `*${fullDescParts[1]}` : "";
-
   // Derive a generic product type label (e.g., "Shampoo", "Conditioner")
   const productTypeLabel = product.routineName.replace("Maggie's ", "");
 
@@ -509,10 +490,10 @@ export default function QuickViewModal({ isOpen, onClose, product }: QuickViewMo
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-50 flex items-center justify-center py-[24px] px-[8px] pointer-events-none"
+            className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none"
           >
             <div
-              className="bg-white w-[375px] max-h-full overflow-y-auto rounded-[20px] pointer-events-auto relative [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+              className="bg-white w-[343px] max-h-[90vh] mx-[16px] overflow-y-auto rounded-[16px] pointer-events-auto relative [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
               onClick={(e) => e.stopPropagation()}
               ref={modalScrollRef}
             >
@@ -563,7 +544,7 @@ export default function QuickViewModal({ isOpen, onClose, product }: QuickViewMo
               </div>
 
               {/* Product Details */}
-              <div className="px-[24px] flex flex-col gap-[48px]">
+              <div className="px-[24px] flex flex-col gap-[24px]">
                 {/* Header Section */}
                 <div className="flex flex-col gap-[24px]">
                   <div className="flex flex-col gap-[16px]">
@@ -587,20 +568,28 @@ export default function QuickViewModal({ isOpen, onClose, product }: QuickViewMo
                       {typeof product.description === "string" ? product.description : product.description[0]}
                     </p>
                   </div>
-
-                  {fullDescBody && (
-                    <div className="flex flex-col gap-[16px]">
-                      <p className="font-['Simplon_Norm',sans-serif] text-[14px] leading-[21px] tracking-[0.28px] text-[#4d523c]">
-                        {fullDescBody}
-                      </p>
-                      {fullDescFootnote && (
-                        <p className="font-['Simplon_Norm',sans-serif] text-[12px] leading-[18px] tracking-[0.24px] text-[#6c6c6c]">
-                          {fullDescFootnote}
-                        </p>
-                      )}
-                    </div>
-                  )}
                 </div>
+
+                {/* Targeted Concerns */}
+                {product.concerns && product.concerns.length > 0 && (
+                  <div className="flex flex-col gap-[8px]">
+                    <p className="font-['Simplon_Mono','JetBrains_Mono',monospace] font-medium text-[12px] leading-[14.4px] tracking-[0.96px] uppercase text-[#4d523c]">
+                      This product targets
+                    </p>
+                    <div className="flex gap-[8px] flex-wrap">
+                      {product.concerns.map((concern, idx) => (
+                        <div
+                          key={idx}
+                          className="border border-[#e2d9c2] rounded-[20px] px-[12px] py-[4px]"
+                        >
+                          <p className="font-['Simplon_Norm',sans-serif] text-[12px] leading-[18px] tracking-[0.24px] text-[#323429]">
+                            {concern}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 {/* Ingredients Section */}
                 <div className="flex flex-col gap-[24px]">
@@ -613,27 +602,6 @@ export default function QuickViewModal({ isOpen, onClose, product }: QuickViewMo
                       ingredients your hair needs.
                     </p>
                   </div>
-
-                  {/* Targeted Concerns */}
-                  {product.concerns && product.concerns.length > 0 && (
-                    <div className="flex flex-col gap-[8px]">
-                      <p className="font-['Simplon_Mono',monospace] text-[12px] leading-[14.4px] tracking-[0.96px] uppercase text-[#4d523c]">
-                        YOUR TARGETED CONCERNS
-                      </p>
-                      <div className="flex gap-[8px] flex-wrap">
-                        {product.concerns.map((concern, idx) => (
-                          <div
-                            key={idx}
-                            className="border border-[#e2d9c2] rounded-[20px] px-[12px] py-[4px]"
-                          >
-                            <p className="font-['Simplon_Norm',sans-serif] text-[12px] leading-[18px] tracking-[0.24px] text-[#323429]">
-                              {concern}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
 
                   {/* Key Ingredients */}
                   {product.ingredients && product.ingredients.length > 0 && (
@@ -710,7 +678,49 @@ export default function QuickViewModal({ isOpen, onClose, product }: QuickViewMo
 
                   {/* Fragrance Preference */}
                   <QuickViewPreferences product={product} />
+
+                  {/* Divider before Scientific Results */}
+                  {product.cardType === "full" && product.id === "custom-shampoo" && (
+                    <div className="bg-[#e2d9c2] h-[0.5px] w-full" />
+                  )}
                 </div>
+
+                {/* Scientific Results — shown only for Shampoo for now (dynamic per product later) */}
+                {product.cardType === "full" && product.id === "custom-shampoo" && (
+                  <div className="flex flex-col gap-[16px]">
+                    <p className="font-['Simplon_Mono',monospace] text-[12px] leading-[14.4px] tracking-[0.96px] uppercase text-[#323429]">
+                      Scientific Results
+                    </p>
+
+                    <p className="font-['Simplon_Norm',sans-serif] text-[14px] leading-[21px] tracking-[0.28px] text-[#4d523c]">
+                      In a rigorous in-house study on Custom Shampoo, we tested its effectiveness across a range of hair types and textures.
+                    </p>
+
+                    <div className="flex flex-col">
+                      <div className="bg-[#e2d9c2] h-[0.5px] w-full" />
+                      <div className="flex gap-[12px] items-center py-[16px]">
+                        <svg className="size-[26px] shrink-0" viewBox="0 0 26 26" fill="none">
+                          <circle cx="12.5964" cy="12.5964" r="12.3263" stroke="#323429" strokeWidth="0.540067"/>
+                          <mask id="mask_sci_0" style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="26" height="26">
+                            <circle cx="12.5964" cy="12.5964" r="12.5964" fill="#D9D9D9"/>
+                          </mask>
+                          <g mask="url(#mask_sci_0)">
+                            <path d="M13.0385 7.94749L10.4978 8.40907L10.1573 8.47028L10.3004 8.78548L11.6504 11.7691L8.41571 12.0996L8.045 12.1368L8.19718 12.4775L9.35315 15.0775L-10.2642 3.90808L-6.29623 -3.06101L13.0385 7.94749Z" stroke="#323429" strokeWidth="0.540067"/>
+                            <path d="M34.5828 20.2203L30.6172 27.1851L12.048 16.6124L10.7321 13.6775L13.982 13.3557L14.3584 13.3183L14.2012 12.9748L12.8249 9.95829L15.6698 9.45191L34.5828 20.2203Z" stroke="#323429" strokeWidth="0.540067"/>
+                          </g>
+                        </svg>
+                        <p className="font-['Simplon_Norm',sans-serif] text-[12px] leading-[18px] tracking-[0.24px] text-[#323429]">
+                          Helps increase hair strength and reduce breakage*
+                        </p>
+                      </div>
+                      <div className="bg-[#e2d9c2] h-[0.5px] w-full" />
+                    </div>
+
+                    <p className="font-['Simplon_Norm',sans-serif] text-[12px] leading-[18px] tracking-[0.24px] text-[#6c6c6c]">
+                      *Instrumental efficacy test of Prose Custom Shampoo, Conditioner & Hair Mask vs. non-conditioning shampoo
+                    </p>
+                  </div>
+                )}
 
                 {/* Reviews Carousel */}
                 {productReviews.length > 0 && (
