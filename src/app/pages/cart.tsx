@@ -142,38 +142,35 @@ export default function Cart() {
 
       {routineCartIds.length === 0 ? (
         <>
-          {/* Empty State: Italic Header */}
-          <div className="flex flex-col h-[80px] items-center justify-center px-[24px] py-[16px] w-full">
-            <p className="font-['Saol Text',serif] italic font-light text-[20px] text-black tracking-[0.4px] leading-[1.5]">It looks a bit empty here.</p>
-          </div>
+          {/* Empty State */}
+          <div className="flex flex-col items-center px-[24px] pt-[40px] pb-[24px] w-full">
+            <p className="font-['Saol Text',serif] text-[28px] text-[#161716] tracking-[-0.5px] leading-[1.15] text-center">
+              Your custom blends<br />are missing
+            </p>
 
-          {/* Empty State: Subscription Promo */}
-          <div className="flex flex-col items-start w-full">
-            {/* Product Image */}
-            <div className="relative w-full h-[241px] overflow-hidden">
-              <img
-                alt="Prose hair care products"
-                className="absolute h-[138%] left-0 max-w-none top-[-18%] w-full object-cover"
-                src={imgProseProducts}
-              />
+            <div className="w-full h-[1px] bg-[#d9d9d9] mt-[24px] mb-[20px]" />
+
+            <div className="bg-[#ecff92] rounded-[4px] px-[12px] py-[4px] flex items-center justify-center mb-[16px]">
+              <p className="font-['Simplon_Mono','JetBrains_Mono',monospace] font-medium text-[12px] text-[#161716] tracking-[0.96px] uppercase leading-[1.2]">
+                60% off + free shipping
+              </p>
             </div>
 
-            {/* Text + CTA */}
-            <div className="bg-white flex flex-col gap-[24px] items-center justify-center p-[24px] w-full">
-              <div className="flex flex-col gap-[8px] items-start w-full">
-                <p className="font-['Simplon_Mono','JetBrains_Mono',monospace] font-medium text-[12px] text-[#161716] tracking-[0.96px] uppercase leading-[1.2] w-full">Made just for you</p>
-                <p className="font-['Saol Text',serif] text-[20px] text-[#161716] tracking-[-0.6px] leading-[1.1] w-full">
-                  Start your custom journey and get 60% off<span className="text-[13px]">*</span> + free shipping when you subscribe.
-                </p>
-              </div>
-              <button
-                onClick={() => navigate("/routine")}
-                className="bg-[#f69371] h-[44px] w-full max-w-[492px] rounded-[60px] cursor-pointer flex items-center justify-center"
-              >
-                <p className="font-['Simplon_Mono','JetBrains_Mono',monospace] font-medium text-[12px] text-[#323429] text-center tracking-[0.96px] uppercase leading-[1.2]">Shop your routine</p>
-              </button>
-              <p className="font-['Simplon_Norm','Inter',sans-serif] italic text-[10px] text-[#6c6c6c] tracking-[0.2px] leading-[1.5] w-full">*offer only valid for first subscription, 15% off reoccurring</p>
-            </div>
+            <p className="font-['Simplon_Norm',sans-serif] text-[14px] text-[#161716] tracking-[0.28px] leading-[1.5] text-center">Made just for you.</p>
+            <p className="font-['Simplon_Norm',sans-serif] text-[14px] text-[#6c6c6c] tracking-[0.28px] leading-[1.5] text-center">
+              Get 60% off + free shipping when you subscribe.
+            </p>
+
+            <button
+              onClick={() => navigate("/routine")}
+              className="mt-[16px] cursor-pointer bg-transparent border-none"
+            >
+              <p className="font-['Simplon_Mono','JetBrains_Mono',monospace] font-medium text-[12px] text-[#161716] tracking-[0.96px] uppercase leading-[1.2] underline underline-offset-[8px]" style={{ textDecorationColor: '#C5765A' }}>
+                Shop your routine
+              </p>
+            </button>
+
+            <div className="w-full h-[1px] bg-[#d9d9d9] mt-[24px]" />
           </div>
 
           {/* Upsell Carousel */}
@@ -182,34 +179,53 @@ export default function Cart() {
       ) : (
         <>
           {/* GWP Tracker */}
-          <div className="px-[24px] pt-[16px] w-full">
+          <div className="w-full">
             {subscriptionCount < 3 ? (
               // State 1: Not eligible yet - show progress banner + gift details
-              <div className="bg-[#f9f7f2] flex flex-col items-center overflow-clip rounded-[10px]">
-                <div className="bg-[#e2d9c2] h-[27px] w-full flex items-center justify-center">
-                  <p className="font-['Simplon_Mono',monospace] text-[12px] text-[#161716] text-center tracking-[0.96px] uppercase leading-[1.2]">
-                    <span>Subscribe to </span>
-                    <span className="font-['Simplon_Mono',monospace] font-medium">{3 - subscriptionCount} more product{3 - subscriptionCount !== 1 ? 's' : ''}</span>
-                    <span> for your free gift</span>
+              <div className="bg-[#f9f7f2] flex flex-col items-center overflow-clip">
+                {/* Dark banner with progress dots */}
+                <div className="bg-[#4d523c] h-[40px] w-full flex items-center justify-center gap-[8px] px-[16px]">
+                  <p className="font-['Simplon_Norm',sans-serif] font-medium text-[12px] text-white tracking-[0.24px] leading-[1.2] whitespace-nowrap">
+                    Subscribe to <span className="font-bold">{3 - subscriptionCount} more item{3 - subscriptionCount !== 1 ? 's' : ''}</span> to get your free gift
                   </p>
+                  <div className="flex gap-[4px] items-center shrink-0">
+                    {[1, 2, 3].map((step) => (
+                      <div
+                        key={step}
+                        className={`size-[16px] rounded-full flex items-center justify-center text-[10px] font-['Simplon_Norm',sans-serif] font-medium leading-none ${
+                          step <= subscriptionCount
+                            ? "bg-[#ecff92] text-[#161716]"
+                            : "border border-white/50 text-white/50"
+                        }`}
+                      >
+                        {step}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <div className="flex gap-[8px] items-center p-[12px] w-full bg-[#f9f7f2]">
-                  <div className="size-[56px] shrink-0 rounded-[6px] overflow-hidden">
+                {/* Gift preview with lock overlay */}
+                <div className="flex gap-[12px] items-center px-[24px] py-[12px] w-full">
+                  <div className="w-[64px] h-[64px] shrink-0 rounded-[6px] overflow-hidden relative">
                     <img src={imgToiletryBag} alt="Free Toiletry Bag" className="size-full object-cover" />
+                    <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[18px] flex items-center justify-center" style={{ backgroundColor: 'rgba(249, 247, 242, 0.75)' }}>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M16.3202 11.0399H15.3602V9.11993C15.3602 7.24793 13.8722 5.75993 12.0002 5.75993C10.1282 5.75993 8.64018 7.24793 8.64018 9.11993V11.0399H7.68018V9.11993C7.68018 6.71993 9.60018 4.79993 12.0002 4.79993C14.4002 4.79993 16.3202 6.71993 16.3202 9.11993V11.0399Z" fill="#161716"/>
+                        <path d="M15.8402 19.2002H8.16021C7.34421 19.2002 6.72021 18.5762 6.72021 17.7602V12.0002C6.72021 11.1842 7.34421 10.5602 8.16021 10.5602H15.8402C16.6562 10.5602 17.2802 11.1842 17.2802 12.0002V17.7602C17.2802 18.5762 16.6562 19.2002 15.8402 19.2002ZM8.16021 11.5202C7.87221 11.5202 7.68021 11.7122 7.68021 12.0002V17.7602C7.68021 18.0482 7.87221 18.2402 8.16021 18.2402H15.8402C16.1282 18.2402 16.3202 18.0482 16.3202 17.7602V12.0002C16.3202 11.7122 16.1282 11.5202 15.8402 11.5202H8.16021Z" fill="#161716"/>
+                        <path d="M11.9996 14.4C12.5297 14.4 12.9596 13.9702 12.9596 13.44C12.9596 12.9098 12.5297 12.48 11.9996 12.48C11.4694 12.48 11.0396 12.9098 11.0396 13.44C11.0396 13.9702 11.4694 14.4 11.9996 14.4Z" fill="#161716"/>
+                        <path d="M12.2398 13.4398H11.7598L11.2798 16.3198H12.7198L12.2398 13.4398Z" fill="#161716"/>
+                      </svg>
+                    </div>
                   </div>
-                  <div className="flex-1 flex flex-col">
-                    <p className="font-['Simplon_Norm',sans-serif] text-[14px] text-[#6c6c6c] tracking-[0.28px] leading-[1.5]">Free Toiletry Bag</p>
-                    <p className="font-['Simplon_Norm',sans-serif] text-[12px] text-[#6c6c6c] tracking-[0.24px] leading-[1.5]">Your travel-friendly toiletry bag — in 100% recycled cotton canvas ($30 value).</p>
-                  </div>
+                  <p className="flex-1 font-['Simplon_Norm',sans-serif] italic text-[10px] text-[#6c6c6c] tracking-[0.2px] leading-[1.5]">
+                    FREE travel-friendly toiletry bag — 100% recycled cotton ($30 value)
+                  </p>
                 </div>
               </div>
             ) : (
               // State 2: Eligible - show compact green badge
-              <div className="bg-[#ecff92] flex items-center justify-center overflow-clip rounded-[4px] h-[27px]">
-                <p className="font-['Simplon_Mono',monospace] text-[12px] text-[#161716] text-center tracking-[0.96px] uppercase leading-[1.2]">
-                  <span>We've</span>
-                  <span className="font-['Simplon_Mono',monospace] font-medium"> added your free gift</span>
-                  <span> to cart!</span>
+              <div className="bg-[#ecff92] flex items-center justify-center overflow-clip h-[40px] w-full">
+                <p className="font-['Simplon_Norm',sans-serif] font-medium text-[12px] text-[#161716] text-center tracking-[0.24px] leading-[1.2]">
+                  We've added your free gift to cart!
                 </p>
               </div>
             )}
