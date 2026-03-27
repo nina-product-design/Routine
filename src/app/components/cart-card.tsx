@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 
 // ─── Icon Components ──────────────────────────────────────
@@ -15,6 +15,53 @@ function PlusIcon() {
     <svg className="size-[24px]" fill="none" viewBox="0 0 24 24">
       <path d="M6 12H18M12 18V6" stroke="#6C6C6C" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" />
     </svg>
+  );
+}
+
+// ─── Monogram Input ──────────────────────────────────────
+function MonogramInput({ value, onChange }: { value: string; onChange?: (v: string) => void }) {
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState(value);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (editing) {
+      setDraft(value);
+      setTimeout(() => inputRef.current?.focus(), 0);
+    }
+  }, [editing]);
+
+  const commit = () => {
+    setEditing(false);
+    onChange?.(draft.toUpperCase());
+  };
+
+  if (editing) {
+    return (
+      <div className="h-[40px] w-[80px] rounded-[20px] border-[0.5px] border-[#4d523c] flex items-center justify-center px-[8px] bg-white">
+        <input
+          ref={inputRef}
+          type="text"
+          maxLength={3}
+          value={draft}
+          onChange={(e) => setDraft(e.target.value.toUpperCase().replace(/[^A-Z]/g, ""))}
+          onBlur={commit}
+          onKeyDown={(e) => { if (e.key === "Enter") commit(); }}
+          className="w-full font-['Simplon_Norm',sans-serif] text-[12px] text-[#323429] tracking-[0.24px] leading-[1.5] text-center bg-transparent outline-none uppercase"
+        />
+      </div>
+    );
+  }
+
+  return (
+    <button
+      onClick={() => setEditing(true)}
+      className="h-[40px] w-[80px] rounded-[20px] border-[0.5px] border-[#b9c2a6] flex items-center justify-center px-[8px] cursor-pointer bg-transparent"
+    >
+      <p className="font-['Simplon_Norm',sans-serif] text-[12px] text-[#6c6c6c] tracking-[0.24px] leading-[1.5] text-center">
+        {value || "ABC"}
+      </p>
+    </button>
   );
 }
 
@@ -42,6 +89,7 @@ interface CartCardProductProps extends CartCardBaseProps {
   isDiscounted: boolean;
   quantity: number;
   monogram?: string;
+  onMonogramChange?: (value: string) => void;
   onIncrement: () => void;
   onDecrement: () => void;
   onRemove: () => void;
@@ -156,10 +204,8 @@ export default function CartCard(props: CartCardProps) {
                       <PlusIcon />
                     </button>
                   </div>
-                  {p.monogram && (
-                    <div className="h-[40px] w-[80px] rounded-[20px] border-[0.5px] border-[#b9c2a6] flex items-center justify-center px-[8px]">
-                      <p className="font-['Simplon_Norm',sans-serif] text-[12px] text-[#6c6c6c] tracking-[0.24px] leading-[1.5] text-center">{p.monogram}</p>
-                    </div>
+                  {p.monogram !== undefined && (
+                    <MonogramInput value={p.monogram || ""} onChange={p.onMonogramChange} />
                   )}
                   <button
                     onClick={handleRemoveClick}

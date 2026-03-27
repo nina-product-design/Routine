@@ -57,6 +57,8 @@ export default function Cart() {
     Object.fromEntries(routineCartIds.map((id) => [id, 1]))
   );
 
+  const [monograms, setMonograms] = useState<Record<string, string>>({});
+
   // Calculate subscription count (includes quantities)
   const subscriptionCount = routineCartIds.reduce((count, id) => {
     const product = productCatalog[id];
@@ -257,7 +259,8 @@ export default function Cart() {
                     originalPrice={product.originalPrice}
                     isDiscounted={isDiscounted}
                     quantity={qty}
-                    monogram={product.category === "brush" ? "ELS" : undefined}
+                    monogram={product.category === "brush" ? (monograms[id] ?? "") : undefined}
+                    onMonogramChange={product.category === "brush" ? (val: string) => setMonograms(prev => ({ ...prev, [id]: val })) : undefined}
                     onIncrement={() => handleIncrement(id)}
                     onDecrement={() => handleDecrement(id)}
                     onRemove={() => handleRemove(id)}
