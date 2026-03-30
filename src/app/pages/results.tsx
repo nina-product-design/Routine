@@ -94,48 +94,56 @@ interface Dot {
   delay: number;
 }
 
-// Hand-placed dots to match the Figma design.
+// Evenly spaced dots around the ring — no overlap.
 // Each entry: [angleDeg, radius offset from center ring, dot radius, color index]
-// angleDeg 0 = top (12 o'clock), clockwise
+// 26 dots spaced ~13.8° apart, sizes alternate small/med/large (max 9px radius)
 const dotDefs: [number, number, number, number][] = [
-  // Top cluster
-  [0, 0, 5, 2],    [8, -4, 4, 0],
-  [18, 2, 10, 3],  [30, -2, 7, 0],
-  [40, 0, 13, 1],  [50, 3, 5, 2],
-  [58, -3, 8, 0],  [65, 1, 14, 1],
-  // Right side
-  [75, -2, 5, 3],  [83, 0, 10, 0],
-  [93, 2, 6, 2],   [102, -1, 14, 1],
-  [112, 3, 4, 0],  [120, 0, 8, 2],
-  [130, -2, 12, 1], [138, 1, 5, 3],
-  // Bottom-right
-  [148, 0, 7, 0],  [158, -3, 13, 2],
-  [168, 2, 5, 1],  [178, 0, 9, 0],
-  // Bottom
-  [188, -1, 14, 3], [198, 3, 6, 2],
-  [208, 0, 10, 1], [216, -2, 4, 0],
-  [224, 1, 13, 2], [234, 0, 7, 3],
-  // Bottom-left
-  [244, -3, 5, 0], [252, 2, 11, 1],
-  [260, 0, 6, 0],  [270, -1, 14, 1],
-  // Left side
-  [280, 2, 5, 2],  [288, 0, 9, 0],
-  [296, -2, 13, 2], [306, 3, 4, 3],
-  [314, 0, 8, 1],  [324, -1, 6, 0],
-  [334, 2, 12, 2], [344, 0, 5, 3],
-  [352, -3, 8, 0],
+  [0,   0, 7, 0],   [14,  0, 4, 0],
+  [28,  0, 9, 3],   [42,  0, 5, 0],
+  [56,  0, 8, 1],   [70,  0, 4, 2],
+  [84,  0, 6, 0],   [98,  0, 9, 1],
+  [112, 0, 4, 0],   [126, 0, 7, 2],
+  [140, 0, 5, 0],   [154, 0, 8, 2],
+  [168, 0, 4, 1],   [182, 0, 9, 0],
+  [196, 0, 5, 3],   [210, 0, 7, 1],
+  [224, 0, 4, 0],   [238, 0, 9, 2],
+  [252, 0, 5, 0],   [266, 0, 8, 1],
+  [280, 0, 4, 3],   [294, 0, 7, 0],
+  [308, 0, 5, 2],   [322, 0, 9, 1],
+  [336, 0, 4, 0],   [350, 0, 6, 3],
 ];
 
-function generateDots(): Dot[] {
+interface FloatingDot extends Dot {
+  floatX: number[];
+  floatY: number[];
+  floatDuration: number;
+}
+
+function generateDots(): FloatingDot[] {
   const center = 140;
   const baseRadius = 100;
+  // Seeded random-ish offsets for each dot's floating path
+  const rng = (seed: number) => ((Math.sin(seed * 127.1 + 311.7) * 43758.5453) % 1 + 1) % 1;
 
   return dotDefs.map(([angleDeg, rOffset, size, colorIdx], i) => {
     const angle = (angleDeg * Math.PI) / 180 - Math.PI / 2;
     const r = baseRadius + rOffset;
     const x = center + Math.cos(angle) * r;
     const y = center + Math.sin(angle) * r;
-    return { cx: x, cy: y, r: size, color: DOT_COLORS[colorIdx], delay: i * 0.03 };
+    // Generate unique floating keyframes per dot (subtle 3-6px drift)
+    const drift = 3 + rng(i) * 3;
+    const driftX = drift * (rng(i * 2) > 0.5 ? 1 : -1);
+    const driftY = drift * (rng(i * 3) > 0.5 ? 1 : -1);
+    return {
+      cx: x,
+      cy: y,
+      r: size,
+      color: DOT_COLORS[colorIdx],
+      delay: i * 0.5 / dotDefs.length, // spread 500ms stagger across all dots
+      floatX: [0, driftX, -driftX * 0.6, driftX * 0.3, 0],
+      floatY: [0, -driftY * 0.7, driftY, -driftY * 0.4, 0],
+      floatDuration: 4 + rng(i * 5) * 3, // 4-7s per cycle, unique per dot
+    };
   });
 }
 
@@ -145,26 +153,63 @@ function DotRingVisualization() {
   const [animated, setAnimated] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setAnimated(true), 100);
+    const timer = setTimeout(() => setAnimated(true), 800);
     return () => clearTimeout(timer);
   }, []);
 
+  // Total entrance stagger: 500ms spread across all dots
+  const totalStagger = 0.5;
+
   return (
     <div className="relative w-[280px] h-[280px] mx-auto">
-      <svg viewBox="0 0 280 280" className="w-full h-full">
-        {ringDots.map((dot, i) => (
-          <motion.circle
-            key={i}
-            cx={dot.cx}
-            cy={dot.cy}
-            r={dot.r}
-            fill={dot.color}
-            opacity={0.85}
-            initial={{ scale: 0, opacity: 0 }}
-            animate={animated ? { scale: 1, opacity: 0.85 } : {}}
-            transition={{ duration: 0.7, delay: dot.delay * 1.5, ease: "easeOut" }}
-          />
-        ))}
+      <svg viewBox="0 0 280 280" className="w-full h-full overflow-visible">
+        {ringDots.map((dot, i) => {
+          const entranceDelay = (i / ringDots.length) * totalStagger;
+          return (
+            <motion.circle
+              key={i}
+              cx={dot.cx}
+              cy={dot.cy}
+              r={dot.r}
+              fill={dot.color}
+              initial={{ scale: 0, opacity: 0, x: 0, y: 0 }}
+              animate={
+                animated
+                  ? {
+                      scale: 1,
+                      opacity: 0.85,
+                      x: dot.floatX,
+                      y: dot.floatY,
+                    }
+                  : {}
+              }
+              transition={{
+                scale: {
+                  duration: 0.8,
+                  delay: entranceDelay,
+                  ease: "easeInOut",
+                },
+                opacity: {
+                  duration: 0.8,
+                  delay: entranceDelay,
+                  ease: "easeInOut",
+                },
+                x: {
+                  duration: dot.floatDuration,
+                  delay: entranceDelay + 0.8,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                },
+                y: {
+                  duration: dot.floatDuration,
+                  delay: entranceDelay + 0.8,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                },
+              }}
+            />
+          );
+        })}
       </svg>
       {/* Center text */}
       <motion.div
