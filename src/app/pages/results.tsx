@@ -402,16 +402,16 @@ function DetailCarousel({
             </div>
           ))}
           {/* Full score overview card — 1:1 match with standalone BarChart */}
-          <div className="snap-start shrink-0 w-[295px] flex items-center">
-            <div className="bg-white rounded-[14px] shadow-[0px_2px_12px_0px_rgba(0,0,0,0.06),0px_0.5px_2px_0px_rgba(0,0,0,0.04)] p-[20px] w-full flex flex-col gap-[16px]">
-              <div className="flex justify-between pl-[90px] mb-[-6px]">
+          <div className="snap-start shrink-0 w-[295px] flex self-stretch">
+            <div className="bg-white rounded-[14px] shadow-[0px_2px_12px_0px_rgba(0,0,0,0.06),0px_0.5px_2px_0px_rgba(0,0,0,0.04)] p-[20px] w-full flex flex-col justify-center gap-[12px]">
+              <div className="flex justify-between pl-[80px] mb-[-4px]">
                 <p className="font-['Simplon_Norm','Inter',sans-serif] text-[11px] text-[#a0a090] tracking-[0.22px]">Low</p>
                 <p className="font-['Simplon_Norm','Inter',sans-serif] text-[11px] text-[#a0a090] tracking-[0.22px] text-right">High</p>
               </div>
               <div className="flex flex-col gap-[12px]">
                 {metrics.map((metric) => (
-                  <div key={metric.key} className="flex items-center gap-[12px] w-full">
-                    <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[10px] text-[#323429] tracking-[0.8px] uppercase w-[78px] text-right shrink-0">
+                  <div key={metric.key} className="flex items-center gap-[8px] w-full">
+                    <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[9px] text-[#323429] tracking-[0.72px] uppercase w-[72px] shrink-0">
                       {metric.label}
                     </p>
                     <div className="flex-1 h-[12px] bg-[#f1ece0] rounded-full relative overflow-hidden">
