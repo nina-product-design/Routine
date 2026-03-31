@@ -437,6 +437,9 @@ export default function Results() {
           >
             Your results, Maggie
           </motion.h1>
+          <p className="font-['Simplon_Norm',sans-serif] font-normal text-[14px] text-[#6c6c6c] tracking-[0.28px] leading-[1.5] mt-[8px]">
+            Each product is made to order with ingredients tailored to your needs.
+          </p>
         </div>
 
         {/* Dot Ring Visualization */}
