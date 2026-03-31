@@ -217,8 +217,8 @@ export default function CartDrawer({
                       <div className="bg-[#f9f7f2] flex flex-col items-center overflow-clip">
                         {/* Dark banner with progress dots */}
                         <div className="bg-[#4d523c] h-[40px] w-full flex items-center justify-center gap-[8px] px-[16px]">
-                          <p className="font-['Simplon_Norm',sans-serif] font-medium text-[12px] text-white tracking-[0.24px] leading-[1.2] whitespace-nowrap">
-                            Subscribe to <span className="font-bold">{3 - subscriptionCount} more item{3 - subscriptionCount !== 1 ? 's' : ''}</span> to get your free gift
+                          <p className="font-['Simplon_Norm',sans-serif] font-normal text-[12px] text-white tracking-[0.24px] leading-[1.2] whitespace-nowrap">
+                            Subscribe to 1 more item to unlock your free gift
                           </p>
                           <div className="flex gap-[4px] items-center shrink-0">
                             {[1, 2, 3].map((step) => (
