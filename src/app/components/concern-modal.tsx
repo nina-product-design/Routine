@@ -6,62 +6,91 @@ import { motion, AnimatePresence } from "motion/react";
 
 // ─── Concern Data ─────────────────────────────────────────
 
+export interface BasedOnFactor {
+  label: string;
+  icon: "heat" | "sun" | "calendar" | "stressed" | "head" | "drop";
+  value: string;
+}
+
 export interface ConcernDetail {
   label: string;
   severityDots: number; // 1–5, filled dots out of 5
   severityLabel: string;
+  percent: number;
+  color: string;
   description: string;
-  basedOn: string[];
+  basedOn: BasedOnFactor[];
 }
 
 export const concernDataMap: Record<string, ConcernDetail> = {
   "Damage": {
     label: "Damage",
     severityDots: 3,
-    severityLabel: "Very Damaged",
+    severityLabel: "High",
+    percent: 88,
+    color: "#f69371",
     description:
-      "We'll strengthen your hair and help repair what we can by adding ingredients to your products that help with hair health, fiber repair, and nourishment.",
-    basedOn: ["You heat-style 3–4x/week", "Your hair is color-treated"],
+      "With multiple high-impact stressors with little recovery time in between, your custom formula will prioritize fiber repair and protection.",
+    basedOn: [
+      { label: "Heat treatment", icon: "heat", value: "High" },
+      { label: "Environment", icon: "sun", value: "Harsh UV" },
+      { label: "Coloring", icon: "calendar", value: "Weekly" },
+    ],
   },
   "Dryness": {
     label: "Dryness",
     severityDots: 3,
-    severityLabel: "Very Dry",
+    severityLabel: "High",
+    percent: 82,
+    color: "#f69371",
     description:
-      "Your hair needs deep moisture restoration. We've selected humectants and emollients that penetrate the hair shaft to lock in hydration without weighing your curls down.",
-    basedOn: ["Your hair feels dry or brittle", "You live in a dry climate"],
+      "With multiple high-impact stressors with little recovery time in between, your custom formula will prioritize fiber repair and protection.",
+    basedOn: [
+      { label: "Heat treatment", icon: "heat", value: "High" },
+      { label: "Environment", icon: "sun", value: "Harsh UV" },
+      { label: "Coloring", icon: "calendar", value: "Weekly" },
+    ],
   },
   "Stressors": {
     label: "Stressors",
     severityDots: 2,
-    severityLabel: "Moderate Stress",
+    severityLabel: "Medium",
+    percent: 58,
+    color: "#EABF6F",
     description:
-      "We'll target your scalp health and hair density with stimulating actives and strengthening proteins designed to promote thicker, more resilient growth from root to tip.",
+      "With multiple high-impact stressors with little recovery time in between, your custom formula will prioritize fiber repair and protection.",
     basedOn: [
-      "You've noticed thinning or shedding",
-      "Your hair grows slowly",
+      { label: "Stress level", icon: "stressed", value: "Sometimes" },
+      { label: "Environment", icon: "sun", value: "High UV" },
+      { label: "Washing", icon: "calendar", value: "2-3 times a week" },
     ],
   },
   "Oiliness": {
     label: "Oiliness",
     severityDots: 1,
-    severityLabel: "Low Oiliness",
+    severityLabel: "Low",
+    percent: 15,
+    color: "#B9C2A6",
     description:
-      "Your custom blend includes cuticle-smoothing agents and lightweight oils to coat each strand and restore the soft, defined texture you're after.",
+      "With multiple high-impact stressors with little recovery time in between, your custom formula will prioritize fiber repair and protection.",
     basedOn: [
-      "Your hair feels coarse or rough",
-      "You want smoother, shinier hair",
+      { label: "Flakiness", icon: "heat", value: "Rarely" },
+      { label: "Scalp Spectrum", icon: "drop", value: "Mixed" },
+      { label: "Washing", icon: "calendar", value: "2-3 times a week" },
     ],
   },
   "Sensitivity": {
     label: "Sensitivity",
     severityDots: 1,
-    severityLabel: "Low Sensitivity",
+    severityLabel: "Low",
+    percent: 30,
+    color: "#B9C2A6",
     description:
-      "We've included calming botanicals and gentle exfoliants to address sensitivity, reduce redness, and keep your scalp balanced throughout your routine.",
+      "With multiple high-impact stressors with little recovery time in between, your custom formula will prioritize fiber repair and protection.",
     basedOn: [
-      "You experience scalp itchiness",
-      "Your scalp is sensitive to products",
+      { label: "Flakiness", icon: "heat", value: "Rarely" },
+      { label: "Sensitive Scalp", icon: "head", value: "Off and on" },
+      { label: "Washing", icon: "calendar", value: "2-3 times a week" },
     ],
   },
 };
