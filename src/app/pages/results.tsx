@@ -334,7 +334,8 @@ function DetailCarousel({
     isUserScrolling.current = true;
     const cardWidth = 295 + 12;
     const index = Math.round(el.scrollLeft / cardWidth);
-    const clamped = Math.min(index, metrics.length - 1);
+    const totalCards = metrics.length + 1; // +1 for overview card
+    const clamped = Math.min(index, totalCards - 1);
     if (clamped !== activeIndex) {
       onIndexChange(clamped);
     }
@@ -400,19 +401,44 @@ function DetailCarousel({
               </div>
             </div>
           ))}
+          {/* Full score overview card — 1:1 match with standalone BarChart */}
+          <div className="snap-start shrink-0 w-[295px] flex items-center">
+            <div className="bg-white rounded-[14px] shadow-[0px_2px_12px_0px_rgba(0,0,0,0.06),0px_0.5px_2px_0px_rgba(0,0,0,0.04)] p-[20px] w-full flex flex-col gap-[16px]">
+              <div className="flex justify-between pl-[90px] mb-[-6px]">
+                <p className="font-['Simplon_Norm','Inter',sans-serif] text-[11px] text-[#a0a090] tracking-[0.22px]">Low</p>
+                <p className="font-['Simplon_Norm','Inter',sans-serif] text-[11px] text-[#a0a090] tracking-[0.22px] text-right">High</p>
+              </div>
+              <div className="flex flex-col gap-[12px]">
+                {metrics.map((metric) => (
+                  <div key={metric.key} className="flex items-center gap-[12px] w-full">
+                    <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[10px] text-[#323429] tracking-[0.8px] uppercase w-[78px] text-right shrink-0">
+                      {metric.label}
+                    </p>
+                    <div className="flex-1 h-[12px] bg-[#f1ece0] rounded-full relative overflow-hidden">
+                      <motion.div
+                        className="h-full rounded-full"
+                        style={{ backgroundColor: metric.color }}
+                        initial={{ width: 0 }}
+                        animate={{ width: `${metric.value * 100}%` }}
+                        transition={{ duration: 1.0, delay: 0.5, ease: "easeOut" }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
           <div className="shrink-0 w-[24px]" aria-hidden />
         </div>
       </div>
       {/* Dot indicators */}
-      <div className="flex gap-[6px] items-center justify-center h-[18px]">
-        {metrics.map((m, i) => (
+      <div className="flex gap-[7px] items-center justify-center h-[18px]">
+        {[...metrics, { key: "overview" }].map((m, i) => (
           <div
             key={m.key}
-            className="rounded-full shrink-0 transition-all duration-300"
+            className="size-[8px] rounded-full shrink-0 transition-colors duration-300"
             style={{
-              width: i === activeIndex ? 16 : 6,
-              height: 6,
-              backgroundColor: i === activeIndex ? "#323429" : "#d1cdc4",
+              backgroundColor: i === activeIndex ? "#4D523C" : "#EAEAEA",
             }}
           />
         ))}
@@ -448,9 +474,7 @@ function ProductThumbnails() {
 // ─── Results Page ─────────────────────────────────────────
 export default function Results() {
   const navigate = useNavigate();
-  const [selectedKey, setSelectedKey] = useState("damage");
-
-  const selectedMetric = analysisMetrics.find((m) => m.key === selectedKey) || analysisMetrics[0];
+  const [activeIndex, setActiveIndex] = useState(0);
 
   return (
     <div className="bg-[#f9f7f2] flex flex-col items-start relative min-h-screen w-full max-w-[375px] mx-auto">
@@ -495,26 +519,12 @@ export default function Results() {
           <DotRingVisualization />
         </motion.div>
 
-        {/* Bar Chart */}
-        <motion.div
-          className="px-[24px] pb-[16px]"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.7 }}
-        >
-          <BarChart
-            metrics={analysisMetrics}
-            selectedKey={selectedKey}
-            onSelect={setSelectedKey}
-          />
-        </motion.div>
-
         {/* Detail Cards Carousel */}
         <div className="pb-[16px]">
           <DetailCarousel
             metrics={analysisMetrics}
-            activeIndex={analysisMetrics.findIndex((m) => m.key === selectedKey)}
-            onIndexChange={(i) => setSelectedKey(analysisMetrics[i].key)}
+            activeIndex={activeIndex}
+            onIndexChange={setActiveIndex}
           />
         </div>
 
