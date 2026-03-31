@@ -351,18 +351,16 @@ function DetailCarousel({
         ref={scrollRef}
         onScroll={handleScroll}
         className="overflow-x-auto w-full scrollbar-hide scroll-smooth snap-x snap-mandatory"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none", scrollPaddingLeft: "24px" }}
       >
-        <div className="flex gap-[12px] px-[24px]">
+        <div className="flex gap-[12px] pl-[24px]">
           {metrics.map((metric) => (
             <div
               key={metric.key}
-              className="snap-start bg-white rounded-[14px] shadow-[0px_2px_12px_0px_rgba(0,0,0,0.06),0px_0.5px_2px_0px_rgba(0,0,0,0.04)] shrink-0 w-[295px] flex overflow-hidden"
+              className="snap-start bg-white rounded-[14px] shadow-[0px_2px_12px_0px_rgba(0,0,0,0.06),0px_0.5px_2px_0px_rgba(0,0,0,0.04)] shrink-0 w-[295px] overflow-hidden"
             >
-              {/* Left color bar */}
-              <div className="w-[11px] shrink-0 rounded-l-[14px]" style={{ backgroundColor: metric.color }} />
               {/* Card content */}
-              <div className="p-[20px] flex flex-col flex-1">
+              <div className="p-[20px] flex flex-col">
                 {/* Header */}
                 <div className="flex items-center justify-between">
                   <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[13px] text-[#323429] tracking-[1px] uppercase">
@@ -402,7 +400,7 @@ function DetailCarousel({
               </div>
             </div>
           ))}
-          <div className="shrink-0 w-[16px]" aria-hidden />
+          <div className="shrink-0 w-[24px]" aria-hidden />
         </div>
       </div>
       {/* Dot indicators */}
@@ -478,16 +476,13 @@ export default function Results() {
         {/* Hero */}
         <div className="px-[24px] pt-[24px] pb-[8px]">
           <motion.h1
-            className="font-['Saol Text',serif] font-light text-[32px] text-[#323429] tracking-[-0.96px] leading-[1.1]"
+            className="font-['Saol Text',serif] font-light text-[36px] text-[#323429] tracking-[-0.96px] leading-[1.15]"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            Your results, Maggie
+            Maggie, here's your analysis based on <span className="relative inline-block"><span className="absolute bottom-[2px] left-0 right-0 h-[0.4em] bg-[#ecff92]" /><span className="relative">85+ factors</span></span>
           </motion.h1>
-          <p className="font-['Simplon_Norm',sans-serif] font-normal text-[14px] text-[#6c6c6c] tracking-[0.28px] leading-[1.5] mt-[8px]">
-            Each product is made to order with ingredients tailored to your needs.
-          </p>
         </div>
 
         {/* Dot Ring Visualization */}

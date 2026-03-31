@@ -77,11 +77,9 @@ interface ScoreCardProps {
 
 function ScoreCard({ concern }: ScoreCardProps) {
   return (
-    <div className="bg-white rounded-[14px] shadow-[0px_2px_12px_0px_rgba(0,0,0,0.06),0px_0.5px_2px_0px_rgba(0,0,0,0.04)] flex overflow-hidden w-full">
-      {/* Left color bar */}
-      <div className="w-[11px] shrink-0 rounded-l-[14px]" style={{ backgroundColor: concern.color }} />
+    <div className="bg-white rounded-[14px] shadow-[0px_2px_12px_0px_rgba(0,0,0,0.06),0px_0.5px_2px_0px_rgba(0,0,0,0.04)] overflow-hidden w-full">
       {/* Card content */}
-      <div className="p-[20px] flex flex-col flex-1">
+      <div className="p-[20px] flex flex-col">
         {/* Header: label + severity */}
         <div className="flex items-center justify-between">
           <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[13px] text-[#323429] tracking-[1px] uppercase">
