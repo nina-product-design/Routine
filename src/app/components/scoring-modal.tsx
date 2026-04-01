@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { concernDataMap, type ConcernDetail, type BasedOnFactor } from "./concern-modal";
 
@@ -145,60 +145,13 @@ export default function ScoringModal({
   ingredients = [],
 }: ScoringModalProps) {
   const [activeTab, setActiveTab] = useState(0);
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const isTabClick = useRef(false);
 
-  // Reset to first tab and scroll position when opening
+  // Reset to first tab when opening
   useEffect(() => {
     if (isOpen) {
       setActiveTab(0);
-      setTimeout(() => {
-        if (scrollRef.current) scrollRef.current.scrollTop = 0;
-      }, 50);
     }
   }, [isOpen]);
-
-  // Scroll to card when tab is clicked
-  const handleTabClick = useCallback((index: number) => {
-    setActiveTab(index);
-    isTabClick.current = true;
-    const card = cardRefs.current[index];
-    if (card && scrollRef.current) {
-      const container = scrollRef.current;
-      const containerRect = container.getBoundingClientRect();
-      const cardRect = card.getBoundingClientRect();
-      const targetTop = container.scrollTop + (cardRect.top - containerRect.top) - 16;
-      container.scrollTo({ top: targetTop, behavior: "smooth" });
-      setTimeout(() => { isTabClick.current = false; }, 500);
-    }
-  }, []);
-
-  // Update active tab on scroll
-  const handleScroll = useCallback(() => {
-    if (isTabClick.current || !scrollRef.current) return;
-    const container = scrollRef.current;
-    const scrollTop = container.scrollTop;
-
-    // If scrolled to the bottom, activate the last tab
-    const atBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 2;
-    if (atBottom && cardRefs.current.length > 0) {
-      setActiveTab(cardRefs.current.length - 1);
-      return;
-    }
-
-    let closestIndex = 0;
-    let closestDistance = Infinity;
-    cardRefs.current.forEach((card, i) => {
-      if (!card) return;
-      const distance = Math.abs(card.offsetTop - scrollTop - 8);
-      if (distance < closestDistance) {
-        closestDistance = distance;
-        closestIndex = i;
-      }
-    });
-    setActiveTab(closestIndex);
-  }, []);
 
   // Lock body scroll when open
   useEffect(() => {
@@ -261,7 +214,7 @@ export default function ScoringModal({
               {concerns.map((concern, i) => (
                 <button
                   key={concern}
-                  onClick={() => handleTabClick(i)}
+                  onClick={() => setActiveTab(i)}
                   className={`px-[12px] pb-[10px] font-['Simplon_Mono','JetBrains_Mono',monospace] font-medium text-[11px] tracking-[0.88px] uppercase leading-[1.2] cursor-pointer transition-colors ${
                     activeTab === i
                       ? "text-[#161716] border-b-[2px] border-[#161716]"
@@ -273,22 +226,28 @@ export default function ScoringModal({
               ))}
             </div>
 
-            {/* Scrollable content */}
+            {/* Single card for active tab */}
             <div
-              ref={scrollRef}
-              onScroll={handleScroll}
-              className="overflow-y-auto flex-1 px-[24px] py-[16px] flex flex-col gap-[16px]"
+              className="overflow-y-auto flex-1 px-[24px] py-[16px]"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
-              {concerns.map((concernKey, i) => {
-                const data = concernDataMap[concernKey];
-                if (!data) return null;
-                return (
-                  <div key={concernKey} ref={(el) => { cardRefs.current[i] = el; }}>
-                    <ScoreCard concern={data} />
-                  </div>
-                );
-              })}
+              <AnimatePresence mode="wait">
+                {(() => {
+                  const data = concernDataMap[concerns[activeTab]];
+                  if (!data) return null;
+                  return (
+                    <motion.div
+                      key={concerns[activeTab]}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <ScoreCard concern={data} />
+                    </motion.div>
+                  );
+                })()}
+              </AnimatePresence>
             </div>
           </motion.div>
         </motion.div>

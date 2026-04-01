@@ -347,26 +347,44 @@ function DetailCarousel({
   metrics,
   activeIndex,
   onIndexChange,
-  onUserTouch,
   onLoopStart,
   onLoopEnd,
+  onKill,
 }: {
   metrics: AnalysisMetric[];
   activeIndex: number;
   onIndexChange: (index: number) => void;
-  onUserTouch?: () => void;
   onLoopStart?: () => void;
   onLoopEnd?: () => void;
+  onKill?: () => void;
 }) {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const isProgrammaticScroll = useRef(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const userTouching = useRef(false);
+  const animFrameId = useRef(0);
+
+  // Kill auto-play on ANY user interaction with the scroll container
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el || !onKill) return;
+
+    // These events ONLY fire from direct user input, never from JS scrollLeft assignment
+    const handler = () => { onKill(); };
+    el.addEventListener("touchstart", handler, { passive: true });
+    el.addEventListener("touchmove", handler, { passive: true });
+    el.addEventListener("pointerdown", handler);
+    el.addEventListener("wheel", handler, { passive: true });
+    return () => {
+      el.removeEventListener("touchstart", handler);
+      el.removeEventListener("touchmove", handler);
+      el.removeEventListener("pointerdown", handler);
+      el.removeEventListener("wheel", handler);
+    };
+  }, [onKill]);
 
   // Smooth scroll with 800ms ease-in-out (only when auto-playing)
   useEffect(() => {
-    // Don't animate if user has taken control
-    if (userTouching.current) return;
+    // If user killed auto-play, don't programmatically scroll
+    if (_autoPlayDead) return;
 
     const el = scrollRef.current;
     if (!el) return;
@@ -376,34 +394,23 @@ function DetailCarousel({
     const distance = targetLeft - startLeft;
     if (Math.abs(distance) < 1) return;
 
-    isProgrammaticScroll.current = true;
-
     // If looping back (scrolling left by more than 1 card), crossfade
     if (distance < -cardWidth) {
-      onLoopStart?.(); // pause auto-play
+      onLoopStart?.();
       const container = scrollContainerRef.current;
       if (container) {
-        // Fade out
         container.style.transition = "opacity 300ms ease-out";
         container.style.opacity = "0";
         setTimeout(() => {
-          // Snap scroll while hidden
+          if (_autoPlayDead) { container.style.transition = ""; container.style.opacity = "1"; return; }
           el.scrollLeft = 0;
-          // Fade back in
           container.style.transition = "opacity 300ms ease-in";
           container.style.opacity = "1";
           setTimeout(() => {
-            isProgrammaticScroll.current = false;
             container.style.transition = "";
-            onLoopEnd?.(); // resume auto-play
+            onLoopEnd?.();
           }, 350);
         }, 320);
-      } else {
-        el.scrollLeft = 0;
-        setTimeout(() => {
-          isProgrammaticScroll.current = false;
-          onLoopEnd?.();
-        }, 200);
       }
       return;
     }
@@ -416,37 +423,29 @@ function DetailCarousel({
     }
 
     function animate(time: number) {
+      if (_autoPlayDead) return;
       if (!startTime) startTime = time;
       const elapsed = time - startTime;
       const progress = Math.min(elapsed / duration, 1);
       el!.scrollLeft = startLeft + distance * easeInOut(progress);
       if (progress < 1) {
-        requestAnimationFrame(animate);
-      } else {
-        setTimeout(() => { isProgrammaticScroll.current = false; }, 50);
+        animFrameId.current = requestAnimationFrame(animate);
       }
     }
 
-    requestAnimationFrame(animate);
+    animFrameId.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animFrameId.current);
   }, [activeIndex]);
 
-  // On touch/pointer down, stop auto-play and let user scroll natively
-  const handlePointerDown = useCallback(() => {
-    if (userTouching.current) return;
-    userTouching.current = true;
-    isProgrammaticScroll.current = false;
-    onUserTouch?.();
-  }, [onUserTouch]);
-
-  // Track which card is visible after user scrolls (for dots/headline)
+  // Track which card is visible after user scrolls (for dots/headline only)
   const handleScroll = useCallback(() => {
-    if (!userTouching.current) return; // only track during user scroll
+    if (!_autoPlayDead) return; // only track user scrolls
 
     const el = scrollRef.current;
     if (!el) return;
     const cardWidth = 295 + 12;
     const index = Math.round(el.scrollLeft / cardWidth);
-    const totalCards = metrics.length + 1; // +1 for overview card
+    const totalCards = metrics.length + 1;
     const clamped = Math.min(index, totalCards - 1);
     if (clamped !== activeIndex) {
       onIndexChange(clamped);
@@ -457,11 +456,10 @@ function DetailCarousel({
     <div ref={scrollContainerRef} className="flex flex-col gap-[8px] w-full">
       <div
         ref={scrollRef}
+        data-carousel-scroll
         onScroll={handleScroll}
-        onPointerDown={handlePointerDown}
-        onTouchStart={handlePointerDown}
-        className="overflow-x-auto w-full scrollbar-hide scroll-smooth snap-x snap-mandatory"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none", scrollPaddingLeft: "24px" }}
+        className="overflow-x-auto w-full scrollbar-hide"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none", scrollPaddingLeft: "24px", scrollSnapType: "none" }}
       >
         <div className="flex gap-[12px] pl-[24px]">
           {/* Full score overview card — first card */}
@@ -479,16 +477,18 @@ function DetailCarousel({
                       {metric.label}
                     </p>
                     <div className="flex-1 h-[12px] bg-[#f1ece0] rounded-full relative overflow-hidden">
-                      <motion.div
+                      <div
                         className="h-full rounded-full"
-                        style={{ backgroundColor: metric.color }}
-                        initial={{ width: 0 }}
-                        animate={{ width: `${metric.value * 100}%` }}
-                        transition={{ duration: 1.0, delay: 0.5, ease: "easeOut" }}
+                        style={{ width: `${metric.value * 100}%`, backgroundColor: metric.color }}
                       />
                     </div>
                   </div>
                 ))}
+              </div>
+              <div className="border-t border-[#E2D9C2] pt-[14px] mt-[4px]">
+                <p className="font-['Simplon_Norm','Inter',sans-serif] text-[13px] text-[#323429] tracking-[0.26px] leading-[1.5]">
+                  Your consultation analyzed 85+ factors across damage, dryness, stressors, sensitivity, and oiliness to build a formula unique to your hair.
+                </p>
               </div>
             </div>
           </div>
@@ -581,6 +581,9 @@ function ProductThumbnails() {
 // 0 = overview card, 1-5 = concern cards
 const HEADLINE_LABELS = ["85+ factors", "Damage", "Dryness", "Stressors", "Sensitivity", "Oiliness"];
 
+// Module-level flag — impossible for closures to miss this
+let _autoPlayDead = false;
+
 // ─── Results Page ─────────────────────────────────────────
 export default function Results() {
   const navigate = useNavigate();
@@ -589,15 +592,20 @@ export default function Results() {
   const [loadingPhase, setLoadingPhase] = useState(-1); // -1=grey, 0-4=concerns, 5=all
 
   const autoPlayTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const userInteracted = useRef(false);
-  const autoPlayPaused = useRef(false); // pause during crossfade
+  const carouselWrapperRef = useRef<HTMLDivElement>(null);
+
+  // Reset module flag on mount (for HMR / navigation)
+  useEffect(() => {
+    _autoPlayDead = false;
+    return () => { _autoPlayDead = false; };
+  }, []);
 
   // Loading sequence: cycle through all concern phases before showing carousel
   useEffect(() => {
     // Phase -1 (grey dots) for 1200ms, then cycle each concern for 1500ms each
-    const phaseDelay = 1500;
+    const phaseDelay = 640; // 80% of 800ms bar animation = overlap feel
     const initialDelay = 1200;
-    const totalPhases = 6; // 0-4 concerns + 5 overview
+    const totalPhases = 5; // 0-4 concerns only (no overview phase)
 
     const startTimer = setTimeout(() => {
       setLoadingPhase(0); // Start first concern
@@ -608,10 +616,10 @@ export default function Results() {
           phase++;
         } else {
           clearInterval(interval);
-          // After overview phase shows for a beat, transition to carousel
+          // After last concern shows for a beat, transition to carousel
           setTimeout(() => {
             setLoaded(true);
-          }, 1200);
+          }, 800);
         }
       }, phaseDelay);
 
@@ -621,29 +629,41 @@ export default function Results() {
     return () => clearTimeout(startTimer);
   }, []);
 
-  // Auto-play: after loaded, cycle through cards every 2000ms with loop
-  const scheduleNext = useCallback(() => {
-    if (autoPlayTimer.current) clearTimeout(autoPlayTimer.current);
-    autoPlayTimer.current = setTimeout(() => {
-      if (userInteracted.current || autoPlayPaused.current) return;
-      const totalCards = analysisMetrics.length + 1;
-      setActiveIndex((prev) => (prev + 1) % totalCards);
-      scheduleNext();
-    }, 3500);
-  }, []);
-
+  // Auto-play: after loaded, cycle through cards with loop
   useEffect(() => {
     if (!loaded) return;
-    scheduleNext();
-    return () => {
-      if (autoPlayTimer.current) clearTimeout(autoPlayTimer.current);
-    };
-  }, [loaded, scheduleNext]);
 
-  // When user touches carousel, stop auto-play permanently
-  const handleUserTouch = useCallback(() => {
-    userInteracted.current = true;
-    if (autoPlayTimer.current) clearTimeout(autoPlayTimer.current);
+    const totalCards = analysisMetrics.length + 1;
+
+    function tick() {
+      console.log("[TICK] _autoPlayDead:", _autoPlayDead, "timer:", autoPlayTimer.current);
+      if (_autoPlayDead) { console.log("[TICK] dead, stopping"); return; }
+      setActiveIndex((prev) => (prev + 1) % totalCards);
+      autoPlayTimer.current = window.setTimeout(tick, 3500);
+    }
+
+    autoPlayTimer.current = window.setTimeout(tick, 3500);
+
+    return () => {
+      if (autoPlayTimer.current) window.clearTimeout(autoPlayTimer.current);
+    };
+  }, [loaded]);
+
+  // Kill auto-play when user interacts with carousel
+  const killAutoPlay = useCallback(() => {
+    console.log("[KILL] killAutoPlay called, _autoPlayDead was:", _autoPlayDead);
+    if (_autoPlayDead) return;
+    _autoPlayDead = true;
+    if (autoPlayTimer.current) {
+      console.log("[KILL] clearing timer", autoPlayTimer.current);
+      window.clearTimeout(autoPlayTimer.current);
+      autoPlayTimer.current = null;
+    }
+    // Enable CSS snap for user scrolling
+    const scrollEl = carouselWrapperRef.current?.querySelector("[data-carousel-scroll]");
+    if (scrollEl) {
+      (scrollEl as HTMLElement).style.scrollSnapType = "x mandatory";
+    }
   }, []);
 
   // Track index from user scroll (just update state, don't stop auto-play)
@@ -715,86 +735,67 @@ export default function Results() {
           <DotRingVisualization phase={dotPhase} />
         </motion.div>
 
-        {/* Loading: Overview bar chart card (visible during loading phase) */}
-        <AnimatePresence>
-          {!loaded && loadingPhase >= 0 && (
-            <motion.div
-              className="px-[24px] pt-[8px] pb-[16px]"
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-            >
-              <div className="bg-white rounded-[14px] shadow-[0px_2px_12px_0px_rgba(0,0,0,0.06),0px_0.5px_2px_0px_rgba(0,0,0,0.04)] p-[20px] w-full flex flex-col gap-[12px]">
-                <div className="flex justify-between pl-[80px] mb-[-4px]">
-                  <p className="font-['Simplon_Norm','Inter',sans-serif] text-[11px] text-[#a0a090] tracking-[0.22px]">Low</p>
-                  <p className="font-['Simplon_Norm','Inter',sans-serif] text-[11px] text-[#a0a090] tracking-[0.22px] text-right">High</p>
-                </div>
-                <div className="flex flex-col gap-[12px]">
-                  {analysisMetrics.map((metric, metricIdx) => {
-                    // Determine if this bar should be filled based on loading phase
-                    const phaseForMetric = metricIdx; // 0=damage, 1=dryness, etc.
-                    const shouldFill = loadingPhase >= phaseForMetric || loadingPhase >= 5;
-                    return (
-                      <div key={metric.key} className="flex items-center gap-[8px] w-full">
-                        <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[9px] text-[#323429] tracking-[0.72px] uppercase w-[72px] shrink-0">
-                          {metric.label}
-                        </p>
-                        <div className="flex-1 h-[12px] bg-[#f1ece0] rounded-full relative overflow-hidden">
-                          <motion.div
-                            className="h-full rounded-full"
-                            style={{ backgroundColor: metric.color }}
-                            initial={{ width: 0 }}
-                            animate={{ width: shouldFill ? `${metric.value * 100}%` : 0 }}
-                            transition={{ duration: 0.8, ease: "easeOut" }}
-                          />
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Subhead */}
-        <AnimatePresence>
-          {loaded && (
-            <motion.p
-              className="px-[24px] pt-[4px] pb-[8px] font-['Simplon_Norm','Inter',sans-serif] font-normal text-[12px] text-[#6C6C6C] tracking-[-0.5px] leading-[1.5]"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
+        {/* Loading card / Carousel — stacked so carousel is always in position */}
+        <div className="relative">
+          {/* Carousel is always mounted — just hidden until loaded */}
+          <div style={{ opacity: loaded ? 1 : 0, transition: "opacity 0.5s ease-out" }}>
+            <p className="px-[24px] pt-[4px] pb-[8px] font-['Simplon_Norm','Inter',sans-serif] font-normal text-[12px] text-[#6C6C6C] tracking-[-0.5px] leading-[1.5]">
               How your results will effect your formula
-            </motion.p>
-          )}
-        </AnimatePresence>
-
-        {/* Detail Cards Carousel — fades in after loading sequence */}
-        <AnimatePresence>
-          {loaded && (
-            <motion.div
-              className="pb-[16px]"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-            >
+            </p>
+            <div ref={carouselWrapperRef} className="pb-[16px]" onPointerDown={killAutoPlay} onTouchStart={killAutoPlay}>
               <DetailCarousel
                 metrics={analysisMetrics}
                 activeIndex={activeIndex}
                 onIndexChange={handleIndexChange}
-                onUserTouch={handleUserTouch}
-                onLoopStart={() => { autoPlayPaused.current = true; }}
-                onLoopEnd={() => {
-                  autoPlayPaused.current = false;
-                  scheduleNext();
-                }}
+                onKill={killAutoPlay}
+                onLoopStart={() => {}}
+                onLoopEnd={() => {}}
               />
-            </motion.div>
-          )}
-        </AnimatePresence>
+            </div>
+          </div>
+
+          {/* Loading card overlays on top, then fades out */}
+          <AnimatePresence>
+            {!loaded && loadingPhase >= 0 && (
+              <motion.div
+                className="absolute inset-x-0 top-0 px-[24px] pt-[8px] pb-[16px] z-10 pointer-events-none"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+              >
+                <div className="bg-white rounded-[14px] shadow-[0px_2px_12px_0px_rgba(0,0,0,0.06),0px_0.5px_2px_0px_rgba(0,0,0,0.04)] p-[20px] w-full flex flex-col gap-[12px]">
+                  <div className="flex justify-between pl-[80px] mb-[-4px]">
+                    <p className="font-['Simplon_Norm','Inter',sans-serif] text-[11px] text-[#a0a090] tracking-[0.22px]">Low</p>
+                    <p className="font-['Simplon_Norm','Inter',sans-serif] text-[11px] text-[#a0a090] tracking-[0.22px] text-right">High</p>
+                  </div>
+                  <div className="flex flex-col gap-[12px]">
+                    {analysisMetrics.map((metric, metricIdx) => {
+                      const phaseForMetric = metricIdx;
+                      const shouldFill = loadingPhase >= phaseForMetric || loadingPhase >= 5;
+                      return (
+                        <div key={metric.key} className="flex items-center gap-[8px] w-full">
+                          <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[9px] text-[#323429] tracking-[0.72px] uppercase w-[72px] shrink-0">
+                            {metric.label}
+                          </p>
+                          <div className="flex-1 h-[12px] bg-[#f1ece0] rounded-full relative overflow-hidden">
+                            <motion.div
+                              className="h-full rounded-full"
+                              style={{ backgroundColor: metric.color }}
+                              initial={{ width: 0 }}
+                              animate={{ width: shouldFill ? `${metric.value * 100}%` : 0 }}
+                              transition={{ duration: 0.8, ease: "easeOut" }}
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
 
       </div>
 
