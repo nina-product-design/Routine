@@ -164,22 +164,55 @@ function getDotColor(dotIndex: number, phase: number): string {
   return grey;
 }
 
-function DotRingVisualization({ phase }: { phase: number }) {
-  const [animated, setAnimated] = useState(false);
+// Which concern owns this dot, and what's its stagger index within that group?
+const dotConcern: number[] = [];
+const dotGroupIndex: number[] = [];
+cloudDots.forEach((_, i) => {
+  for (let c = 0; c < 5; c++) {
+    const idx = concernDotSets[c].indexOf(i);
+    if (idx !== -1) {
+      dotConcern[i] = c;
+      dotGroupIndex[i] = idx;
+      return;
+    }
+  }
+  dotConcern[i] = -1;
+  dotGroupIndex[i] = 0;
+});
 
-  useEffect(() => {
-    const timer = setTimeout(() => setAnimated(true), 800);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const totalStagger = 0.5;
-
+function DotRingVisualization({ phase, loaded }: { phase: number; loaded: boolean }) {
   return (
     <div className="relative w-[182px] h-[174px] mx-auto">
       <svg viewBox="0 0 213 203" className="w-full h-full overflow-visible">
         {animatedCloudDots.map((dot, i) => {
-          const entranceDelay = (i / animatedCloudDots.length) * totalStagger;
-          const fill = getDotColor(i, phase);
+          const concern = dotConcern[i];
+          const groupIdx = dotGroupIndex[i];
+          const groupSize = concern >= 0 ? concernDotSets[concern].length : 1;
+          const concernColor = concern >= 0 ? CONCERN_PHASES[concern].color : "#EAEAEA";
+          const grey = "#EAEAEA";
+
+          let visible: boolean;
+          let fill: string;
+
+          if (!loaded) {
+            // Loading: progressive reveal — only show dots whose concern has been reached
+            visible = concern >= 0 && phase >= concern;
+            fill = concernColor;
+          } else {
+            // Loaded: all dots always visible
+            visible = true;
+            if (phase >= 5) {
+              // Overview card — all colored
+              fill = concernColor;
+            } else {
+              // Individual concern selected — active dots colored, others grey
+              fill = concern === phase ? concernColor : grey;
+            }
+          }
+
+          // Stagger within the group for a natural reveal
+          const staggerDelay = !loaded ? (groupIdx / groupSize) * 0.4 : 0;
+
           return (
             <motion.circle
               key={i}
@@ -188,7 +221,7 @@ function DotRingVisualization({ phase }: { phase: number }) {
               r={dot.r >= 9 ? dot.r * 0.8 : dot.r}
               initial={{ scale: 0, opacity: 0, x: 0, y: 0 }}
               animate={
-                animated
+                visible
                   ? {
                       scale: 1,
                       opacity: dot.opacity,
@@ -196,29 +229,29 @@ function DotRingVisualization({ phase }: { phase: number }) {
                       x: dot.floatX,
                       y: dot.floatY,
                     }
-                  : { fill }
+                  : { scale: 0, opacity: 0, fill }
               }
               transition={{
-                fill: { duration: 0.6, ease: "easeInOut" },
+                fill: { duration: 0.4, ease: "easeInOut" },
                 scale: {
-                  duration: 0.8,
-                  delay: entranceDelay,
-                  ease: "easeInOut",
+                  duration: 0.6,
+                  delay: staggerDelay,
+                  ease: [0.34, 1.56, 0.64, 1],
                 },
                 opacity: {
-                  duration: 0.8,
-                  delay: entranceDelay,
+                  duration: 0.5,
+                  delay: staggerDelay,
                   ease: "easeInOut",
                 },
                 x: {
                   duration: dot.floatDuration,
-                  delay: entranceDelay + 0.8,
+                  delay: staggerDelay + 0.6,
                   repeat: Infinity,
                   ease: "easeInOut",
                 },
                 y: {
                   duration: dot.floatDuration,
-                  delay: entranceDelay + 0.8,
+                  delay: staggerDelay + 0.6,
                   repeat: Infinity,
                   ease: "easeInOut",
                 },
@@ -590,6 +623,7 @@ export default function Results() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const [loadingPhase, setLoadingPhase] = useState(-1); // -1=grey, 0-4=concerns, 5=all
+  const [scoreCount, setScoreCount] = useState(0);
 
   const autoPlayTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const carouselWrapperRef = useRef<HTMLDivElement>(null);
@@ -607,26 +641,42 @@ export default function Results() {
     const initialDelay = 1200;
     const totalPhases = 5; // 0-4 concerns only (no overview phase)
 
+    let countIntervalRef: ReturnType<typeof setInterval> | null = null;
+    let phaseIntervalRef: ReturnType<typeof setInterval> | null = null;
+
     const startTimer = setTimeout(() => {
+      // Count from 1 → 85 across the concern phases
+      const target = 85;
+      const countDuration = totalPhases * phaseDelay;
+      const frameMs = countDuration / target;
+      let frame = 0;
+      countIntervalRef = setInterval(() => {
+        frame++;
+        setScoreCount(frame);
+        if (frame >= target) clearInterval(countIntervalRef!);
+      }, frameMs);
+
       setLoadingPhase(0); // Start first concern
       let phase = 1;
-      const interval = setInterval(() => {
+      phaseIntervalRef = setInterval(() => {
         if (phase < totalPhases) {
           setLoadingPhase(phase);
           phase++;
         } else {
-          clearInterval(interval);
+          clearInterval(phaseIntervalRef!);
           // After last concern shows for a beat, transition to carousel
           setTimeout(() => {
             setLoaded(true);
           }, 800);
         }
       }, phaseDelay);
-
-      return () => clearInterval(interval);
     }, initialDelay);
 
-    return () => clearTimeout(startTimer);
+    return () => {
+      clearTimeout(startTimer);
+      if (countIntervalRef) clearInterval(countIntervalRef);
+      if (phaseIntervalRef) clearInterval(phaseIntervalRef);
+    };
   }, []);
 
   // Auto-play: after loaded, cycle through cards with loop
@@ -674,8 +724,10 @@ export default function Results() {
   // Dot phase: during loading = sync with loadingPhase, after loaded = activeIndex
   // index 0 = overview (all dots colored = phase 5), indices 1-5 = concern phases 0-4
   const dotPhase = !loaded ? loadingPhase : (activeIndex === 0 ? 5 : activeIndex - 1);
-  // Headline: static "85+ factors" during loading, then tied to active card after loaded
-  const headlineText = !loaded ? "85+ factors" : HEADLINE_LABELS[Math.min(activeIndex, 5)];
+  // Headline: counting "N+ factors" during loading, then tied to active card after loaded
+  const headlineText = !loaded
+    ? (scoreCount > 0 ? `${scoreCount}+ factors` : "")
+    : HEADLINE_LABELS[Math.min(activeIndex, 5)];
 
   return (
     <div className="bg-[#f9f7f2] flex flex-col items-start relative min-h-screen w-full max-w-[375px] mx-auto">
@@ -711,14 +763,18 @@ export default function Results() {
               <span className="absolute bottom-[2px] left-0 right-0 h-[0.4em] bg-[#ecff92]" />
               <AnimatePresence mode="wait">
                 <motion.span
-                  key={headlineText}
+                  key={loaded ? headlineText : scoreCount > 0 ? "counting" : "empty"}
                   className="relative"
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -8 }}
                   transition={{ duration: 0.35, ease: "easeInOut" }}
                 >
-                  {headlineText}
+                  {!loaded && scoreCount > 0 ? (
+                    <><span style={{ display: "inline-block", minWidth: "1.6em", textAlign: "right" }}>{scoreCount}+</span> factors</>
+                  ) : (
+                    headlineText
+                  )}
                 </motion.span>
               </AnimatePresence>
             </span>
@@ -732,7 +788,7 @@ export default function Results() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          <DotRingVisualization phase={dotPhase} />
+          <DotRingVisualization phase={dotPhase} loaded={loaded} />
         </motion.div>
 
         {/* Loading card / Carousel — stacked so carousel is always in position */}
