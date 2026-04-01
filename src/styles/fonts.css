@@ -18,11 +18,20 @@
   font-family: 'JetBrains Mono', monospace !important;
 }
 
+@font-face {
+  font-family: 'Saol Text';
+  src: url('../fonts/Saol Text Light.woff') format('woff');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 [class*="Saol_Text"],
 [class*="Saol Text"],
 [style*="Saol_Text"],
 [style*="Saol Text"] {
-  font-family: 'Noto Serif', serif !important;
+  font-family: 'Saol Text', 'Noto Serif', serif !important;
+  font-weight: 300 !important;
 }
 
 [class*="DM_Mono"],

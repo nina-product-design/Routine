@@ -69,6 +69,12 @@ const cloudDots: [number, number, number][] = [
   [81.803,46,10],[113.803,46,10],[148.606,69,6],[127.803,85,10],
   [167.677,77.85,5.025],[150.803,95,10],[143.803,46,10],[51.803,25,10],
   [88.803,12,10],[126.803,12,10],[198.803,91,10],[192.803,131,10],
+  // 17 additional dots to reach 85 total
+  [145.2,38,6],[30.5,88,5.025],[170.3,140,10],[75.4,52,6],
+  [105.5,170,5.025],[48.2,120,10],[158.7,98,5.025],[90.1,140,6],
+  [130.6,60,5.025],[15.8,100,6],[175.9,65,5.025],[65.3,165,10],
+  [140.2,170,6],[108.8,20,5.025],[195.5,105,5.025],[38.7,55,6],
+  [155.4,175,5.025],
 ];
 
 // Seeded pseudo-random for deterministic color assignment
@@ -92,31 +98,16 @@ const CONCERN_PHASES = [
   { key: "oiliness",    label: "Oiliness",    color: "#B9C2A6", dotSize: "small" as DotSize },
 ];
 
-// Pre-split dots by size, then assign halves for same-color concerns
-// Large dots: first half for Damage, second half for Dryness
-// Medium dots: all for Stressors
-// Small dots: first half for Sensitivity, second half for Oiliness
-const largeDotIndices: number[] = [];
-const mediumDotIndices: number[] = [];
-const smallDotIndices: number[] = [];
-cloudDots.forEach(([, , r], i) => {
-  const size = getDotSize(r);
-  if (size === "large") largeDotIndices.push(i);
-  else if (size === "medium") mediumDotIndices.push(i);
-  else smallDotIndices.push(i);
+// Shuffle all dot indices deterministically, then distribute evenly across 5 concerns
+// so each concern gets a mix of large, medium, and small dots
+const allDotIndices = cloudDots.map((_, i) => i);
+// Deterministic shuffle using seeded rng
+const shuffled = [...allDotIndices].sort((a, b) => rng(a * 17 + 3) - rng(b * 13 + 7));
+
+const concernDotSets: number[][] = [[], [], [], [], []];
+shuffled.forEach((dotIndex, i) => {
+  concernDotSets[i % 5].push(dotIndex);
 });
-
-const largeHalf = Math.ceil(largeDotIndices.length / 2);
-const smallHalf = Math.ceil(smallDotIndices.length / 2);
-
-// For each concern phase, which dot indices should be colored
-const concernDotSets: number[][] = [
-  largeDotIndices.slice(0, largeHalf),         // Damage — first half large
-  largeDotIndices.slice(largeHalf),             // Dryness — second half large
-  mediumDotIndices,                              // Stressors — all medium
-  smallDotIndices.slice(0, smallHalf),          // Sensitivity — first half small
-  smallDotIndices.slice(smallHalf),             // Oiliness — second half small
-];
 
 interface CloudDot {
   cx: number;
@@ -125,17 +116,27 @@ interface CloudDot {
   floatX: number[];
   floatY: number[];
   floatDuration: number;
+  opacity: number;
 }
 
+// Stretch dots horizontally and compress vertically to create an oval shape
+const centerX = 106.5;
+const centerY = 101.5;
+const scaleX = 1.0;
+const scaleY = 1.0;
+
 const animatedCloudDots: CloudDot[] = cloudDots.map(([cx, cy, r], i) => {
+  const ovalCx = centerX + (cx - centerX) * scaleX;
+  const ovalCy = centerY + (cy - centerY) * scaleY;
   const drift = 2 + rng(i) * 3;
   const driftX = drift * (rng(i * 2) > 0.5 ? 1 : -1);
   const driftY = drift * (rng(i * 3) > 0.5 ? 1 : -1);
   return {
-    cx, cy, r,
+    cx: ovalCx, cy: ovalCy, r,
     floatX: [0, driftX, -driftX * 0.6, driftX * 0.3, 0],
     floatY: [0, -driftY * 0.7, driftY, -driftY * 0.4, 0],
     floatDuration: 4 + rng(i * 5) * 3,
+    opacity: 0.5 + rng(i * 7) * 0.5, // random opacity between 0.5 and 1.0
   };
 });
 
@@ -174,7 +175,7 @@ function DotRingVisualization({ phase }: { phase: number }) {
   const totalStagger = 0.5;
 
   return (
-    <div className="relative w-[260px] h-[248px] mx-auto">
+    <div className="relative w-[182px] h-[174px] mx-auto">
       <svg viewBox="0 0 213 203" className="w-full h-full overflow-visible">
         {animatedCloudDots.map((dot, i) => {
           const entranceDelay = (i / animatedCloudDots.length) * totalStagger;
@@ -184,13 +185,13 @@ function DotRingVisualization({ phase }: { phase: number }) {
               key={i}
               cx={dot.cx}
               cy={dot.cy}
-              r={dot.r}
+              r={dot.r >= 9 ? dot.r * 0.8 : dot.r}
               initial={{ scale: 0, opacity: 0, x: 0, y: 0 }}
               animate={
                 animated
                   ? {
                       scale: 1,
-                      opacity: 0.85,
+                      opacity: dot.opacity,
                       fill,
                       x: dot.floatX,
                       y: dot.floatY,
@@ -463,63 +464,18 @@ function DetailCarousel({
         style={{ scrollbarWidth: "none", msOverflowStyle: "none", scrollPaddingLeft: "24px" }}
       >
         <div className="flex gap-[12px] pl-[24px]">
-          {metrics.map((metric) => (
-            <div
-              key={metric.key}
-              className="snap-start bg-white rounded-[14px] shadow-[0px_2px_12px_0px_rgba(0,0,0,0.06),0px_0.5px_2px_0px_rgba(0,0,0,0.04)] shrink-0 w-[295px] overflow-hidden"
-            >
-              {/* Card content */}
-              <div className="p-[20px] flex flex-col">
-                {/* Header */}
-                <div className="flex items-center justify-between">
-                  <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[13px] text-[#323429] tracking-[1px] uppercase">
-                    {metric.label}
-                  </p>
-                  <p className="font-['Simplon_Norm','Inter',sans-serif] text-[13px] text-[#6c6c6c] tracking-[0.26px]">
-                    {metric.severityLabel}
-                  </p>
-                </div>
-                {/* Progress bar */}
-                <div className="h-[6px] bg-[#e8e4db] rounded-full w-full overflow-hidden mt-[10px] mb-[16px]">
-                  <div className="h-full rounded-full" style={{ width: `${metric.value * 100}%`, backgroundColor: metric.color }} />
-                </div>
-                {/* Description */}
-                <p className="font-['Simplon_Norm','Inter',sans-serif] text-[14px] text-[#323429] tracking-[0.28px] leading-[1.6] pb-[16px] border-b border-[#E2D9C2]">
-                  {metric.description}
-                </p>
-                {/* Based on */}
-                <div className="flex flex-col gap-[12px] pt-[16px]">
-                  <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[11px] text-[#323429] tracking-[0.88px] uppercase leading-[1.2]">
-                    Based on:
-                  </p>
-                  {metric.basedOn.map((factor, i) => (
-                    <div key={i} className="flex items-center justify-between">
-                      <p className="font-['Simplon_Norm','Inter',sans-serif] text-[13px] text-[#323429] tracking-[0.26px]">
-                        {factor.label}
-                      </p>
-                      <div className="flex items-center gap-[6px]">
-                        <ResultsBasedOnIcon icon={factor.icon} />
-                        <p className="font-['Simplon_Norm','Inter',sans-serif] text-[13px] text-[#6c6c6c] tracking-[0.26px]">
-                          {factor.value}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ))}
-          {/* Full score overview card — 1:1 match with standalone BarChart */}
+          {/* Full score overview card — first card */}
           <div className="snap-start shrink-0 w-[295px] flex self-stretch">
-            <div className="bg-white rounded-[14px] shadow-[0px_2px_12px_0px_rgba(0,0,0,0.06),0px_0.5px_2px_0px_rgba(0,0,0,0.04)] p-[20px] w-full flex flex-col justify-center gap-[12px]">
+            <div className="bg-white rounded-[14px] shadow-[0px_2px_12px_0px_rgba(0,0,0,0.06),0px_0.5px_2px_0px_rgba(0,0,0,0.04)] p-[20px] w-full flex flex-col justify-start gap-[12px]">
               <div className="flex justify-between pl-[80px] mb-[-4px]">
                 <p className="font-['Simplon_Norm','Inter',sans-serif] text-[11px] text-[#a0a090] tracking-[0.22px]">Low</p>
                 <p className="font-['Simplon_Norm','Inter',sans-serif] text-[11px] text-[#a0a090] tracking-[0.22px] text-right">High</p>
               </div>
+              <div className="h-px bg-[#E2D9C2] ml-[80px]" />
               <div className="flex flex-col gap-[12px]">
                 {metrics.map((metric) => (
                   <div key={metric.key} className="flex items-center gap-[8px] w-full">
-                    <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[9px] text-[#323429] tracking-[0.72px] uppercase w-[72px] shrink-0">
+                    <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[10px] text-[#323429] tracking-[0.72px] uppercase w-[72px] shrink-0">
                       {metric.label}
                     </p>
                     <div className="flex-1 h-[12px] bg-[#f1ece0] rounded-full relative overflow-hidden">
@@ -536,12 +492,54 @@ function DetailCarousel({
               </div>
             </div>
           </div>
+          {/* Concern cards */}
+          {metrics.map((metric) => (
+            <div
+              key={metric.key}
+              className="snap-start bg-white rounded-[14px] shadow-[0px_2px_12px_0px_rgba(0,0,0,0.06),0px_0.5px_2px_0px_rgba(0,0,0,0.04)] shrink-0 w-[295px] overflow-hidden"
+            >
+              <div className="p-[20px] flex flex-col">
+                <div className="flex items-center justify-between">
+                  <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[13px] text-[#323429] tracking-[1px] uppercase">
+                    {metric.label}
+                  </p>
+                  <p className="font-['Simplon_Norm','Inter',sans-serif] text-[13px] text-[#6c6c6c] tracking-[0.26px]">
+                    {metric.severityLabel}
+                  </p>
+                </div>
+                <div className="h-[6px] bg-[#e8e4db] rounded-full w-full overflow-hidden mt-[10px] mb-[16px]">
+                  <div className="h-full rounded-full" style={{ width: `${metric.value * 100}%`, backgroundColor: metric.color }} />
+                </div>
+                <p className="font-['Simplon_Norm','Inter',sans-serif] text-[14px] text-[#323429] tracking-[0.28px] leading-[1.5] pb-[16px] border-b border-[#E2D9C2]">
+                  {metric.description}
+                </p>
+                <div className="flex flex-col gap-[12px] pt-[16px]">
+                  <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[11px] text-[#323429] tracking-[0.88px] uppercase leading-[1.2]">
+                    Based on:
+                  </p>
+                  {metric.basedOn.map((factor, fi) => (
+                    <div key={fi} className="flex items-center justify-between">
+                      <p className="font-['Simplon_Norm','Inter',sans-serif] text-[13px] text-[#323429] tracking-[0.26px]">
+                        {factor.label}
+                      </p>
+                      <div className="flex items-center gap-[6px]">
+                        <ResultsBasedOnIcon icon={factor.icon} />
+                        <p className="font-['Simplon_Norm','Inter',sans-serif] text-[13px] text-[#6c6c6c] tracking-[0.26px]">
+                          {factor.value}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
           <div className="shrink-0 w-[24px]" aria-hidden />
         </div>
       </div>
       {/* Dot indicators */}
       <div className="flex gap-[7px] items-center justify-center h-[18px]">
-        {[...metrics, { key: "overview" }].map((m, i) => (
+        {[{ key: "overview" }, ...metrics].map((m, i) => (
           <div
             key={m.key}
             className="size-[8px] rounded-full shrink-0 transition-colors duration-300"
@@ -580,8 +578,8 @@ function ProductThumbnails() {
 }
 
 // ─── Headline labels tied to carousel index ──────────────
-// 0-4 = concern cards, 5 = overview card
-const HEADLINE_LABELS = ["Damage", "Dryness", "Stressors", "Sensitivity", "Oiliness", "85+ factors"];
+// 0 = overview card, 1-5 = concern cards
+const HEADLINE_LABELS = ["85+ factors", "Damage", "Dryness", "Stressors", "Sensitivity", "Oiliness"];
 
 // ─── Results Page ─────────────────────────────────────────
 export default function Results() {
@@ -631,7 +629,7 @@ export default function Results() {
       const totalCards = analysisMetrics.length + 1;
       setActiveIndex((prev) => (prev + 1) % totalCards);
       scheduleNext();
-    }, 2000);
+    }, 3500);
   }, []);
 
   useEffect(() => {
@@ -653,15 +651,11 @@ export default function Results() {
     setActiveIndex(index);
   }, []);
 
-  // Dot phase: during loading = loadingPhase, after loaded = activeIndex
-  const dotPhase = loaded ? activeIndex : loadingPhase;
-  // Headline: during loading = tied to loading phase, after = tied to active card
-  const LOADING_PHASE_LABELS = ["Damage", "Dryness", "Stressors", "Sensitivity", "Oiliness", "85+ factors"];
-  const headlineText = loaded
-    ? HEADLINE_LABELS[Math.min(activeIndex, 5)]
-    : loadingPhase >= 0
-      ? LOADING_PHASE_LABELS[loadingPhase]
-      : "85+ factors";
+  // Dot phase: before loaded = -1 (grey), after loaded = activeIndex (color by active card)
+  // index 0 = overview (all dots colored = phase 5), indices 1-5 = concern phases 0-4
+  const dotPhase = loaded ? (activeIndex === 0 ? 5 : activeIndex - 1) : -1;
+  // Headline: before loaded = "85+ factors", after = tied to active card
+  const headlineText = loaded ? HEADLINE_LABELS[Math.min(activeIndex, 5)] : "85+ factors";
 
   return (
     <div className="bg-[#f9f7f2] flex flex-col items-start relative min-h-screen w-full max-w-[375px] mx-auto">
@@ -685,7 +679,7 @@ export default function Results() {
       {/* Scrollable content */}
       <div className="flex-1 overflow-y-auto w-full pb-[40px]">
         {/* Hero */}
-        <div className="px-[24px] pt-[24px] pb-[8px]">
+        <div className="px-[24px] pt-[24px] pb-[8px] relative z-10">
           <motion.h1
             className="font-['Saol Text',serif] font-light text-[36px] text-[#323429] tracking-[-0.96px] leading-[1.15]"
             initial={{ opacity: 0, y: 12 }}
@@ -711,9 +705,9 @@ export default function Results() {
           </motion.h1>
         </div>
 
-        {/* Dot Cloud Visualization */}
+        {/* Dot Cloud Visualization — overlaps behind title */}
         <motion.div
-          className="px-[24px] py-[6px]"
+          className="px-[24px] py-[6px] -mt-[60px] relative z-0"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.3 }}
@@ -768,12 +762,12 @@ export default function Results() {
         <AnimatePresence>
           {loaded && (
             <motion.p
-              className="px-[24px] pt-[4px] pb-[16px] font-['Simplon_Norm','Inter',sans-serif] font-normal text-[14px] text-[#4D523C] tracking-[-0.5px] leading-[1.5]"
+              className="px-[24px] pt-[4px] pb-[8px] font-['Simplon_Norm','Inter',sans-serif] font-normal text-[12px] text-[#6C6C6C] tracking-[-0.5px] leading-[1.5]"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              Here's what we found and how we are formulating.
+              How your results will effect your formula
             </motion.p>
           )}
         </AnimatePresence>

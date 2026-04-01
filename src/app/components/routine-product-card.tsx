@@ -194,29 +194,19 @@ function FrequencySelector({ price, originalPrice, onOpenChange, onFrequencyChan
           </div>
 
           {/* Divider line */}
-          <div className="flex h-[36px] items-center justify-center relative shrink-0 w-0">
-            <div className="flex-none rotate-90">
-              <div className="h-0 relative w-[36px]">
-                <div className="absolute inset-[-1px_0_0_0]">
-                  <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 36 1">
-                    <line stroke="#E2D9C2" x2="36" y1="0.5" y2="0.5" />
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </div>
+          <div className="w-px h-[36px] bg-[#e2d9c2] shrink-0" />
 
               {/* Arrow icon */}
-              <div className="flex items-center justify-center relative shrink-0 size-[9.899px]">
-                <div className={`flex-none transition-transform ${isOpen ? "-rotate-135" : "rotate-45"}`}>
-                  <div className="relative size-[7px]">
-                    <div className="absolute inset-[-7.14%]">
-                      <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 8 8">
-                        <path d="M7.5 0.5V7.5H0.5" stroke="#323429" strokeLinecap="round" />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
+              <div className="flex items-center justify-center shrink-0">
+                <svg
+                  width="10"
+                  height="10"
+                  viewBox="0 0 10 10"
+                  fill="none"
+                  className={`transition-transform ${isOpen ? "-rotate-135" : "rotate-45"}`}
+                >
+                  <path d="M8.5 1.5V8.5H1.5" stroke="#323429" strokeLinecap="round" />
+                </svg>
               </div>
             </div>
 
@@ -476,7 +466,12 @@ export function RoutineProductCard({
         originalPrice={originalPrice}
         onOpenChange={setIsFrequencyOpen}
         onFrequencyChange={onFrequencyChange}
-        defaultFrequency={frequency === "buy-once" ? "one-time" : frequency}
+        defaultFrequency={
+          frequency === "buy-once" || frequency === "One-time purchase" || frequency === "Buy Once" ? "one-time"
+          : frequency?.includes("12") ? "12-weeks"
+          : frequency?.includes("8") ? "8-weeks"
+          : "4-weeks"
+        }
       />
 
       {/* Concern Detail Modal */}
