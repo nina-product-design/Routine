@@ -588,15 +588,39 @@ export default function Results() {
   const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState(0);
   const [loaded, setLoaded] = useState(false);
+  const [loadingPhase, setLoadingPhase] = useState(-1); // -1=grey, 0-4=concerns, 5=all
 
   const autoPlayTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const userInteracted = useRef(false);
   const autoPlayPaused = useRef(false); // pause during crossfade
 
+  // Loading sequence: cycle through all concern phases before showing carousel
   useEffect(() => {
-    // After 1000ms loading, color dots and show carousel
-    const timer = setTimeout(() => setLoaded(true), 1000);
-    return () => clearTimeout(timer);
+    // Phase -1 (grey dots) for 1200ms, then cycle each concern for 1500ms each
+    const phaseDelay = 1500;
+    const initialDelay = 1200;
+    const totalPhases = 6; // 0-4 concerns + 5 overview
+
+    const startTimer = setTimeout(() => {
+      setLoadingPhase(0); // Start first concern
+      let phase = 1;
+      const interval = setInterval(() => {
+        if (phase < totalPhases) {
+          setLoadingPhase(phase);
+          phase++;
+        } else {
+          clearInterval(interval);
+          // After overview phase shows for a beat, transition to carousel
+          setTimeout(() => {
+            setLoaded(true);
+          }, 1200);
+        }
+      }, phaseDelay);
+
+      return () => clearInterval(interval);
+    }, initialDelay);
+
+    return () => clearTimeout(startTimer);
   }, []);
 
   // Auto-play: after loaded, cycle through cards every 2000ms with loop
@@ -629,10 +653,15 @@ export default function Results() {
     setActiveIndex(index);
   }, []);
 
-  // Dot phase: before loaded = -1 (grey), after loaded = activeIndex (color by active card)
-  const dotPhase = loaded ? activeIndex : -1;
-  // Headline: before loaded = "85+ factors", after = tied to active card
-  const headlineText = loaded ? HEADLINE_LABELS[Math.min(activeIndex, 5)] : "85+ factors";
+  // Dot phase: during loading = loadingPhase, after loaded = activeIndex
+  const dotPhase = loaded ? activeIndex : loadingPhase;
+  // Headline: during loading = tied to loading phase, after = tied to active card
+  const LOADING_PHASE_LABELS = ["Damage", "Dryness", "Stressors", "Sensitivity", "Oiliness", "85+ factors"];
+  const headlineText = loaded
+    ? HEADLINE_LABELS[Math.min(activeIndex, 5)]
+    : loadingPhase >= 0
+      ? LOADING_PHASE_LABELS[loadingPhase]
+      : "85+ factors";
 
   return (
     <div className="bg-[#f9f7f2] flex flex-col items-start relative min-h-screen w-full max-w-[375px] mx-auto">
@@ -691,6 +720,49 @@ export default function Results() {
         >
           <DotRingVisualization phase={dotPhase} />
         </motion.div>
+
+        {/* Loading: Overview bar chart card (visible during loading phase) */}
+        <AnimatePresence>
+          {!loaded && loadingPhase >= 0 && (
+            <motion.div
+              className="px-[24px] pt-[8px] pb-[16px]"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+            >
+              <div className="bg-white rounded-[14px] shadow-[0px_2px_12px_0px_rgba(0,0,0,0.06),0px_0.5px_2px_0px_rgba(0,0,0,0.04)] p-[20px] w-full flex flex-col gap-[12px]">
+                <div className="flex justify-between pl-[80px] mb-[-4px]">
+                  <p className="font-['Simplon_Norm','Inter',sans-serif] text-[11px] text-[#a0a090] tracking-[0.22px]">Low</p>
+                  <p className="font-['Simplon_Norm','Inter',sans-serif] text-[11px] text-[#a0a090] tracking-[0.22px] text-right">High</p>
+                </div>
+                <div className="flex flex-col gap-[12px]">
+                  {analysisMetrics.map((metric, metricIdx) => {
+                    // Determine if this bar should be filled based on loading phase
+                    const phaseForMetric = metricIdx; // 0=damage, 1=dryness, etc.
+                    const shouldFill = loadingPhase >= phaseForMetric || loadingPhase >= 5;
+                    return (
+                      <div key={metric.key} className="flex items-center gap-[8px] w-full">
+                        <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[9px] text-[#323429] tracking-[0.72px] uppercase w-[72px] shrink-0">
+                          {metric.label}
+                        </p>
+                        <div className="flex-1 h-[12px] bg-[#f1ece0] rounded-full relative overflow-hidden">
+                          <motion.div
+                            className="h-full rounded-full"
+                            style={{ backgroundColor: metric.color }}
+                            initial={{ width: 0 }}
+                            animate={{ width: shouldFill ? `${metric.value * 100}%` : 0 }}
+                            transition={{ duration: 0.8, ease: "easeOut" }}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Subhead */}
         <AnimatePresence>
