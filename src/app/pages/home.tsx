@@ -440,7 +440,7 @@ export default function Home() {
           className="flex flex-col gap-[8px] px-[24px] py-[24px] w-full"
         >
           <p className="font-['Saol Text',serif] text-[32px] text-[#323429] tracking-[-0.96px] leading-[1.1] font-normal">Meet your custom formulas, Maggie</p>
-          <p className="font-['Simplon Norm','Inter',sans-serif] text-[14px] text-[#4d523c] tracking-[0.28px] leading-[1.5]">Crafted from hundreds of variables guided by your consultation. No two routines are alike.</p>
+          <p className="font-['Simplon Norm','Inter',sans-serif] text-[14px] text-[#4d523c] tracking-[0.28px] leading-[1.5]">Crafted from hundreds of variables guided by your consultation.</p>
           {routineCartIds.some((id) => productFrequencies[id] && productFrequencies[id] !== "buy-once") && (
             <div className="bg-[#ecff92] px-[8px] py-[4px] rounded-[6px] self-start">
               <p className="font-['Simplon Mono','JetBrains Mono',monospace] font-medium text-[#323429] text-[13px]">

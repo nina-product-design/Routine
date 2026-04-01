@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { concernDataMap, type ConcernDetail, type BasedOnFactor } from "./concern-modal";
 
@@ -145,13 +145,33 @@ export default function ScoringModal({
   ingredients = [],
 }: ScoringModalProps) {
   const [activeTab, setActiveTab] = useState(0);
+  const [cardHeight, setCardHeight] = useState<number | null>(null);
+  const measureRef = useRef<HTMLDivElement>(null);
 
   // Reset to first tab when opening
   useEffect(() => {
     if (isOpen) {
       setActiveTab(0);
+      setCardHeight(null); // reset so we re-measure
     }
   }, [isOpen]);
+
+  // Measure all cards to find the tallest, then lock the height
+  useLayoutEffect(() => {
+    if (!isOpen || cardHeight !== null) return;
+    // Wait a frame for DOM to render
+    const raf = requestAnimationFrame(() => {
+      if (!measureRef.current) return;
+      const cards = measureRef.current.querySelectorAll("[data-measure-card]");
+      let max = 0;
+      cards.forEach((card) => {
+        const h = (card as HTMLElement).offsetHeight;
+        if (h > max) max = h;
+      });
+      if (max > 0) setCardHeight(max);
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [isOpen, cardHeight]);
 
   // Lock body scroll when open
   useEffect(() => {
@@ -226,10 +246,33 @@ export default function ScoringModal({
               ))}
             </div>
 
-            {/* Single card for active tab */}
+            {/* Hidden measure container — renders all cards to find tallest */}
+            {cardHeight === null && (
+              <div
+                ref={measureRef}
+                className="px-[24px] py-[16px]"
+                style={{ position: "absolute", visibility: "hidden", pointerEvents: "none", left: 0, right: 0 }}
+              >
+                {concerns.map((concern) => {
+                  const data = concernDataMap[concern];
+                  if (!data) return null;
+                  return (
+                    <div key={concern} data-measure-card>
+                      <ScoreCard concern={data} />
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* Single card for active tab — fixed height */}
             <div
               className="overflow-y-auto flex-1 px-[24px] py-[16px]"
-              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              style={{
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none',
+                ...(cardHeight ? { minHeight: cardHeight + 32 } : {}),
+              }}
             >
               <AnimatePresence mode="wait">
                 {(() => {

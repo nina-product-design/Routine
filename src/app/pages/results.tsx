@@ -469,7 +469,7 @@ function DetailCarousel({
                 <p className="font-['Simplon_Norm','Inter',sans-serif] text-[11px] text-[#a0a090] tracking-[0.22px]">Low</p>
                 <p className="font-['Simplon_Norm','Inter',sans-serif] text-[11px] text-[#a0a090] tracking-[0.22px] text-right">High</p>
               </div>
-              <div className="h-px bg-[#E2D9C2] ml-[80px]" />
+              <div className="h-[0.5px] bg-[#E2D9C2] ml-[80px]" />
               <div className="flex flex-col gap-[12px]">
                 {metrics.map((metric) => (
                   <div key={metric.key} className="flex items-center gap-[8px] w-full">
@@ -671,11 +671,11 @@ export default function Results() {
     setActiveIndex(index);
   }, []);
 
-  // Dot phase: before loaded = -1 (grey), after loaded = activeIndex (color by active card)
+  // Dot phase: during loading = sync with loadingPhase, after loaded = activeIndex
   // index 0 = overview (all dots colored = phase 5), indices 1-5 = concern phases 0-4
-  const dotPhase = loaded ? (activeIndex === 0 ? 5 : activeIndex - 1) : -1;
-  // Headline: before loaded = "85+ factors", after = tied to active card
-  const headlineText = loaded ? HEADLINE_LABELS[Math.min(activeIndex, 5)] : "85+ factors";
+  const dotPhase = !loaded ? loadingPhase : (activeIndex === 0 ? 5 : activeIndex - 1);
+  // Headline: static "85+ factors" during loading, then tied to active card after loaded
+  const headlineText = !loaded ? "85+ factors" : HEADLINE_LABELS[Math.min(activeIndex, 5)];
 
   return (
     <div className="bg-[#f9f7f2] flex flex-col items-start relative min-h-screen w-full max-w-[375px] mx-auto">
@@ -754,42 +754,53 @@ export default function Results() {
             </div>
           </div>
 
-          {/* Loading card overlays on top, then fades out */}
+          {/* Loading card overlays on top — identical to carousel's overview card */}
           <AnimatePresence>
             {!loaded && loadingPhase >= 0 && (
               <motion.div
-                className="absolute inset-x-0 top-0 px-[24px] pt-[8px] pb-[16px] z-10 pointer-events-none"
+                className="absolute inset-x-0 top-0 z-10 pointer-events-none"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.4, ease: "easeOut" }}
               >
-                <div className="bg-white rounded-[14px] shadow-[0px_2px_12px_0px_rgba(0,0,0,0.06),0px_0.5px_2px_0px_rgba(0,0,0,0.04)] p-[20px] w-full flex flex-col gap-[12px]">
-                  <div className="flex justify-between pl-[80px] mb-[-4px]">
-                    <p className="font-['Simplon_Norm','Inter',sans-serif] text-[11px] text-[#a0a090] tracking-[0.22px]">Low</p>
-                    <p className="font-['Simplon_Norm','Inter',sans-serif] text-[11px] text-[#a0a090] tracking-[0.22px] text-right">High</p>
-                  </div>
-                  <div className="flex flex-col gap-[12px]">
-                    {analysisMetrics.map((metric, metricIdx) => {
-                      const phaseForMetric = metricIdx;
-                      const shouldFill = loadingPhase >= phaseForMetric || loadingPhase >= 5;
-                      return (
-                        <div key={metric.key} className="flex items-center gap-[8px] w-full">
-                          <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[9px] text-[#323429] tracking-[0.72px] uppercase w-[72px] shrink-0">
-                            {metric.label}
-                          </p>
-                          <div className="flex-1 h-[12px] bg-[#f1ece0] rounded-full relative overflow-hidden">
-                            <motion.div
-                              className="h-full rounded-full"
-                              style={{ backgroundColor: metric.color }}
-                              initial={{ width: 0 }}
-                              animate={{ width: shouldFill ? `${metric.value * 100}%` : 0 }}
-                              transition={{ duration: 0.8, ease: "easeOut" }}
-                            />
+                {/* Matches the "How your results..." text above carousel */}
+                <p className="px-[24px] pt-[4px] pb-[8px] font-['Simplon_Norm','Inter',sans-serif] font-normal text-[12px] text-[#6C6C6C] tracking-[-0.5px] leading-[1.5]">
+                  How your results will effect your formula
+                </p>
+                <div className="pl-[24px]">
+                  <div className="w-[295px] bg-white rounded-[14px] shadow-[0px_2px_12px_0px_rgba(0,0,0,0.06),0px_0.5px_2px_0px_rgba(0,0,0,0.04)] p-[20px] flex flex-col justify-start gap-[12px]">
+                    <div className="flex justify-between pl-[80px] mb-[-4px]">
+                      <p className="font-['Simplon_Norm','Inter',sans-serif] text-[11px] text-[#a0a090] tracking-[0.22px]">Low</p>
+                      <p className="font-['Simplon_Norm','Inter',sans-serif] text-[11px] text-[#a0a090] tracking-[0.22px] text-right">High</p>
+                    </div>
+                    <div className="h-[0.5px] bg-[#E2D9C2] ml-[80px]" />
+                    <div className="flex flex-col gap-[12px]">
+                      {analysisMetrics.map((metric, metricIdx) => {
+                        const shouldFill = loadingPhase >= metricIdx;
+                        return (
+                          <div key={metric.key} className="flex items-center gap-[8px] w-full">
+                            <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[10px] text-[#323429] tracking-[0.72px] uppercase w-[72px] shrink-0">
+                              {metric.label}
+                            </p>
+                            <div className="flex-1 h-[12px] bg-[#f1ece0] rounded-full relative overflow-hidden">
+                              <motion.div
+                                className="h-full rounded-full"
+                                style={{ backgroundColor: metric.color }}
+                                initial={{ width: 0 }}
+                                animate={{ width: shouldFill ? `${metric.value * 100}%` : 0 }}
+                                transition={{ duration: 0.8, ease: "easeOut" }}
+                              />
+                            </div>
                           </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
+                    </div>
+                    <div className="border-t border-[#E2D9C2] pt-[14px] mt-[4px]">
+                      <p className="font-['Simplon_Norm','Inter',sans-serif] text-[13px] text-[#323429] tracking-[0.26px] leading-[1.5]">
+                        Your consultation analyzed 85+ factors across damage, dryness, stressors, sensitivity, and oiliness to build a formula unique to your hair.
+                      </p>
+                    </div>
                   </div>
                 </div>
               </motion.div>
