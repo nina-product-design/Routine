@@ -186,7 +186,7 @@ export default function Cart() {
                 {/* Dark banner with progress dots */}
                 <div className="bg-[#4d523c] h-[40px] w-full flex items-center justify-center gap-[8px] px-[16px]">
                   <p className="font-['Simplon_Norm',sans-serif] font-normal text-[12px] text-white tracking-[0.24px] leading-[1.2] whitespace-nowrap">
-                    Subscribe to 1 more item to unlock your free gift
+                    Subscribe to 1 more item to unlock the gift
                   </p>
                   <div className="flex gap-[4px] items-center shrink-0">
                     {[1, 2, 3].map((step) => (
