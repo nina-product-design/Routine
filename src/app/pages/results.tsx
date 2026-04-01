@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import svgPaths from "../../imports/svg-v59w0vx39v";
 import { productCatalog } from "../data/product-catalog";
 import { concernDataMap, type BasedOnFactor } from "../components/concern-modal";
@@ -41,7 +41,7 @@ const analysisMetrics: AnalysisMetric[] = [
   { label: "OILINESS",    key: "oiliness",    value: 0.15, color: "#B9C2A6", severityLabel: concernDataMap["Oiliness"].severityLabel,    description: concernDataMap["Oiliness"].description,    basedOn: concernDataMap["Oiliness"].basedOn },
 ];
 
-// ─── Dot Ring Visualization ───────────────────────────────
+// ─── Dot Cloud Visualization ─────────────────────────────
 const DOT_COLORS = [
   "#d1cdc4",  // neutral/600
   "#f69371",  // accent/200
@@ -49,70 +49,121 @@ const DOT_COLORS = [
   "#EABF6F",  // EABF6F
 ];
 
-interface Dot {
+// Circles from the animation SVG: [cx, cy, r]
+const cloudDots: [number, number, number][] = [
+  [162.803,28,10],[182.575,33.5,5.025],[167.5,47.7375,5.025],[200.162,70.35,5.025],
+  [183.606,76,6],[206.606,117,6],[187.6,112.225,5.025],[190.113,153.262,5.025],
+  [178.606,148,6],[162.475,183.412,5.025],[152.425,170.85,5.025],[116.606,197,6],
+  [113.062,180.9,5.025],[61.975,185.925,5.025],[73.606,177,6],[24.2875,158.288,5.025],
+  [37.606,149,6],[5.025,112.225,5.025],[25.125,112.225,5.025],[10.606,69,6],
+  [26.8,72.025,5.025],[34.3375,33.5,5.025],[42.606,45,6],[67.606,11,6],
+  [72.8625,23.45,5.025],[108.037,5.025,5.025],[149.606,15,6],[139.025,26.8,5.025],
+  [184.803,53,10],[172.803,163,10],[136.803,186,10],[92.803,188,10],
+  [44.803,168,10],[19.803,131,10],[13.803,91,10],[23.803,53,10],
+  [61.351,151.256,5.025],[77.599,141.507,5.025],[40.606,97,6],[55.935,107.928,5.025],
+  [83.606,102,6],[99.263,113.344,5.025],[81.606,123,6],[119.597,160.091,5.025],
+  [133.145,146.773,6],[53.378,59.172,5.025],[73.803,66,6],[98.606,63,6],
+  [117.677,67.85,5.025],[96.705,31.009,5.025],[111.606,29,6],[89.803,157,10],
+  [112.803,136,10],[123.606,112,6],[139.263,123.344,5.025],[152.803,146,10],
+  [162.803,116,10],[55.803,130,10],[57.803,85,10],[100.803,85,10],
+  [81.803,46,10],[113.803,46,10],[148.606,69,6],[127.803,85,10],
+  [167.677,77.85,5.025],[150.803,95,10],[143.803,46,10],[51.803,25,10],
+  [88.803,12,10],[126.803,12,10],[198.803,91,10],[192.803,131,10],
+];
+
+// Seeded pseudo-random for deterministic color assignment
+const rng = (seed: number) => ((Math.sin(seed * 127.1 + 311.7) * 43758.5453) % 1 + 1) % 1;
+
+// Classify dots by size for concern-based coloring
+// large (r=10) → high/red, medium (r=6) → moderate/yellow, small (r=5.025) → low/green
+type DotSize = "large" | "medium" | "small";
+function getDotSize(r: number): DotSize {
+  if (r >= 9) return "large";
+  if (r >= 5.5) return "medium";
+  return "small";
+}
+
+// Map concern phases to which dot sizes light up and in what color
+const CONCERN_PHASES = [
+  { key: "damage",      label: "Damage",      color: "#f69371", dotSize: "large" as DotSize },
+  { key: "dryness",     label: "Dryness",     color: "#f69371", dotSize: "large" as DotSize },
+  { key: "stressors",   label: "Stressors",   color: "#EABF6F", dotSize: "medium" as DotSize },
+  { key: "sensitivity", label: "Sensitivity", color: "#B9C2A6", dotSize: "small" as DotSize },
+  { key: "oiliness",    label: "Oiliness",    color: "#B9C2A6", dotSize: "small" as DotSize },
+];
+
+// Pre-split dots by size, then assign halves for same-color concerns
+// Large dots: first half for Damage, second half for Dryness
+// Medium dots: all for Stressors
+// Small dots: first half for Sensitivity, second half for Oiliness
+const largeDotIndices: number[] = [];
+const mediumDotIndices: number[] = [];
+const smallDotIndices: number[] = [];
+cloudDots.forEach(([, , r], i) => {
+  const size = getDotSize(r);
+  if (size === "large") largeDotIndices.push(i);
+  else if (size === "medium") mediumDotIndices.push(i);
+  else smallDotIndices.push(i);
+});
+
+const largeHalf = Math.ceil(largeDotIndices.length / 2);
+const smallHalf = Math.ceil(smallDotIndices.length / 2);
+
+// For each concern phase, which dot indices should be colored
+const concernDotSets: number[][] = [
+  largeDotIndices.slice(0, largeHalf),         // Damage — first half large
+  largeDotIndices.slice(largeHalf),             // Dryness — second half large
+  mediumDotIndices,                              // Stressors — all medium
+  smallDotIndices.slice(0, smallHalf),          // Sensitivity — first half small
+  smallDotIndices.slice(smallHalf),             // Oiliness — second half small
+];
+
+interface CloudDot {
   cx: number;
   cy: number;
   r: number;
-  color: string;
-  delay: number;
-}
-
-// Evenly spaced dots around the ring — no overlap.
-// Each entry: [angleDeg, radius offset from center ring, dot radius, color index]
-// 26 dots spaced ~13.8° apart, sizes alternate small/med/large (max 9px radius)
-const dotDefs: [number, number, number, number][] = [
-  [0,   0, 7, 0],   [14,  0, 4, 0],
-  [28,  0, 9, 3],   [42,  0, 5, 0],
-  [56,  0, 8, 1],   [70,  0, 4, 2],
-  [84,  0, 6, 0],   [98,  0, 9, 1],
-  [112, 0, 4, 0],   [126, 0, 7, 2],
-  [140, 0, 5, 0],   [154, 0, 8, 2],
-  [168, 0, 4, 1],   [182, 0, 9, 0],
-  [196, 0, 5, 3],   [210, 0, 7, 1],
-  [224, 0, 4, 0],   [238, 0, 9, 2],
-  [252, 0, 5, 0],   [266, 0, 8, 1],
-  [280, 0, 4, 3],   [294, 0, 7, 0],
-  [308, 0, 5, 2],   [322, 0, 9, 1],
-  [336, 0, 4, 0],   [350, 0, 6, 3],
-];
-
-interface FloatingDot extends Dot {
   floatX: number[];
   floatY: number[];
   floatDuration: number;
 }
 
-function generateDots(): FloatingDot[] {
-  const center = 140;
-  const baseRadius = 100;
-  // Seeded random-ish offsets for each dot's floating path
-  const rng = (seed: number) => ((Math.sin(seed * 127.1 + 311.7) * 43758.5453) % 1 + 1) % 1;
+const animatedCloudDots: CloudDot[] = cloudDots.map(([cx, cy, r], i) => {
+  const drift = 2 + rng(i) * 3;
+  const driftX = drift * (rng(i * 2) > 0.5 ? 1 : -1);
+  const driftY = drift * (rng(i * 3) > 0.5 ? 1 : -1);
+  return {
+    cx, cy, r,
+    floatX: [0, driftX, -driftX * 0.6, driftX * 0.3, 0],
+    floatY: [0, -driftY * 0.7, driftY, -driftY * 0.4, 0],
+    floatDuration: 4 + rng(i * 5) * 3,
+  };
+});
 
-  return dotDefs.map(([angleDeg, rOffset, size, colorIdx], i) => {
-    const angle = (angleDeg * Math.PI) / 180 - Math.PI / 2;
-    const r = baseRadius + rOffset;
-    const x = center + Math.cos(angle) * r;
-    const y = center + Math.sin(angle) * r;
-    // Generate unique floating keyframes per dot (subtle 3-6px drift)
-    const drift = 3 + rng(i) * 3;
-    const driftX = drift * (rng(i * 2) > 0.5 ? 1 : -1);
-    const driftY = drift * (rng(i * 3) > 0.5 ? 1 : -1);
-    return {
-      cx: x,
-      cy: y,
-      r: size,
-      color: DOT_COLORS[colorIdx],
-      delay: i * 0.5 / dotDefs.length, // spread 500ms stagger across all dots
-      floatX: [0, driftX, -driftX * 0.6, driftX * 0.3, 0],
-      floatY: [0, -driftY * 0.7, driftY, -driftY * 0.4, 0],
-      floatDuration: 4 + rng(i * 5) * 3, // 4-7s per cycle, unique per dot
-    };
-  });
+// Compute the color for a given dot based on the current active concern phase
+// phase -1 = loading (all grey), 0-4 = concern phases, 5 = all colored (final)
+// Each phase ONLY colors its own dots — no accumulation.
+// Same-color pairs (Damage↔Dryness, Sensitivity↔Oiliness) swap positions.
+function getDotColor(dotIndex: number, phase: number): string {
+  const grey = "#EAEAEA";
+  if (phase < 0) return grey;
+
+  // Phase 5 (overview card) = all dots colored
+  if (phase >= 5) {
+    for (let p = 0; p <= 4; p++) {
+      if (concernDotSets[p].includes(dotIndex)) return CONCERN_PHASES[p].color;
+    }
+    return grey;
+  }
+
+  // Only color dots belonging to the active phase
+  if (concernDotSets[phase].includes(dotIndex)) {
+    return CONCERN_PHASES[phase].color;
+  }
+
+  return grey;
 }
 
-const ringDots = generateDots();
-
-function DotRingVisualization() {
+function DotRingVisualization({ phase }: { phase: number }) {
   const [animated, setAnimated] = useState(false);
 
   useEffect(() => {
@@ -120,33 +171,34 @@ function DotRingVisualization() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Total entrance stagger: 500ms spread across all dots
   const totalStagger = 0.5;
 
   return (
-    <div className="relative w-[280px] h-[280px] mx-auto">
-      <svg viewBox="0 0 280 280" className="w-full h-full overflow-visible">
-        {ringDots.map((dot, i) => {
-          const entranceDelay = (i / ringDots.length) * totalStagger;
+    <div className="relative w-[260px] h-[248px] mx-auto">
+      <svg viewBox="0 0 213 203" className="w-full h-full overflow-visible">
+        {animatedCloudDots.map((dot, i) => {
+          const entranceDelay = (i / animatedCloudDots.length) * totalStagger;
+          const fill = getDotColor(i, phase);
           return (
             <motion.circle
               key={i}
               cx={dot.cx}
               cy={dot.cy}
               r={dot.r}
-              fill={dot.color}
               initial={{ scale: 0, opacity: 0, x: 0, y: 0 }}
               animate={
                 animated
                   ? {
                       scale: 1,
                       opacity: 0.85,
+                      fill,
                       x: dot.floatX,
                       y: dot.floatY,
                     }
-                  : {}
+                  : { fill }
               }
               transition={{
+                fill: { duration: 0.6, ease: "easeInOut" },
                 scale: {
                   duration: 0.8,
                   delay: entranceDelay,
@@ -174,23 +226,6 @@ function DotRingVisualization() {
           );
         })}
       </svg>
-      {/* Center text */}
-      <motion.div
-        className="absolute inset-0 flex flex-col items-center justify-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 1.2 }}
-      >
-        <p className="font-['Simplon_Mono','JetBrains Mono',monospace] text-[10px] text-[#6c6c6c] tracking-[1.2px] uppercase">
-          Based on
-        </p>
-        <p className="font-['Saol Text',serif] font-light text-[48px] text-[#323429] leading-[1] tracking-[-1.5px]">
-          85+
-        </p>
-        <p className="font-['Simplon_Mono','JetBrains Mono',monospace] text-[10px] text-[#6c6c6c] tracking-[1.2px] uppercase">
-          Variables
-        </p>
-      </motion.div>
     </div>
   );
 }
@@ -311,27 +346,103 @@ function DetailCarousel({
   metrics,
   activeIndex,
   onIndexChange,
+  onUserTouch,
+  onLoopStart,
+  onLoopEnd,
 }: {
   metrics: AnalysisMetric[];
   activeIndex: number;
   onIndexChange: (index: number) => void;
+  onUserTouch?: () => void;
+  onLoopStart?: () => void;
+  onLoopEnd?: () => void;
 }) {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const isUserScrolling = useRef(false);
+  const isProgrammaticScroll = useRef(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const userTouching = useRef(false);
 
-  // Sync scroll position when activeIndex changes externally (e.g. bar tap)
+  // Smooth scroll with 800ms ease-in-out (only when auto-playing)
   useEffect(() => {
-    if (isUserScrolling.current) return;
+    // Don't animate if user has taken control
+    if (userTouching.current) return;
+
     const el = scrollRef.current;
     if (!el) return;
-    const cardWidth = 295 + 12; // card width + gap
-    el.scrollTo({ left: activeIndex * cardWidth, behavior: "smooth" });
+    const cardWidth = 295 + 12;
+    const targetLeft = activeIndex * cardWidth;
+    const startLeft = el.scrollLeft;
+    const distance = targetLeft - startLeft;
+    if (Math.abs(distance) < 1) return;
+
+    isProgrammaticScroll.current = true;
+
+    // If looping back (scrolling left by more than 1 card), crossfade
+    if (distance < -cardWidth) {
+      onLoopStart?.(); // pause auto-play
+      const container = scrollContainerRef.current;
+      if (container) {
+        // Fade out
+        container.style.transition = "opacity 300ms ease-out";
+        container.style.opacity = "0";
+        setTimeout(() => {
+          // Snap scroll while hidden
+          el.scrollLeft = 0;
+          // Fade back in
+          container.style.transition = "opacity 300ms ease-in";
+          container.style.opacity = "1";
+          setTimeout(() => {
+            isProgrammaticScroll.current = false;
+            container.style.transition = "";
+            onLoopEnd?.(); // resume auto-play
+          }, 350);
+        }, 320);
+      } else {
+        el.scrollLeft = 0;
+        setTimeout(() => {
+          isProgrammaticScroll.current = false;
+          onLoopEnd?.();
+        }, 200);
+      }
+      return;
+    }
+
+    const duration = 800;
+    let startTime: number | null = null;
+
+    function easeInOut(t: number) {
+      return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+    }
+
+    function animate(time: number) {
+      if (!startTime) startTime = time;
+      const elapsed = time - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      el!.scrollLeft = startLeft + distance * easeInOut(progress);
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        setTimeout(() => { isProgrammaticScroll.current = false; }, 50);
+      }
+    }
+
+    requestAnimationFrame(animate);
   }, [activeIndex]);
 
+  // On touch/pointer down, stop auto-play and let user scroll natively
+  const handlePointerDown = useCallback(() => {
+    if (userTouching.current) return;
+    userTouching.current = true;
+    isProgrammaticScroll.current = false;
+    onUserTouch?.();
+  }, [onUserTouch]);
+
+  // Track which card is visible after user scrolls (for dots/headline)
   const handleScroll = useCallback(() => {
+    if (!userTouching.current) return; // only track during user scroll
+
     const el = scrollRef.current;
     if (!el) return;
-    isUserScrolling.current = true;
     const cardWidth = 295 + 12;
     const index = Math.round(el.scrollLeft / cardWidth);
     const totalCards = metrics.length + 1; // +1 for overview card
@@ -339,18 +450,15 @@ function DetailCarousel({
     if (clamped !== activeIndex) {
       onIndexChange(clamped);
     }
-    // Reset flag after a short delay
-    clearTimeout((handleScroll as any)._timer);
-    (handleScroll as any)._timer = setTimeout(() => {
-      isUserScrolling.current = false;
-    }, 150);
   }, [activeIndex, metrics.length, onIndexChange]);
 
   return (
-    <div className="flex flex-col gap-[8px] w-full">
+    <div ref={scrollContainerRef} className="flex flex-col gap-[8px] w-full">
       <div
         ref={scrollRef}
         onScroll={handleScroll}
+        onPointerDown={handlePointerDown}
+        onTouchStart={handlePointerDown}
         className="overflow-x-auto w-full scrollbar-hide scroll-smooth snap-x snap-mandatory"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none", scrollPaddingLeft: "24px" }}
       >
@@ -471,10 +579,60 @@ function ProductThumbnails() {
   );
 }
 
+// ─── Headline labels tied to carousel index ──────────────
+// 0-4 = concern cards, 5 = overview card
+const HEADLINE_LABELS = ["Damage", "Dryness", "Stressors", "Sensitivity", "Oiliness", "85+ factors"];
+
 // ─── Results Page ─────────────────────────────────────────
 export default function Results() {
   const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState(0);
+  const [loaded, setLoaded] = useState(false);
+
+  const autoPlayTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const userInteracted = useRef(false);
+  const autoPlayPaused = useRef(false); // pause during crossfade
+
+  useEffect(() => {
+    // After 1000ms loading, color dots and show carousel
+    const timer = setTimeout(() => setLoaded(true), 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Auto-play: after loaded, cycle through cards every 2000ms with loop
+  const scheduleNext = useCallback(() => {
+    if (autoPlayTimer.current) clearTimeout(autoPlayTimer.current);
+    autoPlayTimer.current = setTimeout(() => {
+      if (userInteracted.current || autoPlayPaused.current) return;
+      const totalCards = analysisMetrics.length + 1;
+      setActiveIndex((prev) => (prev + 1) % totalCards);
+      scheduleNext();
+    }, 2000);
+  }, []);
+
+  useEffect(() => {
+    if (!loaded) return;
+    scheduleNext();
+    return () => {
+      if (autoPlayTimer.current) clearTimeout(autoPlayTimer.current);
+    };
+  }, [loaded, scheduleNext]);
+
+  // When user touches carousel, stop auto-play permanently
+  const handleUserTouch = useCallback(() => {
+    userInteracted.current = true;
+    if (autoPlayTimer.current) clearTimeout(autoPlayTimer.current);
+  }, []);
+
+  // Track index from user scroll (just update state, don't stop auto-play)
+  const handleIndexChange = useCallback((index: number) => {
+    setActiveIndex(index);
+  }, []);
+
+  // Dot phase: before loaded = -1 (grey), after loaded = activeIndex (color by active card)
+  const dotPhase = loaded ? activeIndex : -1;
+  // Headline: before loaded = "85+ factors", after = tied to active card
+  const headlineText = loaded ? HEADLINE_LABELS[Math.min(activeIndex, 5)] : "85+ factors";
 
   return (
     <div className="bg-[#f9f7f2] flex flex-col items-start relative min-h-screen w-full max-w-[375px] mx-auto">
@@ -505,28 +663,72 @@ export default function Results() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            Maggie, here's your analysis based on <span className="relative inline-block"><span className="absolute bottom-[2px] left-0 right-0 h-[0.4em] bg-[#ecff92]" /><span className="relative">85+ factors</span></span>
+            Maggie, here's your analysis based on{" "}
+            <span className="relative inline-block">
+              <span className="absolute bottom-[2px] left-0 right-0 h-[0.4em] bg-[#ecff92]" />
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={headlineText}
+                  className="relative"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.35, ease: "easeInOut" }}
+                >
+                  {headlineText}
+                </motion.span>
+              </AnimatePresence>
+            </span>
           </motion.h1>
         </div>
 
-        {/* Dot Ring Visualization */}
+        {/* Dot Cloud Visualization */}
         <motion.div
           className="px-[24px] py-[6px]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          <DotRingVisualization />
+          <DotRingVisualization phase={dotPhase} />
         </motion.div>
 
-        {/* Detail Cards Carousel */}
-        <div className="pb-[16px]">
-          <DetailCarousel
-            metrics={analysisMetrics}
-            activeIndex={activeIndex}
-            onIndexChange={setActiveIndex}
-          />
-        </div>
+        {/* Subhead */}
+        <AnimatePresence>
+          {loaded && (
+            <motion.p
+              className="px-[24px] pt-[4px] pb-[16px] font-['Simplon_Norm','Inter',sans-serif] font-normal text-[14px] text-[#4D523C] tracking-[-0.5px] leading-[1.5]"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              Here's what we found and how we are formulating.
+            </motion.p>
+          )}
+        </AnimatePresence>
+
+        {/* Detail Cards Carousel — fades in after loading sequence */}
+        <AnimatePresence>
+          {loaded && (
+            <motion.div
+              className="pb-[16px]"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+            >
+              <DetailCarousel
+                metrics={analysisMetrics}
+                activeIndex={activeIndex}
+                onIndexChange={handleIndexChange}
+                onUserTouch={handleUserTouch}
+                onLoopStart={() => { autoPlayPaused.current = true; }}
+                onLoopEnd={() => {
+                  autoPlayPaused.current = false;
+                  scheduleNext();
+                }}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
       </div>
 
@@ -545,7 +747,7 @@ export default function Results() {
             className="bg-[#323429] h-[44px] w-full rounded-[60px] flex items-center justify-center cursor-pointer"
           >
             <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[12px] text-white text-center tracking-[0.96px] uppercase">
-              See your Custom Routine
+              See your Custom Products
             </p>
           </motion.button>
         </div>

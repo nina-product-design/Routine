@@ -461,7 +461,7 @@ export default function Home() {
                 <motion.div
                   key={id}
                   ref={(el: HTMLDivElement | null) => { cardRefs.current[id] = el; }}
-                  initial={newlyAddedIds.current.has(id) ? { opacity: 1, height: "auto" } : { opacity: 0, height: 0 }}
+                  initial={newlyAddedIds.current.has(id) ? { opacity: 1, height: "auto" } : { opacity: 0, height: "auto" }}
                   animate={isDismissing ? { opacity: 0, height: 0 } : { opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.3 }}
