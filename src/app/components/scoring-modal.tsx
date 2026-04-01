@@ -165,7 +165,11 @@ export default function ScoringModal({
     isTabClick.current = true;
     const card = cardRefs.current[index];
     if (card && scrollRef.current) {
-      card.scrollIntoView({ behavior: "smooth", block: "start" });
+      const container = scrollRef.current;
+      const containerRect = container.getBoundingClientRect();
+      const cardRect = card.getBoundingClientRect();
+      const targetTop = container.scrollTop + (cardRect.top - containerRect.top) - 16;
+      container.scrollTo({ top: targetTop, behavior: "smooth" });
       setTimeout(() => { isTabClick.current = false; }, 500);
     }
   }, []);
@@ -175,6 +179,14 @@ export default function ScoringModal({
     if (isTabClick.current || !scrollRef.current) return;
     const container = scrollRef.current;
     const scrollTop = container.scrollTop;
+
+    // If scrolled to the bottom, activate the last tab
+    const atBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 2;
+    if (atBottom && cardRefs.current.length > 0) {
+      setActiveTab(cardRefs.current.length - 1);
+      return;
+    }
+
     let closestIndex = 0;
     let closestDistance = Infinity;
     cardRefs.current.forEach((card, i) => {
