@@ -543,10 +543,7 @@ function DetailCarousel({
                 <div className="h-[6px] bg-[#e8e4db] rounded-full w-full overflow-hidden mt-[10px] mb-[16px]">
                   <div className="h-full rounded-full" style={{ width: `${metric.value * 100}%`, backgroundColor: metric.color }} />
                 </div>
-                <p className="font-['Simplon_Norm','Inter',sans-serif] text-[14px] text-[#323429] tracking-[0.28px] leading-[1.5] pb-[16px] border-b border-[#E2D9C2]">
-                  {metric.description}
-                </p>
-                <div className="flex flex-col gap-[12px] pt-[16px]">
+                <div className="flex flex-col gap-[12px] pb-[16px] border-b border-[#E2D9C2]">
                   <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[11px] text-[#323429] tracking-[0.88px] uppercase leading-[1.2]">
                     Based on:
                   </p>
@@ -564,6 +561,9 @@ function DetailCarousel({
                     </div>
                   ))}
                 </div>
+                <p className="font-['Simplon_Norm','Inter',sans-serif] text-[14px] text-[#323429] tracking-[0.28px] leading-[1.5] pt-[16px]">
+                  {metric.description}
+                </p>
               </div>
             </div>
           ))}
