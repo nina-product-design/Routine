@@ -30,7 +30,7 @@ export const concernDataMap: Record<string, ConcernDetail> = {
     percent: 88,
     color: "#f69371",
     description:
-      "With frequent heat styling and color treatments, your hair fibers need extra reinforcement. Your formula will focus on repairing bonds and strengthening strands from the inside out.",
+      "With frequent heat and color treatments, your formula will focus on repairing bonds and strengthening strands.",
     basedOn: [
       { label: "Heat treatment", icon: "heat", value: "High" },
       { label: "Environment", icon: "sun", value: "Harsh UV" },
@@ -44,7 +44,7 @@ export const concernDataMap: Record<string, ConcernDetail> = {
     percent: 82,
     color: "#f69371",
     description:
-      "Your hair is losing moisture faster than it can retain it. Your formula will deeply hydrate and seal the cuticle to lock in lasting softness and shine.",
+      "Your hair is losing moisture quickly. Your formula will deeply hydrate and seal the cuticle for lasting softness.",
     basedOn: [
       { label: "Heat treatment", icon: "heat", value: "High" },
       { label: "Environment", icon: "sun", value: "Harsh UV" },
@@ -58,7 +58,7 @@ export const concernDataMap: Record<string, ConcernDetail> = {
     percent: 58,
     color: "#EABF6F",
     description:
-      "Environmental and lifestyle stressors are putting moderate strain on your hair. Your formula will include antioxidants and adaptogens to help build resilience.",
+      "Environmental stressors are straining your hair. Your formula will include antioxidants to build resilience.",
     basedOn: [
       { label: "Stress level", icon: "stressed", value: "Sometimes" },
       { label: "Environment", icon: "sun", value: "High UV" },
@@ -72,7 +72,7 @@ export const concernDataMap: Record<string, ConcernDetail> = {
     percent: 15,
     color: "#B9C2A6",
     description:
-      "Your scalp oil production is well balanced. Your formula will maintain this equilibrium with lightweight ingredients that won't weigh hair down.",
+      "Your scalp oil is well balanced. Your formula will maintain equilibrium with lightweight ingredients.",
     basedOn: [
       { label: "Flakiness", icon: "heat", value: "Rarely" },
       { label: "Scalp Spectrum", icon: "drop", value: "Mixed" },
@@ -86,7 +86,7 @@ export const concernDataMap: Record<string, ConcernDetail> = {
     percent: 30,
     color: "#B9C2A6",
     description:
-      "Your scalp shows occasional sensitivity. Your formula will include gentle, soothing actives to calm irritation and support your scalp's natural barrier.",
+      "Your scalp shows occasional sensitivity. Your formula will include soothing actives to calm irritation.",
     basedOn: [
       { label: "Flakiness", icon: "heat", value: "Rarely" },
       { label: "Sensitive Scalp", icon: "head", value: "Off and on" },

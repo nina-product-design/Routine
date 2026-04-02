@@ -561,9 +561,14 @@ function DetailCarousel({
                     </div>
                   ))}
                 </div>
-                <p className="font-['Simplon_Norm','Inter',sans-serif] text-[14px] text-[#323429] tracking-[0.28px] leading-[1.5] pt-[16px]">
-                  {metric.description}
-                </p>
+                <div className="pt-[16px]">
+                  <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[11px] text-[#323429] tracking-[0.88px] uppercase leading-[1.2] pb-[8px]">
+                    What we will address:
+                  </p>
+                  <p className="font-['Simplon_Norm','Inter',sans-serif] text-[14px] text-[#323429] tracking-[0.28px] leading-[1.5]">
+                    {metric.description}
+                  </p>
+                </div>
               </div>
             </div>
           ))}
@@ -590,10 +595,11 @@ function DetailCarousel({
 const previewProductIds = ["custom-shampoo", "custom-conditioner", "custom-scalp-mask"];
 
 function ProductThumbnails() {
+  const navigate = useNavigate();
   const products = previewProductIds.map((id) => productCatalog[id]).filter(Boolean);
 
   return (
-    <div className="flex gap-[8px] items-center justify-center w-full">
+    <div className="flex gap-[8px] items-center justify-center w-full cursor-pointer" onClick={() => navigate("/routine")}>
       {products.map((product, i) => (
         <div
           key={i}
@@ -602,7 +608,7 @@ function ProductThumbnails() {
           <img
             src={product.routineImage}
             alt={product.routineName}
-            className="w-full h-full object-cover blur-[1px]"
+            className="w-full h-full object-cover blur-[3px]"
           />
         </div>
       ))}

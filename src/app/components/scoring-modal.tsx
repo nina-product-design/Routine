@@ -98,13 +98,8 @@ function ScoreCard({ concern }: ScoreCardProps) {
           />
         </div>
 
-        {/* Description */}
-        <p className="font-['Simplon_Norm','Inter',sans-serif] text-[14px] text-[#323429] tracking-[0.28px] leading-[1.6] pb-[16px] border-b border-[#E2D9C2]">
-          {concern.description}
-        </p>
-
         {/* Based on */}
-        <div className="flex flex-col gap-[12px] pt-[16px]">
+        <div className="flex flex-col gap-[12px] pb-[16px] border-b border-[#E2D9C2]">
           <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[11px] text-[#323429] tracking-[0.88px] uppercase leading-[1.2]">
             Based on:
           </p>
@@ -121,6 +116,16 @@ function ScoreCard({ concern }: ScoreCardProps) {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Description */}
+        <div className="pt-[16px]">
+          <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[11px] text-[#323429] tracking-[0.88px] uppercase leading-[1.2] pb-[8px]">
+            What we will address:
+          </p>
+          <p className="font-['Simplon_Norm','Inter',sans-serif] text-[14px] text-[#323429] tracking-[0.28px] leading-[1.6]">
+            {concern.description}
+          </p>
         </div>
       </div>
     </div>
