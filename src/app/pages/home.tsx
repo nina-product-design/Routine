@@ -131,16 +131,16 @@ function DropletIcon() {
   return (
     <div className="size-[24px] overflow-clip relative">
       <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
-        <path d={svgPaths.p23d57380} stroke="#323429" strokeWidth="0.514498" />
+        <path d={svgPaths.p23d57380} stroke="#4D523C" strokeWidth="0.514498" />
       </svg>
       <div className="absolute inset-[57.17%_51.41%_24.25%_34.3%]">
         <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 3.72907 4.75793">
-          <path d={svgPaths.p177ec800} stroke="#323429" strokeWidth="0.514498" />
+          <path d={svgPaths.p177ec800} stroke="#4D523C" strokeWidth="0.514498" />
         </svg>
       </div>
       <div className="absolute inset-[17.15%_27.11%_15.68%_27.15%]">
         <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 11.4905 16.739">
-          <path d={svgPaths.p1e7cd700} stroke="#323429" strokeWidth="0.514498" />
+          <path d={svgPaths.p1e7cd700} stroke="#4D523C" strokeWidth="0.514498" />
         </svg>
       </div>
     </div>
@@ -295,14 +295,12 @@ function TopNav({ cartCount, onBagClick }: { cartCount: number; onBagClick: () =
   return (
     <div className="bg-white flex items-center justify-between px-[24px] py-[16px] w-full sticky top-0 z-50">
       <HamburgerIcon />
-      <div className="flex items-center justify-end w-[194px]">
-        <ProseLogo className="hidden" />
-        <div className="flex gap-[16px] items-start">
-          <div onClick={onBagClick}>
-            <BagIcon count={cartCount} />
-          </div>
-          <AccountIcon />
+      <ProseLogo />
+      <div className="flex gap-[16px] items-center">
+        <div onClick={onBagClick}>
+          <BagIcon count={cartCount} />
         </div>
+        <AccountIcon />
       </div>
     </div>
   );
@@ -514,8 +512,26 @@ export default function Home() {
         {/* Upsell Carousel */}
         {upsellIds.length > 0 && (
           <div className="flex flex-col gap-[12px] py-[48px] w-full">
-            <div className="pl-[24px]">
+            <div className="flex items-center justify-between px-[24px]">
               <p className="font-['Simplon Mono','JetBrains Mono',monospace] font-medium text-[14px] text-[#323429] tracking-[1.12px] uppercase font-[Simplon_Mono]">ADD TO YOUR ROUTINE</p>
+              <div className="flex gap-[8px]">
+                <button
+                  onClick={() => upsellScrollRef.current?.scrollBy({ left: -188, behavior: "smooth" })}
+                  className="size-[36px] rounded-full border border-[#F1ECE0] flex items-center justify-center cursor-pointer bg-[#F1ECE0] transition-colors"
+                >
+                  <svg width="8" height="14" viewBox="0 0 8 14" fill="none">
+                    <path d="M7 1L1 7L7 13" stroke="#4D523C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+                <button
+                  onClick={() => upsellScrollRef.current?.scrollBy({ left: 188, behavior: "smooth" })}
+                  className="size-[36px] rounded-full border border-[#F1ECE0] flex items-center justify-center cursor-pointer bg-[#F1ECE0] transition-colors"
+                >
+                  <svg width="8" height="14" viewBox="0 0 8 14" fill="none">
+                    <path d="M1 1L7 7L1 13" stroke="#4D523C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+              </div>
             </div>
             <div
               ref={upsellScrollRef}

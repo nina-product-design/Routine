@@ -2,13 +2,39 @@
 // Horizontally scrollable product carousel for the cart page,
 // showing products not currently in the routine.
 
-import { useRef } from "react";
+import { useRef, useCallback } from "react";
 import { productCatalog } from "../data/product-catalog";
 import { useCart } from "../context/cart-context";
+
+function CarouselArrow({ direction, onClick }: { direction: "left" | "right"; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className="size-[36px] rounded-full border border-[#F1ECE0] flex items-center justify-center cursor-pointer bg-[#F1ECE0] transition-colors"
+    >
+      <svg width="8" height="14" viewBox="0 0 8 14" fill="none">
+        <path
+          d={direction === "left" ? "M7 1L1 7L7 13" : "M1 1L7 7L1 13"}
+          stroke="#4D523C"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </button>
+  );
+}
 
 export default function Upsell() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const { upsellIds, removedFromRoutineIds, handleAddToRoutine } = useCart();
+
+  const scrollBy = useCallback((direction: "left" | "right") => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const amount = 188; // card width + gap
+    el.scrollBy({ left: direction === "left" ? -amount : amount, behavior: "smooth" });
+  }, []);
 
   // Priority sorting:
   // 1. Hair towel
@@ -53,10 +79,14 @@ export default function Upsell() {
 
   return (
     <div className="flex flex-col gap-[12px] py-[24px] w-full">
-      <div className="pl-[24px]">
+      <div className="flex items-center justify-between px-[24px]">
         <p className="font-['Simplon_Mono',monospace] font-medium text-[14px] text-[#323429] tracking-[1.12px] uppercase">
           YOU MIGHT ALSO LIKE
         </p>
+        <div className="flex gap-[8px]">
+          <CarouselArrow direction="left" onClick={() => scrollBy("left")} />
+          <CarouselArrow direction="right" onClick={() => scrollBy("right")} />
+        </div>
       </div>
       <div
         ref={scrollRef}

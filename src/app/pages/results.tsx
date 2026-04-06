@@ -732,7 +732,7 @@ export default function Results() {
   const dotPhase = !loaded ? loadingPhase : (activeIndex === 0 ? 5 : activeIndex - 1);
   // Headline: counting "N+ factors" during loading, then tied to active card after loaded
   const headlineText = !loaded
-    ? (scoreCount > 0 ? `${scoreCount}+ factors` : "")
+    ? "85+ factors"
     : HEADLINE_LABELS[Math.min(activeIndex, 5)];
 
   return (
@@ -769,18 +769,14 @@ export default function Results() {
               <span className="absolute bottom-[2px] left-0 right-0 h-[0.4em] bg-[#ecff92]" />
               <AnimatePresence mode="wait">
                 <motion.span
-                  key={loaded ? headlineText : scoreCount > 0 ? "counting" : "empty"}
+                  key={headlineText}
                   className="relative"
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -8 }}
                   transition={{ duration: 0.35, ease: "easeInOut" }}
                 >
-                  {!loaded && scoreCount > 0 ? (
-                    <><span style={{ display: "inline-block", minWidth: "1.6em", textAlign: "right" }}>{scoreCount}+</span> factors</>
-                  ) : (
-                    headlineText
-                  )}
+                  {headlineText}
                 </motion.span>
               </AnimatePresence>
             </span>
