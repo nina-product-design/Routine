@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import { motion, AnimatePresence } from "motion/react";
 import { productCatalog } from "../data/product-catalog";
 import { cartImageDataMap } from "../data/cart-card-assets";
@@ -53,6 +54,7 @@ export default function CartDrawer({
   onClose,
   onCheckout,
 }: CartDrawerProps) {
+  const navigate = useNavigate();
   const {
     routineCartIds,
     productFrequencies,
@@ -172,38 +174,29 @@ export default function CartDrawer({
 
               {routineCartIds.length === 0 ? (
                 <>
-                  {/* Empty State: Italic Header */}
-                  <div className="flex flex-col h-[80px] items-center justify-center px-[24px] py-[16px] w-full">
-                    <p className="font-['Saol Text',serif] italic font-light text-[20px] text-black tracking-[0.4px] leading-[1.5]">It looks a bit empty here.</p>
-                  </div>
-
-                  {/* Empty State: Subscription Promo */}
-                  <div className="flex flex-col items-start w-full">
-                    {/* Product Image */}
-                    <div className="relative w-full h-[241px] overflow-hidden">
-                      <img
-                        alt="Prose hair care products"
-                        className="absolute h-[138%] left-0 max-w-none top-[-18%] w-full object-cover"
-                        src={imgProseProducts}
-                      />
+                  {/* Empty State */}
+                  <div className="flex flex-col items-center px-[24px] pt-[48px] pb-[32px] w-full border-b border-[#eaeaea]">
+                    <h2 className="font-['Saol_Text',serif] text-[32px] text-[#323429] text-center leading-[1.15] tracking-[-0.5px]">
+                      Your custom blends<br />are missing
+                    </h2>
+                    <div className="h-px w-[60px] bg-[#C5765A] mt-[20px] mb-[20px]" />
+                    <div className="bg-[#ecff92] px-[16px] py-[8px] rounded-[4px] mb-[16px]">
+                      <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[12px] text-[#323429] tracking-[0.96px] uppercase">
+                        60% off + free shipping
+                      </p>
                     </div>
-
-                    {/* Text + CTA */}
-                    <div className="bg-white flex flex-col gap-[24px] items-center justify-center p-[24px] w-full">
-                      <div className="flex flex-col gap-[8px] items-start w-full">
-                        <p className="font-['Simplon_Mono','JetBrains_Mono',monospace] font-medium text-[12px] text-[#161716] tracking-[0.96px] uppercase leading-[1.2] w-full">Made just for you</p>
-                        <p className="font-['Saol Text',serif] text-[20px] text-[#161716] tracking-[-0.6px] leading-[1.1] w-full">
-                          Start your custom journey and get 60% off<span className="text-[13px]">*</span> + free shipping when you subscribe.
-                        </p>
-                      </div>
-                      <button
-                        onClick={onClose}
-                        className="bg-[#f69371] h-[44px] w-full max-w-[492px] rounded-[60px] cursor-pointer flex items-center justify-center"
-                      >
-                        <p className="font-['Simplon_Mono','JetBrains_Mono',monospace] font-medium text-[12px] text-[#323429] text-center tracking-[0.96px] uppercase leading-[1.2]">Shop your routine</p>
-                      </button>
-                      <p className="font-['Simplon_Norm','Inter',sans-serif] italic text-[10px] text-[#6c6c6c] tracking-[0.2px] leading-[1.5] w-full">*offer only valid for first subscription, 15% off reoccurring</p>
-                    </div>
+                    <p className="font-['Simplon_Norm','Inter',sans-serif] text-[14px] text-[#6c6c6c] text-center tracking-[0.28px] leading-[1.5]">
+                      Made just for you.<br />
+                      Get 60% off + free shipping when you subscribe.
+                    </p>
+                    <button
+                      onClick={() => { onClose(); navigate('/routine'); }}
+                      className="mt-[20px] cursor-pointer"
+                    >
+                      <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[12px] text-[#323429] tracking-[0.96px] uppercase border-b-[2px] border-[#C5765A] pb-[2px]">
+                        Shop your routine
+                      </p>
+                    </button>
                   </div>
 
                   {/* Upsell Carousel */}
