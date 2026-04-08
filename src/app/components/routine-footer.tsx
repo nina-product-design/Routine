@@ -1,7 +1,6 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import imgImage12 from "figma:asset/9a0f1af7fa14dd4e72ad9cd85a2b569e25329f2c.png";
-import imgToiletryBag from "figma:asset/e87de096b8d731479f6a3293f72b7a5cf0254f46.png";
+import imgComb from "../../assets/COMB3.png";
 
 interface RoutineFooterProps {
   cartItems: { id: string; name: string; image: string; price: number; originalPrice: number; frequency: string }[];
@@ -102,7 +101,7 @@ export default function RoutineFooter({ cartItems, onContinueToCart, onRemoveIte
                             className={`size-[16px] rounded-full flex items-center justify-center text-[10px] font-['Simplon_Norm',sans-serif] font-medium leading-none ${
                               step <= subscriptionCount
                                 ? "bg-[#ecff92] text-[#161716]"
-                                : "border border-white/50 text-white/50"
+                                : "bg-[#ecff92]/50 text-[#161716]/50"
                             }`}
                           >
                             {step}
@@ -112,7 +111,7 @@ export default function RoutineFooter({ cartItems, onContinueToCart, onRemoveIte
                     </div>
                     <div className="flex gap-[12px] items-center px-[24px] py-[12px] w-full">
                       <div className="w-[64px] h-[64px] shrink-0 rounded-[6px] overflow-hidden relative">
-                        <img src={imgImage12} alt="Free Toiletry Bag" className="size-full object-cover" />
+                        <img src={imgComb} alt="Signature Comb" className="size-full object-contain" />
                         <div className="absolute inset-0 flex items-center justify-center" style={{ backgroundColor: 'rgba(249, 247, 242, 0.75)' }}>
                           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                             <path fillRule="evenodd" clipRule="evenodd" d="M7 7C7 4.238 9.238 2 12 2C14.762 2 17 4.238 17 7V10H17.4C18.28 10 19 10.72 19 11.6V18.6C19 19.92 17.92 21 16.6 21H7.4C6.08 21 5 19.92 5 18.6V11.6C5 10.72 5.72 10 6.6 10H7V7ZM15 7V10H9V7C9 5.342 10.342 4 12 4C13.658 4 15 5.342 15 7ZM12 12.25C11.6023 12.2496 11.2164 12.3846 10.9057 12.6329C10.5951 12.8811 10.3782 13.2278 10.2909 13.6157C10.2036 14.0037 10.251 14.4098 10.4253 14.7672C10.5997 15.1246 10.8905 15.412 11.25 15.582V18C11.25 18.1989 11.329 18.3897 11.4697 18.5303C11.6103 18.671 11.8011 18.75 12 18.75C12.1989 18.75 12.3897 18.671 12.5303 18.5303C12.671 18.3897 12.75 18.1989 12.75 18V15.582C13.1095 15.412 13.4004 15.1246 13.5747 14.7672C13.749 14.4098 13.7964 14.0037 13.7091 13.6157C13.6218 13.2278 13.4049 12.8811 13.0943 12.6329C12.7836 12.3846 12.3977 12.2496 12 12.25Z" fill="black"/>
@@ -120,7 +119,7 @@ export default function RoutineFooter({ cartItems, onContinueToCart, onRemoveIte
                         </div>
                       </div>
                       <p className="flex-1 font-['Simplon_Norm',sans-serif] italic text-[10px] text-[#6c6c6c] tracking-[0.2px] leading-[1.5]">
-                        FREE travel-friendly toiletry bag — 100% recycled cotton ($30 value)
+                        Free Signature Comb — Your elegant, everyday styling tool for detangling all hair types.
                       </p>
                     </div>
                   </div>
@@ -153,11 +152,11 @@ export default function RoutineFooter({ cartItems, onContinueToCart, onRemoveIte
                       <div className="flex items-center gap-[12px] py-[6px] group">
                         {/* Thumbnail */}
                         <div className="size-[40px] rounded-[6px] overflow-hidden shrink-0 bg-[#f1ece0]">
-                          <img src={imgImage12} alt="Toiletry Bag" className="size-full object-cover" />
+                          <img src={imgComb} alt="Signature Comb" className="size-full object-contain" />
                         </div>
                         {/* Name */}
                         <div className="flex flex-col flex-1 gap-[2px]">
-                          <p className="font-['Simplon_Norm',sans-serif] text-[14px] text-[#323429]">Toiletry Bag</p>
+                          <p className="font-['Simplon_Norm',sans-serif] text-[14px] text-[#323429]">Signature Comb</p>
                         </div>
                         {/* FREE Price */}
                         <div className="flex gap-[8px] items-start shrink-0">
