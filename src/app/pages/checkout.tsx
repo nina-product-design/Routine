@@ -135,7 +135,7 @@ export default function Checkout() {
       <div className="bg-[#f9f7f2] flex flex-col items-center h-screen w-[375px] mx-auto relative overflow-y-auto">
         {/* Banner */}
         <div className="bg-[#323429] flex h-[40px] items-center justify-center px-[7px] py-[5px] w-full">
-          <p className="font-['Simplon Norm','Inter',sans-serif] text-[14px] text-center text-white tracking-[0.28px] whitespace-nowrap">Love your first order (or it's on us)</p>
+          <p className="font-['Simplon Norm',sans-serif] text-[14px] text-center text-white tracking-[0.28px] leading-[1.5] whitespace-nowrap">Love your first order (or it's on us)</p>
         </div>
         {/* Nav */}
         <div className="bg-white w-full border-b border-[#b9c2a6]">
@@ -160,7 +160,7 @@ export default function Checkout() {
     <div className="bg-[#f9f7f2] flex flex-col items-center h-screen w-[375px] mx-auto relative overflow-y-auto">
       {/* Banner */}
       <div className="bg-[#323429] flex h-[40px] items-center justify-center px-[7px] py-[5px] w-full">
-        <p className="font-['Simplon Norm','Inter',sans-serif] text-[14px] text-center text-white tracking-[0.28px] whitespace-nowrap">Love your first order (or it's on us)</p>
+        <p className="font-['Simplon Norm',sans-serif] text-[14px] text-center text-white tracking-[0.28px] leading-[1.5] whitespace-nowrap">Love your first order (or it's on us)</p>
       </div>
 
       {/* Navigation */}
@@ -184,7 +184,7 @@ export default function Checkout() {
           onClick={() => setSummaryOpen(!summaryOpen)}
           className="flex gap-[8px] items-center cursor-pointer"
         >
-          <p className="font-['Simplon_Mono','JetBrains_Mono',monospace] text-[12px] text-[#161716] tracking-[0.96px] uppercase whitespace-nowrap">
+          <p className="font-['Simplon_Mono',monospace] text-[12px] text-[#161716] tracking-[0.96px] uppercase whitespace-nowrap">
             order summary ({itemCount})
           </p>
           <div className={`h-[3.6px] w-[7.2px] transition-transform ${summaryOpen ? "rotate-180" : ""}`}>
@@ -195,11 +195,11 @@ export default function Checkout() {
         </button>
         <div className="flex gap-[8px] items-start text-[12px] text-right tracking-[0.96px] uppercase whitespace-nowrap">
           {hasDiscount && (
-            <p className="font-['Simplon_Mono','JetBrains_Mono',monospace] line-through text-[#6c6c6c]">
+            <p className="font-['Simplon_Mono',monospace] line-through text-[#6c6c6c]">
               ${originalSubtotal.toFixed(2)}
             </p>
           )}
-          <p className="font-['Simplon_Mono','JetBrains_Mono',monospace] font-medium text-[#161716]">
+          <p className="font-['Simplon_Mono',monospace] font-medium text-[#161716]">
             ${total.toFixed(2)}
           </p>
         </div>
@@ -207,8 +207,8 @@ export default function Checkout() {
 
       {/* Reduce & Reuse */}
       <div className="bg-[#f1ece0] flex flex-col gap-[12px] items-center justify-center px-[24px] py-[16px] w-full">
-        <p className="font-['Simplon Norm','Inter',sans-serif] text-[12px] text-[#161716] tracking-[0.24px] w-full">
-          <span className="font-['Simplon Norm','Inter',sans-serif] font-medium">Reduce and reuse</span>
+        <p className="font-['Simplon Norm',sans-serif] text-[12px] text-[#161716] tracking-[0.24px] w-full">
+          <span className="font-['Simplon Norm',sans-serif] font-medium">Reduce and reuse</span>
           <span>{` — Only your first subscription order includes pumps/droppers to reduce waste.`}</span>
         </p>
         <div className="flex gap-[8px] items-center w-full">
@@ -224,7 +224,7 @@ export default function Checkout() {
               )}
             </svg>
           </button>
-          <p className="font-['Simplon Norm','Inter',sans-serif] text-[10px] text-[#161716] tracking-[0.2px] flex-1">
+          <p className="font-['Simplon Norm',sans-serif] text-[10px] text-[#161716] tracking-[0.2px] flex-1">
             Check this box if you need pumps/droppers added to your future subscription orders.
           </p>
         </div>
@@ -243,8 +243,8 @@ export default function Checkout() {
           <div className="bg-white h-[56px] w-full">
             <div className="flex items-center px-[16px] py-[8px] h-full">
               <div className="flex flex-col gap-[2px] flex-1">
-                <p className="font-['Simplon Norm','Inter',sans-serif] text-[12px] text-[#161716] tracking-[0.24px]">First name*</p>
-                <p className="font-['Simplon Norm','Inter',sans-serif] text-[16px] text-[#6c6c6c] tracking-[0.32px]">Maggie</p>
+                <p className="font-['Simplon Norm',sans-serif] text-[12px] text-[#161716] tracking-[0.24px]">First name*</p>
+                <p className="font-['Simplon Norm',sans-serif] text-[16px] text-[#6c6c6c] tracking-[0.32px]">Maggie</p>
               </div>
             </div>
           </div>
@@ -253,8 +253,8 @@ export default function Checkout() {
           <div className="bg-white h-[56px] w-full">
             <div className="flex items-center px-[16px] py-[8px] h-full">
               <div className="flex flex-col gap-[2px] flex-1">
-                <p className="font-['Simplon Norm','Inter',sans-serif] text-[12px] text-[#161716] tracking-[0.24px]">Last name*</p>
-                <p className="font-['Simplon Norm','Inter',sans-serif] text-[16px] text-[#6c6c6c] tracking-[0.32px]">Michaux</p>
+                <p className="font-['Simplon Norm',sans-serif] text-[12px] text-[#161716] tracking-[0.24px]">Last name*</p>
+                <p className="font-['Simplon Norm',sans-serif] text-[16px] text-[#6c6c6c] tracking-[0.32px]">Michaux</p>
               </div>
             </div>
           </div>
@@ -263,8 +263,8 @@ export default function Checkout() {
           <div className="bg-white h-[56px] w-full">
             <div className="flex items-center px-[16px] py-[8px] h-full">
               <div className="flex flex-col gap-[2px] flex-1">
-                <p className="font-['Simplon Norm','Inter',sans-serif] text-[12px] text-[#161716] tracking-[0.24px]">Email*</p>
-                <p className="font-['Simplon Norm','Inter',sans-serif] text-[16px] text-[#6c6c6c] tracking-[0.32px]">maggiemich@gmail.com</p>
+                <p className="font-['Simplon Norm',sans-serif] text-[12px] text-[#161716] tracking-[0.24px]">Email*</p>
+                <p className="font-['Simplon Norm',sans-serif] text-[16px] text-[#6c6c6c] tracking-[0.32px]">maggiemich@gmail.com</p>
               </div>
             </div>
           </div>
@@ -273,7 +273,7 @@ export default function Checkout() {
           <div className="bg-white h-[56px] w-full border border-[#eaeaea] shadow-[2px_2px_3px_0px_#eaeaea]">
             <div className="flex items-center px-[16px] py-[8px] h-full">
               <div className="flex flex-col gap-[2px] flex-1 relative">
-                <p className="font-['Simplon Norm','Inter',sans-serif] text-[16px] text-[#6c6c6c] tracking-[0.32px]">Phone numer*</p>
+                <p className="font-['Simplon Norm',sans-serif] text-[16px] text-[#6c6c6c] tracking-[0.32px]">Phone numer*</p>
                 <div className="absolute h-[17.894px] right-0 top-[3px] w-[29px]">
                   <div
                     className="absolute inset-[-50.3%_-82.05%_-56.48%_-58.62%] mask-alpha mask-intersect mask-no-clip mask-no-repeat mask-position-[17px_9px] mask-size-[29px_17.894px]"
@@ -289,7 +289,7 @@ export default function Checkout() {
 
         {/* Legal text */}
         <div className="flex flex-col gap-[12px] w-full">
-          <p className="font-['Simplon Norm','Inter',sans-serif] text-[12px] text-[#6c6c6c] tracking-[0.24px] leading-[1.5]">
+          <p className="font-['Simplon Norm',sans-serif] text-[12px] text-[#6c6c6c] tracking-[0.24px] leading-[1.5]">
             <span>{`By checking the box(es) below and entering your phone number above, you consent to receive recurring account-related text messages (such as order and shipping confirmation, or error alerts) and/or marketing text messages (such as ads, promotions, and special offers) from Prose from time to time at the number provided, including messages sent using an automatic telephone dialing system. You further agree to our `}</span>
             <span className="underline">Terms of Use</span>
             <span>{`. Consent is not a condition of any purchase. You can opt-out at any time by replying STOP to any one of our messages or by logging into your Prose account and visiting your communication settings in your `}</span>
@@ -312,7 +312,7 @@ export default function Checkout() {
                   </svg>
                 )}
               </div>
-              <p className="font-['Simplon Norm','Inter',sans-serif] text-[12px] text-[#161716] tracking-[0.24px] text-left">
+              <p className="font-['Simplon Norm',sans-serif] text-[12px] text-[#161716] tracking-[0.24px] text-left">
                 Text me with order updates
               </p>
             </button>
@@ -328,7 +328,7 @@ export default function Checkout() {
                   </svg>
                 )}
               </div>
-              <p className="font-['Simplon Norm','Inter',sans-serif] text-[12px] text-[#161716] tracking-[0.24px] text-left">
+              <p className="font-['Simplon Norm',sans-serif] text-[12px] text-[#161716] tracking-[0.24px] text-left">
                 Text me with news and offers
               </p>
             </button>
@@ -339,7 +339,7 @@ export default function Checkout() {
       {/* Continue to Shipping CTA */}
       <div className="px-[24px] pb-[24px] w-full">
         <button className="bg-[#4d523c] h-[48px] w-full flex items-center justify-center cursor-pointer">
-          <p className="font-['Simplon_Mono','JetBrains_Mono',monospace] font-medium text-[12px] text-white tracking-[0.96px] uppercase">
+          <p className="font-['Simplon_Mono',monospace] font-medium text-[12px] text-white tracking-[0.96px] uppercase">
             continue to shipping
           </p>
         </button>

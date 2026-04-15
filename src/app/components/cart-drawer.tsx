@@ -176,16 +176,16 @@ export default function CartDrawer({
                 <>
                   {/* Empty State */}
                   <div className="flex flex-col items-center px-[24px] pt-[48px] pb-[32px] w-full border-b border-[#eaeaea]">
-                    <h2 className="font-['Saol_Text',serif] text-[32px] text-[#323429] text-center leading-[1.15] tracking-[-0.5px]">
+                    <h2 className="font-['Saol_Text',serif] font-light text-[32px] text-[#323429] text-center leading-[1.1] tracking-[-0.96px]">
                       Your custom blends<br />are missing
                     </h2>
                     <div className="h-px w-[60px] bg-[#C5765A] mt-[20px] mb-[20px]" />
                     <div className="bg-[#ecff92] px-[16px] py-[8px] rounded-[4px] mb-[16px]">
-                      <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[12px] text-[#323429] tracking-[0.96px] uppercase">
+                      <p className="font-['Simplon_Mono',monospace] font-medium text-[12px] text-[#323429] tracking-[0.96px] uppercase">
                         60% off + free shipping
                       </p>
                     </div>
-                    <p className="font-['Simplon_Norm','Inter',sans-serif] text-[14px] text-[#6c6c6c] text-center tracking-[0.28px] leading-[1.5]">
+                    <p className="font-['Simplon_Norm',sans-serif] text-[14px] text-[#6c6c6c] text-center tracking-[0.28px] leading-[1.5]">
                       Made just for you.<br />
                       Get 60% off + free shipping when you subscribe.
                     </p>
@@ -193,7 +193,7 @@ export default function CartDrawer({
                       onClick={() => { onClose(); navigate('/routine'); }}
                       className="mt-[20px] cursor-pointer"
                     >
-                      <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[12px] text-[#323429] tracking-[0.96px] uppercase border-b-[2px] border-[#C5765A] pb-[2px]">
+                      <p className="font-['Simplon_Mono',monospace] font-medium text-[12px] text-[#323429] tracking-[0.96px] uppercase border-b-[2px] border-[#C5765A] pb-[2px]">
                         Shop your routine
                       </p>
                     </button>
@@ -211,7 +211,7 @@ export default function CartDrawer({
                         {/* Dark banner with progress dots */}
                         <div className="bg-[#4d523c] h-[40px] w-full flex items-center justify-center gap-[8px] px-[16px]">
                           <p className="font-['Simplon_Norm',sans-serif] font-normal text-[12px] text-white tracking-[0.24px] leading-[1.2] whitespace-nowrap">
-                            Subscribe to 1 more item to unlock the gift
+                            Subscribe to 1 more item to unlock your gift
                           </p>
                           <div className="flex gap-[4px] items-center shrink-0">
                             {[1, 2, 3].map((step) => (
@@ -239,14 +239,14 @@ export default function CartDrawer({
                             </div>
                           </div>
                           <p className="flex-1 font-['Simplon_Norm',sans-serif] italic text-[10px] text-[#6c6c6c] tracking-[0.2px] leading-[1.5]">
-                            FREE travel-friendly toiletry bag — 100% recycled cotton ($30 value).
+                            FREE travel-friendly toiletry bag — crafted in 100% recycled cotton canvas ($30 value).
                           </p>
                         </div>
                       </div>
                     ) : (
                       <div className="bg-[#ecff92] flex items-center justify-center overflow-clip h-[40px] w-full">
                         <p className="font-['Simplon_Norm',sans-serif] font-medium text-[12px] text-[#161716] text-center tracking-[0.24px] leading-[1.2]">
-                          We've added your free gift to cart!
+                          You unlocked your free gift!
                         </p>
                       </div>
                     )}
@@ -269,7 +269,7 @@ export default function CartDrawer({
                           variant="gift"
                           image={imgGwp}
                           name="Toiletry Bag"
-                          subtitle="Your travel-friendly toiletry bag — in 100% recycled cotton canvas ($30 value)."
+                          subtitle="FREE travel-friendly toiletry bag — crafted in 100% recycled cotton canvas ($30 value)."
                           originalPrice={30}
                         />
                       )}

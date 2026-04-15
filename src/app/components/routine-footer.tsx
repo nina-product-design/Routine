@@ -92,7 +92,7 @@ export default function RoutineFooter({ cartItems, onContinueToCart, onRemoveIte
                   <div className="bg-[#f9f7f2] flex flex-col items-center overflow-clip mb-[12px] -mx-[24px]">
                     <div className="bg-[#4d523c] h-[40px] w-full flex items-center justify-center gap-[8px] px-[16px]">
                       <p className="font-['Simplon_Norm',sans-serif] font-normal text-[12px] text-white tracking-[0.24px] leading-[1.2] whitespace-nowrap">
-                        Subscribe to 1 more item to unlock the gift
+                        Subscribe to 1 more item to unlock your gift
                       </p>
                       <div className="flex gap-[4px] items-center shrink-0">
                         {[1, 2, 3].map((step) => (
@@ -119,7 +119,7 @@ export default function RoutineFooter({ cartItems, onContinueToCart, onRemoveIte
                         </div>
                       </div>
                       <p className="flex-1 font-['Simplon_Norm',sans-serif] italic text-[10px] text-[#6c6c6c] tracking-[0.2px] leading-[1.5]">
-                        FREE travel-friendly toiletry bag — 100% recycled cotton ($30 value).
+                        FREE travel-friendly toiletry bag — crafted in 100% recycled cotton canvas ($30 value).
                       </p>
                     </div>
                   </div>
@@ -127,7 +127,7 @@ export default function RoutineFooter({ cartItems, onContinueToCart, onRemoveIte
                   // State 2: Eligible - compact green banner
                   <div className="bg-[#ecff92] flex items-center justify-center overflow-clip rounded-[4px] h-[40px] mb-[12px]">
                     <p className="font-['Simplon_Norm',sans-serif] font-medium text-[12px] text-[#161716] text-center tracking-[0.24px] leading-[1.2]">
-                      We've added your free gift to cart!
+                      You unlocked your free gift!
                     </p>
                   </div>
                 )}
@@ -138,7 +138,7 @@ export default function RoutineFooter({ cartItems, onContinueToCart, onRemoveIte
                 
                 {cartItems.length === 0 ? (
                   <div className="flex flex-col items-center justify-center py-[24px] gap-[8px]">
-                    <p className="font-['Saol Text',serif] italic text-[16px] text-[#6c6c6c] tracking-[0.32px] leading-[1.5]">
+                    <p className="font-['Saol Text',serif] font-light italic text-[16px] text-[#6c6c6c] tracking-[-0.48px] leading-[1.2]">
                       Your cart is empty
                     </p>
                     <p className="font-['Simplon_Norm',sans-serif] text-[12px] text-[#6c6c6c] tracking-[0.24px] leading-[1.5]">

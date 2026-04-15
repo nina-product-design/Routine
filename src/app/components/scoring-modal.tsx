@@ -82,10 +82,10 @@ function ScoreCard({ concern }: ScoreCardProps) {
       <div className="p-[20px] flex flex-col">
         {/* Header: label + severity */}
         <div className="flex items-center justify-between">
-          <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[13px] text-[#323429] tracking-[1px] uppercase">
+          <p className="font-['Simplon_Mono',monospace] font-medium text-[12px] text-[#323429] tracking-[0.96px] uppercase">
             {concern.label}
           </p>
-          <p className="font-['Simplon_Norm','Inter',sans-serif] text-[13px] text-[#6c6c6c] tracking-[0.26px]">
+          <p className="font-['Simplon_Norm',sans-serif] text-[12px] text-[#6c6c6c] tracking-[0.24px]">
             {concern.severityLabel}
           </p>
         </div>
@@ -100,17 +100,17 @@ function ScoreCard({ concern }: ScoreCardProps) {
 
         {/* Based on */}
         <div className="flex flex-col gap-[12px] pb-[16px] border-b border-[#E2D9C2]">
-          <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[11px] text-[#323429] tracking-[0.88px] uppercase leading-[1.2]">
+          <p className="font-['Simplon_Mono',monospace] font-medium text-[12px] text-[#323429] tracking-[0.96px] uppercase leading-[1.2]">
             Based on:
           </p>
           {concern.basedOn.map((factor, i) => (
             <div key={i} className="flex items-center justify-between">
-              <p className="font-['Simplon_Norm','Inter',sans-serif] text-[13px] text-[#323429] tracking-[0.26px]">
+              <p className="font-['Simplon_Norm',sans-serif] text-[12px] text-[#323429] tracking-[0.24px]">
                 {factor.label}
               </p>
               <div className="flex items-center gap-[6px]">
                 <BasedOnIcon icon={factor.icon} />
-                <p className="font-['Simplon_Norm','Inter',sans-serif] text-[13px] text-[#6c6c6c] tracking-[0.26px]">
+                <p className="font-['Simplon_Norm',sans-serif] text-[12px] text-[#6c6c6c] tracking-[0.24px]">
                   {factor.value}
                 </p>
               </div>
@@ -120,10 +120,10 @@ function ScoreCard({ concern }: ScoreCardProps) {
 
         {/* Description */}
         <div className="pt-[16px]">
-          <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[11px] text-[#323429] tracking-[0.88px] uppercase leading-[1.2] pb-[8px]">
+          <p className="font-['Simplon_Mono',monospace] font-medium text-[12px] text-[#323429] tracking-[0.96px] uppercase leading-[1.2] pb-[8px]">
             What we will address:
           </p>
-          <p className="font-['Simplon_Norm','Inter',sans-serif] text-[14px] text-[#323429] tracking-[0.28px] leading-[1.6]">
+          <p className="font-['Simplon_Norm',sans-serif] text-[14px] text-[#323429] tracking-[0.28px] leading-[1.6]">
             {concern.description}
           </p>
         </div>
@@ -229,7 +229,7 @@ export default function ScoringModal({
 
             {/* Title */}
             <div className="px-[24px] pb-[16px]">
-              <p className="font-['Saol_Text',serif] text-[22px] text-[#161716] tracking-[-0.5px] leading-[1.2]">
+              <p className="font-['Saol_Text',serif] font-light text-[24px] text-[#161716] tracking-[-0.72px] leading-[1.1]">
                 Your {productType} addresses:
               </p>
             </div>
@@ -240,7 +240,7 @@ export default function ScoringModal({
                 <button
                   key={concern}
                   onClick={() => setActiveTab(i)}
-                  className={`px-[12px] pb-[10px] font-['Simplon_Mono','JetBrains_Mono',monospace] font-medium text-[11px] tracking-[0.88px] uppercase leading-[1.2] cursor-pointer transition-colors ${
+                  className={`px-[12px] pb-[10px] font-['Simplon_Mono',monospace] font-medium text-[12px] tracking-[0.96px] uppercase leading-[1.2] cursor-pointer transition-colors ${
                     activeTab === i
                       ? "text-[#161716] border-b-[2px] border-[#161716]"
                       : "text-[#6c6c6c] border-b-[2px] border-transparent"

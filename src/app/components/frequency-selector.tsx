@@ -50,7 +50,7 @@ export function FrequencySelector({
     <div className="w-[295px] rounded-[10px] border border-[#e2d9c2] relative">
       {/* "Added to cart" label - positioned on top of border */}
       <div className="absolute top-[-8px] left-[8px] bg-white px-[4px] z-10">
-        <p className="font-['Simplon Norm','Inter',sans-serif] font-medium text-[10px] text-[#4d523c] leading-[1.5]">
+        <p className="font-['Simplon Norm',sans-serif] font-medium text-[10px] text-[#4d523c] leading-[1.5]">
           Added to cart
         </p>
       </div>
@@ -66,19 +66,19 @@ export function FrequencySelector({
         <div className="flex gap-[12px] items-center w-full">
           {/* Product Info */}
           <div className="flex flex-col gap-[4px] items-start flex-1 text-left">
-            <p className="font-['Simplon Norm','Inter',sans-serif] text-[12px] text-[#4d523c] tracking-[0.24px] leading-[1.5]">
+            <p className="font-['Simplon Norm',sans-serif] text-[12px] text-[#4d523c] tracking-[0.24px] leading-[1.5]">
               {selectedOption.label}
             </p>
             {/* Show sublabel for subscription options */}
             {isSubscription && (
-              <p className="font-['Simplon Norm','Inter',sans-serif] font-normal text-[10px] text-[#4d523c] tracking-[0.2px] leading-[1.5]">
+              <p className="font-['Simplon Norm',sans-serif] font-normal text-[10px] text-[#4d523c] tracking-[0.2px] leading-[1.5]">
                 60% off first subscription order
               </p>
             )}
             {/* One-time purchase incentive message */}
             {selectedOption.value === "buy-once" && isSubscription === false && interactive && (
               <div className="bg-[#ecff92] px-[6px] py-[2px] rounded-[4px]">
-                <p className="font-['Simplon Norm','Inter',sans-serif] text-[10px] text-[#323429] tracking-[0.2px] leading-[1.5]">
+                <p className="font-['Simplon Norm',sans-serif] text-[10px] text-[#323429] tracking-[0.2px] leading-[1.5]">
                   Get 60% when you subscribe
                 </p>
               </div>
@@ -90,16 +90,16 @@ export function FrequencySelector({
             {isSubscription ? (
               <>
                 <div className="bg-[#ecff92] px-[4px] rounded-[4px] flex items-center justify-center">
-                  <p className="font-['Simplon Norm','Inter',sans-serif] font-medium text-[14px] text-[#161716] leading-[1.5]">
+                  <p className="font-['Simplon Norm',sans-serif] font-medium text-[14px] text-[#161716] leading-[1.5]">
                     ${selectedOption.price.toFixed(2)}
                   </p>
                 </div>
-                <p className="font-['Simplon Norm','Inter',sans-serif] text-[10px] text-[#6c6c6c] line-through tracking-[0.2px] leading-[1.5]">
+                <p className="font-['Simplon Norm',sans-serif] text-[10px] text-[#6c6c6c] line-through tracking-[0.2px] leading-[1.5]">
                   ${selectedOption.originalPrice.toFixed(2)}
                 </p>
               </>
             ) : (
-              <p className="font-['Simplon Norm','Inter',sans-serif] font-medium text-[14px] text-[#161716] leading-[1.5]">
+              <p className="font-['Simplon Norm',sans-serif] font-medium text-[14px] text-[#161716] leading-[1.5]">
                 ${selectedOption.price.toFixed(2)}
               </p>
             )}
@@ -161,7 +161,7 @@ export function FrequencySelector({
 
                     {/* Option info */}
                     <div className="flex flex-col gap-[2px] items-start flex-1 text-left">
-                      <p className="font-['Simplon Norm','Inter',sans-serif] text-[12px] text-[#4d523c] tracking-[0.24px] leading-[1.5]">
+                      <p className="font-['Simplon Norm',sans-serif] text-[12px] text-[#4d523c] tracking-[0.24px] leading-[1.5]">
                         {option.label}
                       </p>
                     </div>
@@ -170,15 +170,15 @@ export function FrequencySelector({
                     <div className="flex flex-col gap-[2px] items-end shrink-0">
                       {isOptionSubscription ? (
                         <>
-                          <p className="font-['Simplon Norm','Inter',sans-serif] font-medium text-[14px] text-[#161716] leading-[1.5]">
+                          <p className="font-['Simplon Norm',sans-serif] font-medium text-[14px] text-[#161716] leading-[1.5]">
                             ${option.price.toFixed(2)}
                           </p>
-                          <p className="font-['Simplon Norm','Inter',sans-serif] text-[10px] text-[#6c6c6c] line-through tracking-[0.2px] leading-[1.5]">
+                          <p className="font-['Simplon Norm',sans-serif] text-[10px] text-[#6c6c6c] line-through tracking-[0.2px] leading-[1.5]">
                             ${option.originalPrice.toFixed(2)}
                           </p>
                         </>
                       ) : (
-                        <p className="font-['Simplon Norm','Inter',sans-serif] font-medium text-[14px] text-[#161716] leading-[1.5]">
+                        <p className="font-['Simplon Norm',sans-serif] font-medium text-[14px] text-[#161716] leading-[1.5]">
                           ${option.price.toFixed(2)}
                         </p>
                       )}

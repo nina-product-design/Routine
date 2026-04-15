@@ -24,7 +24,7 @@ function AddedToCart({ className, type = "Every 4 weeks" }: AddedToCartProps) {
           {isEvery4Weeks && <p className="min-w-full relative shrink-0 text-[10px] tracking-[0.2px] w-[min-content]">60% off first order</p>}
           {isBuyOnce && (
             <div className="bg-[#ecff92] content-stretch flex items-center justify-center px-[4px] relative rounded-[4px] shrink-0">
-              <p className="font-['Simplon Norm','Inter',sans-serif] leading-[1.5] not-italic relative shrink-0 text-[#6c6c6c] text-[10px] tracking-[0.2px] whitespace-nowrap">Get 60% when you subscribe</p>
+              <p className="font-['Simplon Norm',sans-serif] leading-[1.5] not-italic relative shrink-0 text-[#6c6c6c] text-[10px] tracking-[0.2px] whitespace-nowrap">Get 60% when you subscribe</p>
             </div>
           )}
         </div>
@@ -32,7 +32,7 @@ function AddedToCart({ className, type = "Every 4 weeks" }: AddedToCartProps) {
           <div className={`content-stretch flex items-center justify-center px-[4px] relative rounded-[4px] shrink-0 ${isBuyOnceOrAccessory ? "" : "bg-[#ecff92]"}`} data-name="highlight">
             <p className="font-['Simplon_Norm:Medium',sans-serif] leading-[1.5] not-italic relative shrink-0 text-[#161716] text-[14px] text-right whitespace-nowrap">$14.00</p>
           </div>
-          {isEvery4WeeksOrBuyOnce && <div className={`content-stretch flex items-center justify-center px-[4px] shrink-0 ${isBuyOnce ? "" : "relative"}`}>{isEvery4Weeks && <p className="[text-decoration-skip-ink:none] decoration-solid font-['Simplon Norm','Inter',sans-serif] leading-[1.5] line-through not-italic relative shrink-0 text-[#6c6c6c] text-[10px] text-right tracking-[0.2px] whitespace-nowrap">$35.00</p>}</div>}
+          {isEvery4WeeksOrBuyOnce && <div className={`content-stretch flex items-center justify-center px-[4px] shrink-0 ${isBuyOnce ? "" : "relative"}`}>{isEvery4Weeks && <p className="[text-decoration-skip-ink:none] decoration-solid font-['Simplon Norm',sans-serif] leading-[1.5] line-through not-italic relative shrink-0 text-[#6c6c6c] text-[10px] text-right tracking-[0.2px] whitespace-nowrap">$35.00</p>}</div>}
         </div>
         {isEvery4WeeksOrBuyOnce && (
           <>
@@ -76,7 +76,7 @@ function GoalPill({ className, text = "Improved Hydration" }: GoalPillProps) {
   return (
     <div className={className || "content-stretch flex flex-col items-start px-[12px] py-[4px] relative rounded-[20px]"} data-name="goal pill">
       <div aria-hidden="true" className="absolute border border-[#e2d9c2] border-solid inset-0 pointer-events-none rounded-[20px]" />
-      <p className="font-['Simplon Norm','Inter',sans-serif] leading-[1.5] not-italic relative shrink-0 text-[#323429] text-[12px] tracking-[0.24px] whitespace-nowrap">{text}</p>
+      <p className="font-['Simplon Norm',sans-serif] leading-[1.5] not-italic relative shrink-0 text-[#323429] text-[12px] tracking-[0.24px] whitespace-nowrap">{text}</p>
     </div>
   );
 }
@@ -118,7 +118,7 @@ export default function RoutineSubCard({ className }: { className?: string }) {
           </div>
         </div>
         <div className="absolute backdrop-blur-[2px] bg-[rgba(255,255,255,0.5)] content-stretch flex items-center justify-center left-[8px] px-[12px] py-[4px] rounded-[20px] top-[8px]" data-name="reccomended tag">
-          <p className="font-['Simplon Norm','Inter',sans-serif] leading-[1.5] not-italic relative shrink-0 text-[#4d523c] text-[14px] tracking-[0.28px] whitespace-nowrap">Recommended</p>
+          <p className="font-['Simplon Norm',sans-serif] leading-[1.5] not-italic relative shrink-0 text-[#4d523c] text-[14px] tracking-[0.28px] whitespace-nowrap">Recommended</p>
         </div>
         <UiControlsCloseButton className="absolute left-[287px] size-[32px] top-[8px]" />
       </div>
@@ -126,14 +126,14 @@ export default function RoutineSubCard({ className }: { className?: string }) {
         <div className="content-stretch flex flex-col gap-[24px] items-start px-[16px] relative w-full">
           <div className="content-stretch flex flex-col gap-[8px] items-start not-italic relative shrink-0 text-[#4d523c] w-full" data-name="Product info">
             <p className="font-['Saol Text','Noto Serif',serif] leading-[1.1] min-w-full relative shrink-0 text-[32px] tracking-[-0.96px] w-[min-content]">Maggie’s Shampoo</p>
-            <p className="font-['Simplon Norm','Inter',sans-serif] leading-[1.5] min-w-full relative shrink-0 text-[14px] tracking-[0.28px] w-[min-content]">A gentle, sulfate-free cleanser that maintains the natural balance of your scalp, without color washout.</p>
-            <div className="content-stretch flex font-['Simplon Norm','Inter',sans-serif] gap-[24px] items-start leading-[1.5] relative shrink-0 text-[12px] tracking-[0.24px] whitespace-nowrap" data-name="size & link">
+            <p className="font-['Simplon Norm',sans-serif] leading-[1.5] min-w-full relative shrink-0 text-[14px] tracking-[0.28px] w-[min-content]">A gentle, sulfate-free cleanser that maintains the natural balance of your scalp, without color washout.</p>
+            <div className="content-stretch flex font-['Simplon Norm',sans-serif] gap-[24px] items-start leading-[1.5] relative shrink-0 text-[12px] tracking-[0.24px] whitespace-nowrap" data-name="size & link">
               <p className="relative shrink-0">8.5 fl oz</p>
               <p className="[text-decoration-skip-ink:none] decoration-solid relative shrink-0 underline">See full details</p>
             </div>
           </div>
           <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-full" data-name="Targeted goals">
-            <p className="font-['Simplon Mono','JetBrains Mono',monospace] leading-[14.4px] not-italic relative shrink-0 text-[#4d523c] text-[12px] tracking-[0.96px] uppercase whitespace-nowrap">YOUR TARGETED CONCERNS</p>
+            <p className="font-['Simplon Mono',monospace] leading-[14.4px] not-italic relative shrink-0 text-[#4d523c] text-[12px] tracking-[0.96px] uppercase whitespace-nowrap">YOUR TARGETED CONCERNS</p>
             <div className="content-start flex flex-wrap gap-[8px] items-start relative shrink-0 w-[271.133px]" data-name="goal pills">
               <GoalPill className="content-stretch flex flex-col items-start px-[12px] py-[4px] relative rounded-[20px] shrink-0" />
               <GoalPill className="content-stretch flex flex-col items-start px-[12px] py-[4px] relative rounded-[20px] shrink-0" text="Reduced Damage" />
@@ -141,7 +141,7 @@ export default function RoutineSubCard({ className }: { className?: string }) {
             </div>
           </div>
           <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-[279px]" data-name="ingrident list">
-            <p className="font-['Simplon Mono','JetBrains Mono',monospace] leading-[1.2] min-w-full not-italic relative shrink-0 text-[#4d523c] text-[12px] tracking-[0.96px] uppercase w-[min-content]">your KEY INGREDIENTS</p>
+            <p className="font-['Simplon Mono',monospace] leading-[1.2] min-w-full not-italic relative shrink-0 text-[#4d523c] text-[12px] tracking-[0.96px] uppercase w-[min-content]">your KEY INGREDIENTS</p>
             <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-[279px]" data-name="ingridents">
               <div className="content-stretch flex gap-[8px] items-center relative shrink-0 w-full">
                 <div className="h-[40px] relative shrink-0 w-[32px]" data-name="Prose-Ingredient-Fermented-Rice-Water">
@@ -149,7 +149,7 @@ export default function RoutineSubCard({ className }: { className?: string }) {
                 </div>
                 <div className="content-stretch flex flex-col items-start leading-[1.5] not-italic relative shrink-0 text-[#4d523c] text-[12px] w-[223px]">
                   <p className="font-['Simplon_Norm:Medium',sans-serif] relative shrink-0 w-full">Fermented Rice Water</p>
-                  <p className="font-['Simplon Norm','Inter',sans-serif] relative shrink-0 tracking-[0.24px] w-full">Tamed Frizz</p>
+                  <p className="font-['Simplon Norm',sans-serif] relative shrink-0 tracking-[0.24px] w-full">Tamed Frizz</p>
                 </div>
               </div>
               <div className="content-stretch flex gap-[8px] items-center relative shrink-0 w-full">
@@ -158,7 +158,7 @@ export default function RoutineSubCard({ className }: { className?: string }) {
                 </div>
                 <div className="content-stretch flex flex-col items-start leading-[1.5] not-italic relative shrink-0 text-[#4d523c] text-[12px] w-[223px]">
                   <p className="font-['Simplon_Norm:Medium',sans-serif] relative shrink-0 w-full">{`Oat Lipid & Sunflower Seed Extract`}</p>
-                  <p className="font-['Simplon Norm','Inter',sans-serif] relative shrink-0 tracking-[0.24px] w-full">Color Care</p>
+                  <p className="font-['Simplon Norm',sans-serif] relative shrink-0 tracking-[0.24px] w-full">Color Care</p>
                 </div>
               </div>
               <div className="content-stretch flex gap-[8px] items-center relative shrink-0 w-full">
@@ -167,7 +167,7 @@ export default function RoutineSubCard({ className }: { className?: string }) {
                 </div>
                 <div className="content-stretch flex flex-col items-start leading-[1.5] not-italic relative shrink-0 text-[#4d523c] text-[12px] w-[223px]">
                   <p className="font-['Simplon_Norm:Medium',sans-serif] relative shrink-0 w-full">{`Licorice & Panthenol`}</p>
-                  <p className="font-['Simplon Norm','Inter',sans-serif] relative shrink-0 tracking-[0.24px] w-full">Scalp Comfort</p>
+                  <p className="font-['Simplon Norm',sans-serif] relative shrink-0 tracking-[0.24px] w-full">Scalp Comfort</p>
                 </div>
               </div>
               <div className="content-stretch flex gap-[8px] items-center relative shrink-0 w-full">
@@ -176,7 +176,7 @@ export default function RoutineSubCard({ className }: { className?: string }) {
                 </div>
                 <div className="content-stretch flex flex-col items-start leading-[1.5] not-italic relative shrink-0 text-[#4d523c] text-[12px] w-[223px]">
                   <p className="font-['Simplon_Norm:Medium',sans-serif] relative shrink-0 w-full">Professional Polymer</p>
-                  <p className="font-['Simplon Norm','Inter',sans-serif] relative shrink-0 tracking-[0.24px] w-full">Curl Definition</p>
+                  <p className="font-['Simplon Norm',sans-serif] relative shrink-0 tracking-[0.24px] w-full">Curl Definition</p>
                 </div>
               </div>
             </div>
@@ -184,8 +184,8 @@ export default function RoutineSubCard({ className }: { className?: string }) {
           <div className="content-stretch flex items-start relative shrink-0 w-full">
             <div className="content-stretch flex flex-[1_0_0] flex-col items-start min-h-px min-w-px relative">
               <div className="content-stretch flex flex-col gap-[8px] items-start not-italic relative shrink-0 text-[#4d523c] text-[12px] w-full">
-                <p className="font-['Simplon Mono','JetBrains Mono',monospace] leading-[1.2] relative shrink-0 tracking-[0.96px] uppercase w-full">YOUR PREFERENCES</p>
-                <p className="font-['Simplon Norm','Inter',sans-serif] leading-[1.5] relative shrink-0 tracking-[0.24px] w-full">Fragrance free.</p>
+                <p className="font-['Simplon Mono',monospace] leading-[1.2] relative shrink-0 tracking-[0.96px] uppercase w-full">YOUR PREFERENCES</p>
+                <p className="font-['Simplon Norm',sans-serif] leading-[1.5] relative shrink-0 tracking-[0.24px] w-full">Fragrance free.</p>
               </div>
             </div>
           </div>

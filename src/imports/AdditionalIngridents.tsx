@@ -64,7 +64,7 @@ export default function AdditionalIngridents() {
           onClick={() => setIsOpen(!isOpen)}
           className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex items-center justify-between relative w-full text-left"
         >
-          <p className="font-['JetBrains Mono',monospace] font-normal leading-[14.4px] tracking-[0.96px] uppercase text-[#323429] text-[14px]">
+          <p className="font-['Simplon Mono',monospace] font-normal leading-[14.4px] tracking-[0.96px] uppercase text-[#323429] text-[14px]">
             Additional ingredients
           </p>
           <Icon isOpen={isOpen} />

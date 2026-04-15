@@ -205,11 +205,11 @@ function HowToUseSection({ productTypeLabel, productId }: { productTypeLabel: st
 
 export default function QuickViewModal({ isOpen, onClose, product }: QuickViewModalProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [dragStart, setDragStart] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
   const [allIngredientsOpen, setAllIngredientsOpen] = useState(false);
   const reviewsRef = useRef<HTMLDivElement>(null);
   const modalScrollRef = useRef<HTMLDivElement>(null);
+  const pointerStart = useRef<{ x: number; t: number } | null>(null);
 
   const scrollToReviews = () => {
     if (reviewsRef.current && modalScrollRef.current) {
@@ -421,7 +421,7 @@ export default function QuickViewModal({ isOpen, onClose, product }: QuickViewMo
   }
   
   // Use shampoo's full carousel for shampoo, otherwise just the product's carousel image
-  const carouselImages = product.id === "custom-shampoo"
+  const carouselImages: (string | null)[] = product.id === "custom-shampoo"
     ? [
         imgImageProseCustomShampooBottle,
         imgImageProseCustomShampooWithBubbles,
@@ -429,42 +429,44 @@ export default function QuickViewModal({ isOpen, onClose, product }: QuickViewMo
         imgImageWomanWashingHairWithShampoo,
         imgImageProseCustomersWithTheirCustomShampoo,
       ]
-    : [product.carouselImage];
+    : (() => {
+        const imgs: (string | null)[] = [product.carouselImage];
+        while (imgs.length < 5) imgs.push(null);
+        return imgs;
+      })();
 
   const totalSlides = carouselImages.length;
 
-  const handleDragEnd = (_event: any, info: any) => {
-    const offset = info.offset.x;
-    const velocity = info.velocity.x;
-    
-    // Determine if swipe was significant enough
-    if (Math.abs(velocity) > 500 || Math.abs(offset) > 50) {
-      if (offset > 0 && currentSlide > 0) {
-        // Swiped right, go to previous slide
+  const handlePointerDown = (e: React.PointerEvent) => {
+    pointerStart.current = { x: e.clientX, t: Date.now() };
+  };
+
+  const handlePointerUp = (e: React.PointerEvent) => {
+    if (!pointerStart.current) return;
+    const dx = e.clientX - pointerStart.current.x;
+    const dt = Date.now() - pointerStart.current.t;
+    const velocity = Math.abs(dx) / (dt || 1) * 1000;
+    pointerStart.current = null;
+
+    if (velocity > 300 || Math.abs(dx) > 40) {
+      if (dx > 0 && currentSlide > 0) {
         setCurrentSlide(currentSlide - 1);
-      } else if (offset < 0 && currentSlide < totalSlides - 1) {
-        // Swiped left, go to next slide
+      } else if (dx < 0 && currentSlide < totalSlides - 1) {
         setCurrentSlide(currentSlide + 1);
       }
     }
   };
 
-  // Handle trackpad/wheel swipes
   const handleWheel = (e: React.WheelEvent) => {
-    // Only handle horizontal swipes (trackpad gestures)
     if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 10) {
       e.preventDefault();
-      
       if (isScrolling) return;
-      
       setIsScrolling(true);
       setTimeout(() => setIsScrolling(false), 300);
 
       if (e.deltaX > 0 && currentSlide < totalSlides - 1) {
-        // Swiped left (next slide)
         setCurrentSlide(currentSlide + 1);
       } else if (e.deltaX < 0 && currentSlide > 0) {
-        // Swiped right (previous slide)
         setCurrentSlide(currentSlide - 1);
       }
     }
@@ -500,37 +502,47 @@ export default function QuickViewModal({ isOpen, onClose, product }: QuickViewMo
               {/* Close Button */}
               <button
                 onClick={onClose}
-                className="sticky top-[32px] float-right mr-[24px] z-10 bg-white/80 backdrop-blur-sm rounded-full p-[8px] hover:bg-white transition-colors"
+                className="absolute top-[16px] right-[16px] z-10 bg-white/80 backdrop-blur-sm rounded-full p-[8px] hover:bg-white transition-colors"
                 aria-label="Close"
               >
                 <X className="size-[20px] text-[#323429]" />
               </button>
 
               {/* Carousel */}
-              <div className="relative w-full pt-[24px] pb-[12px]">
-                <div className="relative w-full h-[381px] overflow-hidden touch-pan-y">
+              <div className="relative w-full pt-[16px] pb-[24px] flex flex-col gap-[12px]">
+                <div
+                  className="relative w-full h-[381px] overflow-hidden cursor-grab active:cursor-grabbing"
+                  onPointerDown={handlePointerDown}
+                  onPointerUp={handlePointerUp}
+                  onWheel={handleWheel}
+                >
                   <motion.div
-                    className="flex h-full cursor-grab active:cursor-grabbing touch-none"
-                    animate={{ x: totalSlides > 1 ? `${24 - currentSlide * 317}px` : `${-currentSlide * 100}%` }}
+                    className="flex gap-[8px] h-full"
+                    animate={{ x: 19 - 313 - currentSlide * 313 }}
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                    drag="x"
-                    dragElastic={0.2}
-                    dragMomentum={false}
-                    onDragEnd={handleDragEnd}
-                    onWheel={handleWheel}
                   >
+                    {/* Clone of last slide — peeks on the left of the first slide */}
+                    <div className="shrink-0 w-[305px] h-[381px] rounded-[10px] overflow-hidden pointer-events-none">
+                      {carouselImages[carouselImages.length - 1] ? (
+                        <img src={carouselImages[carouselImages.length - 1]!} alt="" className="size-full object-cover" />
+                      ) : (
+                        <div className="size-full bg-[#f1ece0]" />
+                      )}
+                    </div>
                     {carouselImages.map((img, idx) => (
-                      <div key={idx} className={totalSlides > 1 ? "shrink-0 h-full" : "min-w-full h-full flex items-center justify-center px-[27.5px]"} style={totalSlides > 1 ? { width: 305, marginRight: 12 } : undefined}>
-                        <div className="w-[305px] h-[381px] rounded-[10px] overflow-hidden pointer-events-none">
+                      <div key={idx} className="shrink-0 w-[305px] h-[381px] rounded-[10px] overflow-hidden pointer-events-none">
+                        {img ? (
                           <img src={img} alt={`${product.routineName} ${idx + 1}`} className="size-full object-cover" />
-                        </div>
+                        ) : (
+                          <div className="size-full bg-[#f1ece0]" />
+                        )}
                       </div>
                     ))}
                   </motion.div>
                 </div>
 
                 {/* Dot Indicators */}
-                <div className="flex gap-[8px] items-center justify-center mt-[12px]">
+                <div className="flex gap-[8px] items-center justify-center">
                   {totalSlides > 1 && Array.from({ length: totalSlides }).map((_, idx) => (
                     <button
                       key={idx}
@@ -544,7 +556,7 @@ export default function QuickViewModal({ isOpen, onClose, product }: QuickViewMo
               </div>
 
               {/* Product Details */}
-              <div className="px-[24px] flex flex-col gap-[24px]">
+              <div className="px-[16px] flex flex-col gap-[24px]">
                 {/* Header Section */}
                 <div className="flex flex-col gap-[24px]">
                   <div className="flex flex-col gap-[16px]">
@@ -573,8 +585,8 @@ export default function QuickViewModal({ isOpen, onClose, product }: QuickViewMo
                 {/* Targeted Concerns */}
                 {product.concerns && product.concerns.length > 0 && (
                   <div className="flex flex-col gap-[8px]">
-                    <p className="font-['Simplon_Mono','JetBrains_Mono',monospace] font-medium text-[12px] leading-[14.4px] tracking-[0.96px] uppercase text-[#4d523c]">
-                      This product targets
+                    <p className="font-['Simplon_Mono',monospace] font-medium text-[12px] leading-[14.4px] tracking-[0.96px] uppercase text-[#4d523c]">
+                      FORMULATED TO TARGET
                     </p>
                     <div className="flex gap-[8px] flex-wrap">
                       {product.concerns.map((concern, idx) => (
@@ -724,11 +736,11 @@ export default function QuickViewModal({ isOpen, onClose, product }: QuickViewMo
 
                 {/* Reviews Carousel */}
                 {productReviews.length > 0 && (
-                  <div ref={reviewsRef} className="flex flex-col gap-[16px] -mx-[24px]">
-                    <p className="font-['Simplon_Mono',monospace] text-[12px] leading-[14.4px] tracking-[0.96px] uppercase text-[#323429] px-[24px]">
+                  <div ref={reviewsRef} className="flex flex-col gap-[16px] -mx-[16px]">
+                    <p className="font-['Simplon_Mono',monospace] text-[12px] leading-[14.4px] tracking-[0.96px] uppercase text-[#323429] px-[16px]">
                       WHAT PEOPLE ARE SAYING
                     </p>
-                    <div className="flex gap-[12px] overflow-x-auto px-[24px] pb-[4px] [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                    <div className="flex gap-[12px] overflow-x-auto px-[16px] pb-[4px] [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                       {productReviews.map((review, idx) => (
                         <ReviewCard key={idx} review={review} />
                       ))}
@@ -737,7 +749,7 @@ export default function QuickViewModal({ isOpen, onClose, product }: QuickViewMo
                 )}
 
                 {/* How to Use Section */}
-                <div className="flex flex-col -mx-[24px]">
+                <div className="flex flex-col -mx-[16px]">
                   {/* Video/Image */}
                   <div className="w-full aspect-[974/946]">
                     <img src={product.id === "custom-shampoo" ? imgVideo : product.carouselImage} alt="How to use" className="size-full object-cover" />

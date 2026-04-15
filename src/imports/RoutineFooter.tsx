@@ -70,7 +70,7 @@ function Content() {
           <div className="bg-[#323429] min-w-[327px] relative rounded-[60px] self-stretch shrink-0 w-[327px]" data-name="Buttons">
             <div className="flex flex-row items-center justify-center min-w-[inherit] size-full">
               <div className="content-stretch flex items-center justify-center min-w-[inherit] px-[32px] py-[14px] relative size-full">
-                <p className="flex-[1_0_0] font-['JetBrains Mono',monospace] font-medium leading-[1.2] min-h-px min-w-px not-italic relative text-[12px] text-center text-white tracking-[0.96px] uppercase">continue to cart (4 items)</p>
+                <p className="flex-[1_0_0] font-['Simplon Mono',monospace] font-medium leading-[1.2] min-h-px min-w-px not-italic relative text-[12px] text-center text-white tracking-[0.96px] uppercase">continue to cart (4 items)</p>
               </div>
             </div>
           </div>

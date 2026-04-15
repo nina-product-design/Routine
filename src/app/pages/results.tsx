@@ -278,8 +278,8 @@ function BarChart({
     <div className="bg-white rounded-[14px] shadow-[0px_2px_12px_0px_rgba(0,0,0,0.06),0px_0.5px_2px_0px_rgba(0,0,0,0.04)] p-[20px] w-full flex flex-col gap-[16px]">
       {/* Low / High labels */}
       <div className="flex justify-between pl-[90px] mb-[-6px]">
-        <p className="font-['Simplon_Norm','Inter',sans-serif] text-[11px] text-[#a0a090] tracking-[0.22px]">Low</p>
-        <p className="font-['Simplon_Norm','Inter',sans-serif] text-[11px] text-[#a0a090] tracking-[0.22px] text-right">High</p>
+        <p className="font-['Simplon_Norm',sans-serif] text-[10px] text-[#a0a090] tracking-[0.2px]">Low</p>
+        <p className="font-['Simplon_Norm',sans-serif] text-[10px] text-[#a0a090] tracking-[0.2px] text-right">High</p>
       </div>
 
       {/* Bars */}
@@ -293,7 +293,7 @@ function BarChart({
               className="flex items-center gap-[12px] w-full cursor-pointer group"
             >
               <p
-                className="font-['Simplon_Mono','JetBrains Mono',monospace] text-[10px] tracking-[0.8px] uppercase w-[78px] text-right shrink-0 transition-colors"
+                className="font-['Simplon_Mono',monospace] text-[10px] tracking-[0.8px] uppercase w-[78px] text-right shrink-0 transition-colors"
                 style={{ color: "#323429", fontWeight: 500 }}
               >
                 {metric.label}
@@ -499,14 +499,14 @@ function DetailCarousel({
           <div className="snap-start shrink-0 w-[295px] flex self-stretch">
             <div className="bg-white rounded-[14px] shadow-[0px_2px_12px_0px_rgba(0,0,0,0.06),0px_0.5px_2px_0px_rgba(0,0,0,0.04)] p-[20px] w-full flex flex-col justify-start gap-[12px]">
               <div className="flex justify-between pl-[80px] mb-[-4px]">
-                <p className="font-['Simplon_Norm','Inter',sans-serif] text-[11px] text-[#a0a090] tracking-[0.22px]">Low</p>
-                <p className="font-['Simplon_Norm','Inter',sans-serif] text-[11px] text-[#a0a090] tracking-[0.22px] text-right">High</p>
+                <p className="font-['Simplon_Norm',sans-serif] text-[10px] text-[#a0a090] tracking-[0.2px]">Low</p>
+                <p className="font-['Simplon_Norm',sans-serif] text-[10px] text-[#a0a090] tracking-[0.2px] text-right">High</p>
               </div>
               <div className="h-[0.5px] bg-[#E2D9C2] ml-[80px]" />
               <div className="flex flex-col gap-[12px]">
                 {metrics.map((metric) => (
                   <div key={metric.key} className="flex items-center gap-[8px] w-full">
-                    <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[10px] text-[#323429] tracking-[0.72px] uppercase w-[72px] shrink-0">
+                    <p className="font-['Simplon_Mono',monospace] font-medium text-[10px] text-[#323429] tracking-[0.8px] uppercase w-[72px] shrink-0">
                       {metric.label}
                     </p>
                     <div className="flex-1 h-[12px] bg-[#f1ece0] rounded-full relative overflow-hidden">
@@ -519,8 +519,8 @@ function DetailCarousel({
                 ))}
               </div>
               <div className="border-t border-[#E2D9C2] pt-[14px] mt-[4px]">
-                <p className="font-['Simplon_Norm','Inter',sans-serif] text-[13px] text-[#323429] tracking-[0.26px] leading-[1.5]">
-                  Your consultation analyzed 85+ factors across damage, dryness, stressors, sensitivity, and oiliness to build a formula unique to your hair.
+                <p className="font-['Simplon_Norm',sans-serif] text-[12px] text-[#323429] tracking-[0.24px] leading-[1.5]">
+                  Your consultation analyzed 85+ factors — from hair damage to environmental stressors. Swipe to see how each one helps us personalize your formula.
                 </p>
               </div>
             </div>
@@ -533,28 +533,28 @@ function DetailCarousel({
             >
               <div className="p-[20px] flex flex-col">
                 <div className="flex items-center justify-between">
-                  <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[13px] text-[#323429] tracking-[1px] uppercase">
+                  <p className="font-['Simplon_Mono',monospace] font-medium text-[12px] text-[#323429] tracking-[0.96px] uppercase">
                     {metric.label}
                   </p>
-                  <p className="font-['Simplon_Norm','Inter',sans-serif] text-[13px] text-[#6c6c6c] tracking-[0.26px]">
+                  <p className="font-['Simplon_Norm',sans-serif] text-[12px] text-[#6c6c6c] tracking-[0.24px]">
                     {metric.severityLabel}
                   </p>
                 </div>
                 <div className="h-[6px] bg-[#e8e4db] rounded-full w-full overflow-hidden mt-[10px] mb-[16px]">
                   <div className="h-full rounded-full" style={{ width: `${metric.value * 100}%`, backgroundColor: metric.color }} />
                 </div>
-                <div className="flex flex-col gap-[12px] pb-[16px] border-b border-[#E2D9C2]">
-                  <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[11px] text-[#323429] tracking-[0.88px] uppercase leading-[1.2]">
+                <div className="flex flex-col gap-[8px] pb-[16px] border-b border-[#E2D9C2]">
+                  <p className="font-['Simplon_Norm',sans-serif] font-medium text-[12px] text-[#323429] tracking-[0.24px] leading-[1.5]">
                     Based on:
                   </p>
                   {metric.basedOn.map((factor, fi) => (
                     <div key={fi} className="flex items-center justify-between">
-                      <p className="font-['Simplon_Norm','Inter',sans-serif] text-[13px] text-[#323429] tracking-[0.26px]">
+                      <p className="font-['Simplon_Norm',sans-serif] text-[12px] text-[#323429] tracking-[0.24px]">
                         {factor.label}
                       </p>
                       <div className="flex items-center gap-[6px]">
                         <ResultsBasedOnIcon icon={factor.icon} />
-                        <p className="font-['Simplon_Norm','Inter',sans-serif] text-[13px] text-[#6c6c6c] tracking-[0.26px]">
+                        <p className="font-['Simplon_Norm',sans-serif] text-[12px] text-[#6c6c6c] tracking-[0.24px]">
                           {factor.value}
                         </p>
                       </div>
@@ -562,10 +562,10 @@ function DetailCarousel({
                   ))}
                 </div>
                 <div className="pt-[16px]">
-                  <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[11px] text-[#323429] tracking-[0.88px] uppercase leading-[1.2] pb-[8px]">
-                    What we will address:
+                  <p className="font-['Simplon_Norm',sans-serif] font-medium text-[12px] text-[#323429] tracking-[0.24px] leading-[1.5] pb-[8px]">
+                    Your formula will:
                   </p>
-                  <p className="font-['Simplon_Norm','Inter',sans-serif] text-[14px] text-[#323429] tracking-[0.28px] leading-[1.5]">
+                  <p className="font-['Simplon_Norm',sans-serif] text-[14px] text-[#323429] tracking-[0.28px] leading-[1.5]">
                     {metric.description}
                   </p>
                 </div>
@@ -742,13 +742,13 @@ export default function Results() {
         <div className="h-[95px] relative w-full shrink-0">
           <div className="absolute bg-[#323429] inset-[0_0_57.89%_0]" />
           <div className="absolute bg-white inset-[42.11%_0_0_0] shadow-[0px_2px_3px_0px_rgba(234,234,234,0.5)]" />
-          <p className="absolute font-['Simplon_Norm','Inter',sans-serif] inset-[9.47%_6.4%_67.37%_6.4%] leading-[1.5] text-[12px] text-center text-white tracking-[0.24px] underline whitespace-nowrap">
+          <p className="absolute font-['Simplon_Norm',sans-serif] inset-[9.47%_6.4%_67.37%_6.4%] leading-[1.5] text-[12px] text-center text-white tracking-[0.24px] underline whitespace-nowrap">
             {`500k 5-star Prose product reviews on Review & Refine`}<span>®</span>
           </p>
           <div className="absolute inset-[58.95%_0_0_0] flex items-center justify-center">
             <ProseLogo />
           </div>
-          <span className="absolute font-['Simplon_Norm','Inter',sans-serif] text-[#323429] text-[14px] tracking-[0.28px] left-[5.6%] top-[57.89%] mt-[8px] leading-[1.5] select-none">
+          <span className="absolute font-['Simplon_Norm',sans-serif] text-[#323429] text-[14px] tracking-[0.28px] left-[5.6%] top-[57.89%] mt-[8px] leading-[1.5] select-none">
             ← Back
           </span>
         </div>
@@ -759,12 +759,12 @@ export default function Results() {
         {/* Hero */}
         <div className="px-[24px] pt-[24px] pb-[8px] relative z-10">
           <motion.h1
-            className="font-['Saol Text',serif] font-light text-[36px] text-[#323429] tracking-[-0.96px] leading-[1.15]"
+            className="font-['Saol Text',serif] font-light text-[32px] text-[#323429] tracking-[-0.96px] leading-[1.1]"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            Maggie, here's your analysis based on{" "}
+            Maggie, here's your <span className="whitespace-nowrap">in-depth</span> hair analysis, focused on{" "}
             <span className="relative inline-block">
               <span className="absolute bottom-[2px] left-0 right-0 h-[0.4em] bg-[#ecff92]" />
               <AnimatePresence mode="wait">
@@ -797,8 +797,8 @@ export default function Results() {
         <div className="relative">
           {/* Carousel is always mounted — just hidden until loaded */}
           <div style={{ opacity: loaded ? 1 : 0, transition: "opacity 0.5s ease-out" }}>
-            <p className="px-[24px] pt-[4px] pb-[8px] font-['Simplon_Norm','Inter',sans-serif] font-normal text-[12px] text-[#6C6C6C] tracking-[-0.5px] leading-[1.5]">
-              How your results will effect your formula
+            <p className="px-[24px] pt-[4px] pb-[8px] font-['Simplon_Norm',sans-serif] font-normal text-[12px] text-[#6C6C6C] tracking-[-0.5px] leading-[1.5]">
+              What you shared is now shaping your formula.
             </p>
             <div ref={carouselWrapperRef} className="pb-[16px]" onPointerDown={killAutoPlay} onTouchStart={killAutoPlay}>
               <DetailCarousel
@@ -823,14 +823,14 @@ export default function Results() {
                 transition={{ duration: 0.4, ease: "easeOut" }}
               >
                 {/* Matches the "How your results..." text above carousel */}
-                <p className="px-[24px] pt-[4px] pb-[8px] font-['Simplon_Norm','Inter',sans-serif] font-normal text-[12px] text-[#6C6C6C] tracking-[-0.5px] leading-[1.5]">
-                  How your results will effect your formula
+                <p className="px-[24px] pt-[4px] pb-[8px] font-['Simplon_Norm',sans-serif] font-normal text-[12px] text-[#6C6C6C] tracking-[-0.5px] leading-[1.5]">
+                  What you shared is now shaping your formula.
                 </p>
                 <div className="pl-[24px]">
                   <div className="w-[295px] bg-white rounded-[14px] shadow-[0px_2px_12px_0px_rgba(0,0,0,0.06),0px_0.5px_2px_0px_rgba(0,0,0,0.04)] p-[20px] flex flex-col justify-start gap-[12px]">
                     <div className="flex justify-between pl-[80px] mb-[-4px]">
-                      <p className="font-['Simplon_Norm','Inter',sans-serif] text-[11px] text-[#a0a090] tracking-[0.22px]">Low</p>
-                      <p className="font-['Simplon_Norm','Inter',sans-serif] text-[11px] text-[#a0a090] tracking-[0.22px] text-right">High</p>
+                      <p className="font-['Simplon_Norm',sans-serif] text-[10px] text-[#a0a090] tracking-[0.2px]">Low</p>
+                      <p className="font-['Simplon_Norm',sans-serif] text-[10px] text-[#a0a090] tracking-[0.2px] text-right">High</p>
                     </div>
                     <div className="h-[0.5px] bg-[#E2D9C2] ml-[80px]" />
                     <div className="flex flex-col gap-[12px]">
@@ -838,7 +838,7 @@ export default function Results() {
                         const shouldFill = loadingPhase >= metricIdx;
                         return (
                           <div key={metric.key} className="flex items-center gap-[8px] w-full">
-                            <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[10px] text-[#323429] tracking-[0.72px] uppercase w-[72px] shrink-0">
+                            <p className="font-['Simplon_Mono',monospace] font-medium text-[10px] text-[#323429] tracking-[0.8px] uppercase w-[72px] shrink-0">
                               {metric.label}
                             </p>
                             <div className="flex-1 h-[12px] bg-[#f1ece0] rounded-full relative overflow-hidden">
@@ -855,8 +855,8 @@ export default function Results() {
                       })}
                     </div>
                     <div className="border-t border-[#E2D9C2] pt-[14px] mt-[4px]">
-                      <p className="font-['Simplon_Norm','Inter',sans-serif] text-[13px] text-[#323429] tracking-[0.26px] leading-[1.5]">
-                        Your consultation analyzed 85+ factors across damage, dryness, stressors, sensitivity, and oiliness to build a formula unique to your hair.
+                      <p className="font-['Simplon_Norm',sans-serif] text-[12px] text-[#323429] tracking-[0.24px] leading-[1.5]">
+                        Your consultation analyzed 85+ factors — from hair damage to environmental stressors. Swipe to see how each one helps us personalize your formula.
                       </p>
                     </div>
                   </div>
@@ -882,8 +882,8 @@ export default function Results() {
             onClick={() => navigate("/routine")}
             className="bg-[#323429] h-[44px] w-full rounded-[60px] flex items-center justify-center cursor-pointer"
           >
-            <p className="font-['Simplon_Mono','JetBrains Mono',monospace] font-medium text-[12px] text-white text-center tracking-[0.96px] uppercase">
-              See your Custom Products
+            <p className="font-['Simplon_Mono',monospace] font-medium text-[12px] text-white text-center tracking-[0.96px] uppercase">
+              MEET YOUR CUSTOM PRODUCTS
             </p>
           </motion.button>
         </div>

@@ -86,7 +86,7 @@ function ToastItem({
         </button>
 
         {/* Message */}
-        <p className="font-['Simplon_Norm','Inter',sans-serif] font-medium text-[14px] text-white tracking-[0.28px] leading-[1.4] flex-1 truncate">
+        <p className="font-['Simplon_Norm',sans-serif] font-medium text-[14px] text-white tracking-[0.28px] leading-[1.4] flex-1 truncate">
           {message}
         </p>
 

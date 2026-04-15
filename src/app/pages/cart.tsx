@@ -144,14 +144,14 @@ export default function Cart() {
         <>
           {/* Empty State */}
           <div className="flex flex-col items-center px-[24px] pt-[40px] pb-[24px] w-full">
-            <p className="font-['Saol Text',serif] text-[28px] text-[#161716] tracking-[-0.5px] leading-[1.15] text-center">
+            <p className="font-['Saol Text',serif] font-light text-[32px] text-[#161716] tracking-[-0.96px] leading-[1.1] text-center">
               Your custom blends<br />are missing
             </p>
 
             <div className="w-full h-[1px] bg-[#d9d9d9] mt-[24px] mb-[20px]" />
 
             <div className="bg-[#ecff92] rounded-[4px] px-[12px] py-[4px] flex items-center justify-center mb-[16px]">
-              <p className="font-['Simplon_Mono','JetBrains_Mono',monospace] font-medium text-[12px] text-[#161716] tracking-[0.96px] uppercase leading-[1.2]">
+              <p className="font-['Simplon_Mono',monospace] font-medium text-[12px] text-[#161716] tracking-[0.96px] uppercase leading-[1.2]">
                 60% off + free shipping
               </p>
             </div>
@@ -165,7 +165,7 @@ export default function Cart() {
               onClick={() => navigate("/routine")}
               className="mt-[16px] cursor-pointer bg-transparent border-none"
             >
-              <p className="font-['Simplon_Mono','JetBrains_Mono',monospace] font-medium text-[12px] text-[#161716] tracking-[0.96px] uppercase leading-[1.2] underline underline-offset-[8px]" style={{ textDecorationColor: '#C5765A' }}>
+              <p className="font-['Simplon_Mono',monospace] font-medium text-[12px] text-[#161716] tracking-[0.96px] uppercase leading-[1.2] underline underline-offset-[8px]" style={{ textDecorationColor: '#C5765A' }}>
                 Shop your routine
               </p>
             </button>
@@ -186,7 +186,7 @@ export default function Cart() {
                 {/* Dark banner with progress dots */}
                 <div className="bg-[#4d523c] h-[40px] w-full flex items-center justify-center gap-[8px] px-[16px]">
                   <p className="font-['Simplon_Norm',sans-serif] font-normal text-[12px] text-white tracking-[0.24px] leading-[1.2] whitespace-nowrap">
-                    Subscribe to 1 more item to unlock the gift
+                    Subscribe to 1 more item to unlock your gift
                   </p>
                   <div className="flex gap-[4px] items-center shrink-0">
                     {[1, 2, 3].map((step) => (
@@ -214,7 +214,7 @@ export default function Cart() {
                     </div>
                   </div>
                   <p className="flex-1 font-['Simplon_Norm',sans-serif] italic text-[10px] text-[#6c6c6c] tracking-[0.2px] leading-[1.5]">
-                    FREE travel-friendly toiletry bag — 100% recycled cotton ($30 value).
+                    FREE travel-friendly toiletry bag — crafted in 100% recycled cotton canvas ($30 value).
                   </p>
                 </div>
               </div>
@@ -222,7 +222,7 @@ export default function Cart() {
               // State 2: Eligible - show compact green badge
               <div className="bg-[#ecff92] flex items-center justify-center overflow-clip h-[40px] w-full">
                 <p className="font-['Simplon_Norm',sans-serif] font-medium text-[12px] text-[#161716] text-center tracking-[0.24px] leading-[1.2]">
-                  We've added your free gift to cart!
+                  You unlocked your free gift!
                 </p>
               </div>
             )}
@@ -245,7 +245,7 @@ export default function Cart() {
                   variant="gift"
                   image={imgGwp}
                   name="Toiletry Bag"
-                  subtitle="Your travel-friendly toiletry bag — in 100% recycled cotton canvas ($30 value)."
+                  subtitle="FREE travel-friendly toiletry bag — crafted in 100% recycled cotton canvas ($30 value)."
                   originalPrice={30}
                 />
               )}

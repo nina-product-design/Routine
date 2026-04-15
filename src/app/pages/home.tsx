@@ -54,7 +54,7 @@ function BagIcon({ count }: { count: number }) {
       </svg>
       {count > 0 && (
         <div className="absolute right-0 top-0 bg-[#f69371] rounded-full size-[16px] flex items-center justify-center">
-          <span className="font-['Simplon Norm','Inter',sans-serif] text-white text-[9px] font-medium">{count}</span>
+          <span className="font-['Simplon Norm',sans-serif] text-white text-[10px] font-medium">{count}</span>
         </div>
       )}
     </div>
@@ -270,9 +270,9 @@ function GoalCarousel() {
                 <div className="bg-[rgba(241,236,224,0.6)] rounded-full p-[6px]">
                   <GoalIcon type={card.icon} />
                 </div>
-                <p className="font-['Simplon Norm','Inter',sans-serif] font-medium text-[#323429] font-[Simplon_Norm] text-[16px]">{card.title}</p>
+                <p className="font-['Simplon Norm',sans-serif] font-medium text-[#323429] font-[Simplon_Norm] text-[16px]">{card.title}</p>
               </div>
-              <p className="font-['Simplon Norm','Inter',sans-serif] text-[#4d523c] tracking-[0.24px] leading-[1.5] w-[221px] font-[Simplon_Norm] text-[14px]">{card.description}</p>
+              <p className="font-['Simplon Norm',sans-serif] text-[#4d523c] tracking-[0.24px] leading-[1.5] w-[221px] font-[Simplon_Norm] text-[14px]">{card.description}</p>
             </div>
           ))}
           <div className="shrink-0 w-[16px]" aria-hidden />
@@ -437,12 +437,12 @@ export default function Home() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="flex flex-col gap-[8px] px-[24px] py-[24px] w-full"
         >
-          <p className="font-['Saol Text',serif] text-[32px] text-[#323429] tracking-[-0.96px] leading-[1.1] font-normal">Meet your custom formulas, Maggie</p>
-          <p className="font-['Simplon Norm','Inter',sans-serif] text-[14px] text-[#4d523c] tracking-[0.28px] leading-[1.5]">Crafted from hundreds of variables guided by your consultation.</p>
+          <p className="font-['Saol Text',serif] text-[32px] text-[#323429] tracking-[-0.96px] leading-[1.1] font-light">Maggie, your custom formulas are ready</p>
+          <p className="font-['Simplon Norm',sans-serif] text-[14px] text-[#4d523c] tracking-[0.28px] leading-[1.5]">Personalized for your unique hair, goals, and lifestyle — for more benefits in every bottle.</p>
           {routineCartIds.some((id) => productFrequencies[id] && productFrequencies[id] !== "buy-once") && (
             <div className="bg-[#ecff92] px-[8px] py-[4px] rounded-[6px] self-start">
-              <p className="font-['Simplon Mono','JetBrains Mono',monospace] font-medium text-[#323429] text-[13px]">
-                60% off your order + free shipping
+              <p className="font-['Simplon Mono',monospace] font-medium text-[#323429] text-[14px] tracking-[1.12px] leading-[1.2] uppercase">
+                60% off + free shipping unlocked
               </p>
             </div>
           )}
@@ -502,7 +502,7 @@ export default function Home() {
           {/* Empty State Message */}
           {routineCartIds.length === 0 && (
             <div className="w-full px-[24px] py-[32px] flex items-center justify-center">
-              <p className="font-['Simplon Norm','Inter',sans-serif] text-[14px] text-[#4d523c] tracking-[0.28px] leading-[1.5] text-center">
+              <p className="font-['Simplon Norm',sans-serif] text-[14px] text-[#4d523c] tracking-[0.28px] leading-[1.5] text-center">
                 Your routine is empty. Add products from below to get started!
               </p>
             </div>
@@ -513,7 +513,7 @@ export default function Home() {
         {upsellIds.length > 0 && (
           <div className="flex flex-col gap-[12px] py-[48px] w-full">
             <div className="flex items-center justify-between px-[24px]">
-              <p className="font-['Simplon Mono','JetBrains Mono',monospace] font-medium text-[14px] text-[#323429] tracking-[1.12px] uppercase font-[Simplon_Mono]">ADD TO YOUR ROUTINE</p>
+              <p className="font-['Simplon Mono',monospace] font-medium text-[14px] text-[#323429] tracking-[1.12px] uppercase font-[Simplon_Mono]">ADD TO YOUR ROUTINE</p>
               <div className="flex gap-[8px]">
                 <button
                   onClick={() => upsellScrollRef.current?.scrollBy({ left: -188, behavior: "smooth" })}
@@ -576,24 +576,24 @@ export default function Home() {
                         <img alt={product.carouselName} className="absolute inset-0 object-cover size-full" src={product.carouselImage} />
                         {(product.upsellTag || product.isRecommended) && (
                           <div className="absolute left-[13px] top-[12px] backdrop-blur-[2px] bg-white/50 px-[12px] py-[4px] rounded-[20px]">
-                            <p className="font-['Simplon Norm','Inter',sans-serif] text-[12px] text-[#4d523c] tracking-[0.24px] leading-[1.5] whitespace-nowrap">{product.isRecommended ? "Recommended" : product.upsellTag}</p>
+                            <p className="font-['Simplon Norm',sans-serif] text-[12px] text-[#4d523c] tracking-[0.24px] leading-[1.5] whitespace-nowrap">{product.isRecommended ? "Recommended" : product.upsellTag}</p>
                           </div>
                         )}
                       </div>
-                      <p className="font-['Simplon Norm','Inter',sans-serif] font-medium text-[14px] text-[#4d523c] leading-[1.5] h-[42px] font-[Simplon_Norm]">{product.carouselName}</p>
+                      <p className="font-['Simplon Norm',sans-serif] font-medium text-[14px] text-[#4d523c] leading-[1.5] h-[42px] font-[Simplon_Norm]">{product.carouselName}</p>
                       <div className="flex items-center justify-between w-full">
                         <button
                           onClick={() => handleAddWithTracking(id)}
                           className="cursor-pointer shrink-0"
                         >
                           <div className="flex h-[44px] items-center justify-center px-[32px] py-[16px] rounded-[60px] w-[88px] bg-[#323429]">
-                            <p className="font-['Simplon Mono','JetBrains Mono',monospace] font-medium text-[12px] text-white text-center tracking-[0.96px] uppercase font-[Simplon_Mono]">ADD</p>
+                            <p className="font-['Simplon Mono',monospace] font-medium text-[12px] text-white text-center tracking-[0.96px] uppercase font-[Simplon_Mono]">ADD</p>
                           </div>
                         </button>
                         <div className="flex flex-col items-end pr-[8px]">
-                          <p className="font-['Simplon Norm','Inter',sans-serif] font-medium text-[14px] text-[#4d523c] font-[Simplon_Norm]">${product.price.toFixed(2)}</p>
+                          <p className="font-['Simplon Norm',sans-serif] font-medium text-[14px] text-[#4d523c] font-[Simplon_Norm]">${product.price.toFixed(2)}</p>
                           {product.price < product.originalPrice && (
-                            <p className="font-['Simplon Norm','Inter',sans-serif] text-[12px] text-[#6c6c6c] line-through tracking-[0.24px] font-[Simplon_Norm]">${product.originalPrice.toFixed(2)}</p>
+                            <p className="font-['Simplon Norm',sans-serif] text-[12px] text-[#6c6c6c] line-through tracking-[0.24px] font-[Simplon_Norm]">${product.originalPrice.toFixed(2)}</p>
                           )}
                         </div>
                       </div>

@@ -150,7 +150,7 @@ export default function ConcernModal({
                   aria-hidden="true"
                   className="absolute border border-[#e2d9c2] border-solid inset-0 pointer-events-none rounded-[20px]"
                 />
-                <p className="font-['Simplon Norm','Inter',sans-serif] leading-[1.5] text-[#323429] text-[12px] tracking-[0.24px] whitespace-nowrap">
+                <p className="font-['Simplon Norm',sans-serif] leading-[1.5] text-[#323429] text-[12px] tracking-[0.24px] whitespace-nowrap">
                   {data.label}
                 </p>
               </div>
@@ -209,24 +209,24 @@ export default function ConcernModal({
                   />
                 ))}
               </div>
-              <p className="font-['Simplon Norm','Inter',sans-serif] text-[#323429] text-[12px] tracking-[0.24px] leading-[1.5]">
+              <p className="font-['Simplon Norm',sans-serif] text-[#323429] text-[12px] tracking-[0.24px] leading-[1.5]">
                 {data.severityLabel}
               </p>
             </div>
 
             {/* Body */}
             <div className="pb-[8px] w-full">
-              <p className="font-['Simplon Norm','Inter',sans-serif] text-[14px] text-black tracking-[0.28px] leading-[1.5]">
+              <p className="font-['Simplon Norm',sans-serif] text-[14px] text-black tracking-[0.28px] leading-[1.5]">
                 {data.description}
               </p>
             </div>
 
             {/* Based on */}
             <div className="flex flex-col gap-[4px] items-start pt-[8px] w-full border-t border-[#f1ece0]">
-              <p className="font-['Simplon Mono','JetBrains Mono',monospace] text-[#4d523c] text-[10px] tracking-[0.8px] uppercase leading-[1.2]">
+              <p className="font-['Simplon Mono',monospace] text-[#4d523c] text-[10px] tracking-[0.8px] uppercase leading-[1.2]">
                 Based on:
               </p>
-              <ul className="font-['Simplon Norm','Inter',sans-serif] text-[#161716] text-[12px] tracking-[0.24px] leading-[1.5]">
+              <ul className="font-['Simplon Norm',sans-serif] text-[#161716] text-[12px] tracking-[0.24px] leading-[1.5]">
                 {data.basedOn.map((reason) => (
                   <li key={reason} className="list-disc ms-[18px]">
                     {reason}

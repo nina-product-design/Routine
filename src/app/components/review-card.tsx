@@ -34,7 +34,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
     <div className="bg-white flex flex-col gap-[16px] p-[16px] rounded-[10px] border border-[#f1ece0] min-w-[270px] w-[270px] shrink-0">
       {/* Name, Location, Date & Stars */}
       <div className="flex flex-col gap-[8px]">
-        <div className="flex flex-col font-['Simplon Norm','Inter',sans-serif] text-[#4d523c] text-[12px] leading-[1.5] tracking-[0.24px]">
+        <div className="flex flex-col font-['Simplon Norm',sans-serif] text-[#4d523c] text-[12px] leading-[1.5] tracking-[0.24px]">
           <p>{review.name}</p>
           {review.location && <p>{review.location}</p>}
           <p>{review.date}</p>
@@ -47,7 +47,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
       </div>
 
       {/* Body */}
-      <p className="font-['Simplon Norm','Inter',sans-serif] text-[14px] leading-[1.5] tracking-[0.28px] text-[#4d523c]">
+      <p className="font-['Simplon Norm',sans-serif] text-[14px] leading-[1.5] tracking-[0.28px] text-[#4d523c]">
         {review.body}
       </p>
     </div>

@@ -47,7 +47,7 @@ function MonogramInput({ value, onChange }: { value: string; onChange?: (v: stri
           onChange={(e) => setDraft(e.target.value.toUpperCase().replace(/[^A-Z]/g, ""))}
           onBlur={commit}
           onKeyDown={(e) => { if (e.key === "Enter") commit(); }}
-          className="w-full font-['Simplon_Norm',sans-serif] text-[12px] text-[#323429] tracking-[0.24px] leading-[1.5] text-center bg-transparent outline-none uppercase"
+          className="w-full font-['Simplon_Mono',monospace] font-medium text-[12px] text-[#323429] tracking-[0.96px] leading-[1.2] text-center bg-transparent outline-none uppercase"
         />
       </div>
     );

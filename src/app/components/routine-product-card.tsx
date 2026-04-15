@@ -109,7 +109,7 @@ function GoalPill({ text, onClick }: { text: string; onClick?: () => void }) {
       onClick={onClick}
     >
       <div aria-hidden="true" className="absolute border border-[#e2d9c2] border-solid inset-0 pointer-events-none rounded-[20px]" />
-      <p className="font-['Simplon Norm','Inter',sans-serif] leading-[1.5] relative shrink-0 text-[#323429] text-[12px] tracking-[0.24px] whitespace-nowrap">{text}</p>
+      <p className="font-['Simplon Norm',sans-serif] leading-[1.5] relative shrink-0 text-[#323429] text-[12px] tracking-[0.24px] whitespace-nowrap">{text}</p>
     </div>
   );
 }
@@ -164,13 +164,13 @@ function FrequencySelector({ price, originalPrice, onOpenChange, onFrequencyChan
             {/* Top row */}
             <div className="content-stretch flex gap-[12px] items-center relative shrink-0 w-full">
           {/* Product info */}
-          <div className="content-stretch flex flex-[1_0_0] flex-col items-start min-h-px min-w-px relative gap-[4px] font-['Simplon Norm','Inter',sans-serif] leading-[1.5] text-[#4d523c] text-left">
+          <div className="content-stretch flex flex-[1_0_0] flex-col items-start min-h-px min-w-px relative gap-[4px] font-['Simplon Norm',sans-serif] leading-[1.5] text-[#4d523c] text-left">
             <p className="relative shrink-0 text-[12px] text-left tracking-[0.24px] w-full">{getLabelForOption(selected)}</p>
             {isSubscription ? (
               <p className="min-w-full relative shrink-0 text-[10px] text-left tracking-[0.2px] w-[min-content]">60% off first subscription order</p>
             ) : (
               <div className="bg-[#ecff92] content-stretch flex items-center justify-center px-[4px] relative rounded-[4px] shrink-0">
-                <p className="font-['Simplon Norm','Inter',sans-serif] leading-[1.5] relative shrink-0 text-[#6c6c6c] text-[10px] tracking-[0.2px] whitespace-nowrap">Get 60% when you subscribe</p>
+                <p className="font-['Simplon Norm',sans-serif] leading-[1.5] relative shrink-0 text-[#6c6c6c] text-[10px] tracking-[0.2px] whitespace-nowrap">Get 60% when you subscribe</p>
               </div>
             )}
           </div>
@@ -178,13 +178,13 @@ function FrequencySelector({ price, originalPrice, onOpenChange, onFrequencyChan
           {/* Price */}
           <div className="content-stretch flex flex-col gap-[4px] items-end leading-[1.5] relative shrink-0 whitespace-nowrap">
             <div className={`content-stretch flex items-center justify-center px-[4px] relative rounded-[4px] shrink-0 ${isSubscription ? "bg-[#ecff92]" : ""}`}>
-              <p className="font-['Simplon Norm','Inter',sans-serif] font-medium relative shrink-0 text-[#161716] text-[14px]">
+              <p className="font-['Simplon Norm',sans-serif] font-medium relative shrink-0 text-[#161716] text-[14px]">
                 ${displayPrice.toFixed(2)}
               </p>
             </div>
             {isSubscription ? (
               <div className="content-stretch flex items-center justify-center px-[4px] relative shrink-0">
-                <p className="decoration-solid font-['Simplon Norm','Inter',sans-serif] leading-[1.5] line-through relative shrink-0 text-[#6c6c6c] text-[10px] tracking-[0.2px]">
+                <p className="decoration-solid font-['Simplon Norm',sans-serif] leading-[1.5] line-through relative shrink-0 text-[#6c6c6c] text-[10px] tracking-[0.2px]">
                   ${originalPrice.toFixed(2)}
                 </p>
               </div>
@@ -212,7 +212,7 @@ function FrequencySelector({ price, originalPrice, onOpenChange, onFrequencyChan
 
             {/* Added to cart label */}
             <div className="absolute bg-white content-stretch flex items-center justify-center left-[8px] px-[4px] top-[-8px]">
-              <p className="font-['Simplon Norm','Inter',sans-serif] font-medium leading-[1.5] relative shrink-0 text-[#4d523c] text-[10px] whitespace-nowrap">
+              <p className="font-['Simplon Norm',sans-serif] font-medium leading-[1.5] relative shrink-0 text-[#4d523c] text-[10px] whitespace-nowrap">
                 Added to cart
               </p>
             </div>
@@ -255,7 +255,7 @@ function AddedToCart({ type, price, originalPrice }: AddedToCartProps) {
     <div className="content-stretch flex flex-col gap-[4px] items-center justify-center px-[12px] py-[16px] relative rounded-[10px] w-[295px]">
       <div aria-hidden="true" className="absolute border border-[#e2d9c2] border-solid inset-0 pointer-events-none rounded-[10px]" />
       <div className="content-stretch flex gap-[12px] items-center relative shrink-0 w-full">
-        <div className="content-stretch flex flex-[1_0_0] flex-col items-start min-h-px min-w-px relative gap-[4px] font-['Simplon Norm','Inter',sans-serif] leading-[1.5] text-[#4d523c]">
+        <div className="content-stretch flex flex-[1_0_0] flex-col items-start min-h-px min-w-px relative gap-[4px] font-['Simplon Norm',sans-serif] leading-[1.5] text-[#4d523c]">
           <p className="relative shrink-0 text-[12px] tracking-[0.24px] w-full">
             {isSubscription ? "Every 4 weeks (recommended)" : "One-time purchase"}
           </p>
@@ -264,17 +264,17 @@ function AddedToCart({ type, price, originalPrice }: AddedToCartProps) {
           )}
           {!isSubscription && (
             <div className="bg-[#ecff92] content-stretch flex items-center justify-center px-[4px] relative rounded-[4px] shrink-0">
-              <p className="font-['Simplon Norm','Inter',sans-serif] leading-[1.5] relative shrink-0 text-[#6c6c6c] text-[10px] tracking-[0.2px] whitespace-nowrap">Get 60% when you subscribe</p>
+              <p className="font-['Simplon Norm',sans-serif] leading-[1.5] relative shrink-0 text-[#6c6c6c] text-[10px] tracking-[0.2px] whitespace-nowrap">Get 60% when you subscribe</p>
             </div>
           )}
         </div>
         <div className="content-stretch flex flex-col relative shrink-0 gap-[4px] items-end">
           <div className={`content-stretch flex items-center justify-center px-[4px] relative rounded-[4px] shrink-0 ${isSubscription ? "bg-[#ecff92]" : ""}`}>
-            <p className="font-['Simplon Norm','Inter',sans-serif] font-medium leading-[1.5] relative shrink-0 text-[#161716] text-[14px] text-right whitespace-nowrap">${price.toFixed(2)}</p>
+            <p className="font-['Simplon Norm',sans-serif] font-medium leading-[1.5] relative shrink-0 text-[#161716] text-[14px] text-right whitespace-nowrap">${price.toFixed(2)}</p>
           </div>
           {isSubscription && (
             <div className="content-stretch flex items-center justify-center px-[4px] shrink-0 relative">
-              <p className="decoration-solid font-['Simplon Norm','Inter',sans-serif] leading-[1.5] line-through relative shrink-0 text-[#6c6c6c] text-[10px] text-right tracking-[0.2px] whitespace-nowrap">${originalPrice.toFixed(2)}</p>
+              <p className="decoration-solid font-['Simplon Norm',sans-serif] leading-[1.5] line-through relative shrink-0 text-[#6c6c6c] text-[10px] text-right tracking-[0.2px] whitespace-nowrap">${originalPrice.toFixed(2)}</p>
             </div>
           )}
         </div>
@@ -302,7 +302,7 @@ function AddedToCart({ type, price, originalPrice }: AddedToCartProps) {
         </div>
       </div>
       <div className="absolute bg-white content-stretch flex items-center justify-center left-[8px] px-[4px] top-[-8px]">
-        <p className="font-['Simplon Norm','Inter',sans-serif] font-medium leading-[1.5] relative shrink-0 text-[#4d523c] text-[10px] whitespace-nowrap">Added to cart</p>
+        <p className="font-['Simplon Norm',sans-serif] font-medium leading-[1.5] relative shrink-0 text-[#4d523c] text-[10px] whitespace-nowrap">Added to cart</p>
       </div>
     </div>
   );
@@ -315,16 +315,16 @@ function AddedToCartAccessory({ price }: { price: number }) {
       <div aria-hidden="true" className="absolute border border-[#e2d9c2] border-solid inset-0 pointer-events-none rounded-[10px]" />
       <div className="content-stretch flex gap-[12px] items-center relative shrink-0 w-full">
         <div className="content-stretch flex flex-[1_0_0] flex-col items-start min-h-px min-w-px relative">
-          <p className="font-['Simplon Norm','Inter',sans-serif] leading-[1.5] relative shrink-0 text-[#4d523c] text-[12px] tracking-[0.24px] w-full">One-time purchase</p>
+          <p className="font-['Simplon Norm',sans-serif] leading-[1.5] relative shrink-0 text-[#4d523c] text-[12px] tracking-[0.24px] w-full">One-time purchase</p>
         </div>
         <div className="content-stretch flex flex-col relative shrink-0 items-center justify-center">
           <div className="content-stretch flex items-center justify-center px-[4px] relative rounded-[4px] shrink-0">
-            <p className="font-['Simplon Norm','Inter',sans-serif] font-medium leading-[1.5] relative shrink-0 text-[#161716] text-[14px] text-right whitespace-nowrap">${price.toFixed(2)}</p>
+            <p className="font-['Simplon Norm',sans-serif] font-medium leading-[1.5] relative shrink-0 text-[#161716] text-[14px] text-right whitespace-nowrap">${price.toFixed(2)}</p>
           </div>
         </div>
       </div>
       <div className="absolute bg-white content-stretch flex items-center justify-center left-[8px] px-[4px] top-[-8px]">
-        <p className="font-['Simplon Norm','Inter',sans-serif] font-medium leading-[1.5] relative shrink-0 text-[#4d523c] text-[10px] whitespace-nowrap">Added to cart</p>
+        <p className="font-['Simplon Norm',sans-serif] font-medium leading-[1.5] relative shrink-0 text-[#4d523c] text-[10px] whitespace-nowrap">Added to cart</p>
       </div>
     </div>
   );
@@ -383,7 +383,7 @@ export function RoutineProductCard({
         </div>
         {badge && (
           <div className="absolute backdrop-blur-[2px] bg-[rgba(255,255,255,0.5)] content-stretch flex items-center justify-center left-[8px] px-[12px] py-[4px] rounded-[20px] top-[8px]">
-            <p className="font-['Simplon Norm','Inter',sans-serif] leading-[1.5] relative shrink-0 text-[#4d523c] text-[14px] tracking-[0.28px] whitespace-nowrap">{badge}</p>
+            <p className="font-['Simplon Norm',sans-serif] leading-[1.5] relative shrink-0 text-[#4d523c] text-[14px] tracking-[0.28px] whitespace-nowrap">{badge}</p>
           </div>
         )}
         <div className="absolute right-[8px] top-[8px]">
@@ -397,8 +397,8 @@ export function RoutineProductCard({
           {/* Product Info */}
           <div className="content-stretch flex flex-col gap-[8px] items-start text-[#4d523c] relative shrink-0 w-full">
             <p className="font-['Saol Text',serif] font-light leading-[1.1] min-w-full relative shrink-0 text-[32px] tracking-[-0.96px] w-[min-content]">{productName}</p>
-            <p className="font-['Simplon Norm','Inter',sans-serif] leading-[1.5] min-w-full relative shrink-0 text-[14px] tracking-[0.28px] w-[min-content] line-clamp-2">{description}</p>
-            <div className="content-stretch flex font-['Simplon Norm','Inter',sans-serif] gap-[24px] items-start leading-[1.5] relative shrink-0 text-[12px] tracking-[0.24px] whitespace-nowrap">
+            <p className="font-['Simplon Norm',sans-serif] leading-[1.5] min-w-full relative shrink-0 text-[14px] tracking-[0.28px] w-[min-content] line-clamp-2">{description}</p>
+            <div className="content-stretch flex font-['Simplon Norm',sans-serif] gap-[24px] items-start leading-[1.5] relative shrink-0 text-[12px] tracking-[0.24px] whitespace-nowrap">
               <p className="relative shrink-0">{size}</p>
               {onQuickView && (
                 <button 
@@ -417,7 +417,7 @@ export function RoutineProductCard({
               onClick={() => setIsScoringOpen(true)}
               className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-full cursor-pointer text-left"
             >
-              <p className="font-['Simplon Mono','JetBrains Mono',monospace] font-medium leading-[14.4px] relative shrink-0 text-[#4d523c] text-[12px] tracking-[0.96px] uppercase whitespace-nowrap">THIS PRODUCT TARGETS</p>
+              <p className="font-['Simplon Mono',monospace] font-medium leading-[14.4px] relative shrink-0 text-[#4d523c] text-[12px] tracking-[0.96px] uppercase whitespace-nowrap">FORMULATED TO TARGET</p>
               <div className="content-start flex flex-wrap gap-[8px] items-start relative shrink-0">
                 {concerns.map((concern, i) => (
                   <GoalPill key={i} text={concern} onClick={() => setIsScoringOpen(true)} />
@@ -429,7 +429,7 @@ export function RoutineProductCard({
           {/* Key Ingredients */}
           {ingredients && ingredients.length > 0 && (
             <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-full">
-              <p className="font-['Simplon Mono','JetBrains Mono',monospace] font-medium leading-[1.2] min-w-full relative shrink-0 text-[#4d523c] text-[12px] tracking-[0.96px] uppercase w-[min-content]">your KEY INGREDIENTS</p>
+              <p className="font-['Simplon Mono',monospace] font-medium leading-[1.2] min-w-full relative shrink-0 text-[#4d523c] text-[12px] tracking-[0.96px] uppercase w-[min-content]">your KEY INGREDIENTS</p>
               <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-full">
                 {ingredients.map((ingredient, i) => (
                   <div key={i} className="content-stretch flex gap-[8px] items-center relative shrink-0 w-full">
@@ -437,8 +437,8 @@ export function RoutineProductCard({
                       <img alt={ingredient.name} className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={ingredient.image} />
                     </div>
                     <div className="content-stretch flex flex-col items-start leading-[1.5] relative shrink-0 text-[#4d523c] text-[12px] flex-1">
-                      <p className="font-['Simplon Norm','Inter',sans-serif] font-medium relative shrink-0 w-full">{ingredient.name}</p>
-                      <p className="font-['Simplon Norm','Inter',sans-serif] relative shrink-0 tracking-[0.24px] w-full">{ingredient.benefit}</p>
+                      <p className="font-['Simplon Norm',sans-serif] font-medium relative shrink-0 w-full">{ingredient.name}</p>
+                      <p className="font-['Simplon Norm',sans-serif] relative shrink-0 tracking-[0.24px] w-full">{ingredient.benefit}</p>
                     </div>
                   </div>
                 ))}
@@ -451,8 +451,8 @@ export function RoutineProductCard({
             <div className="content-stretch flex items-start relative shrink-0 w-full">
               <div className="content-stretch flex flex-[1_0_0] flex-col items-start min-h-px min-w-px relative">
                 <div className="content-stretch flex flex-col gap-[8px] items-start text-[#4d523c] text-[12px] relative shrink-0 w-full">
-                  <p className="font-['Simplon Mono','JetBrains Mono',monospace] font-medium leading-[1.2] relative shrink-0 tracking-[0.96px] uppercase w-full">YOUR PREFERENCES</p>
-                  <p className="font-['Simplon Norm','Inter',sans-serif] leading-[1.5] relative shrink-0 tracking-[0.24px] w-full">{preferences}</p>
+                  <p className="font-['Simplon Mono',monospace] font-medium leading-[1.2] relative shrink-0 tracking-[0.96px] uppercase w-full">YOUR PREFERENCES</p>
+                  <p className="font-['Simplon Norm',sans-serif] leading-[1.5] relative shrink-0 tracking-[0.24px] w-full">{preferences}</p>
                 </div>
               </div>
             </div>
@@ -525,7 +525,7 @@ export function RoutineProductCardAccessory({
         </div>
         {badge && (
           <div className="absolute backdrop-blur-[2px] bg-[rgba(255,255,255,0.5)] content-stretch flex items-center justify-center left-[8px] px-[12px] py-[4px] rounded-[20px] top-[8px]">
-            <p className="font-['Simplon Norm','Inter',sans-serif] leading-[1.5] relative shrink-0 text-[#4d523c] text-[14px] tracking-[0.28px] whitespace-nowrap">{badge}</p>
+            <p className="font-['Simplon Norm',sans-serif] leading-[1.5] relative shrink-0 text-[#4d523c] text-[14px] tracking-[0.28px] whitespace-nowrap">{badge}</p>
           </div>
         )}
         <div className="absolute right-[8px] top-[8px]">
@@ -539,11 +539,11 @@ export function RoutineProductCardAccessory({
           {/* Product Info */}
           <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-full">
             <p className="font-['Saol Text',serif] font-light leading-[1.1] min-w-full relative shrink-0 text-[#4d523c] text-[32px] tracking-[-0.96px] w-[min-content]">{productName}</p>
-            <div className="font-['Simplon Norm','Inter',sans-serif] leading-[1.5] min-w-full relative shrink-0 text-[#4d523c] text-[14px] tracking-[0.28px] w-[min-content] whitespace-pre-wrap">
+            <div className="font-['Simplon Norm',sans-serif] leading-[1.5] min-w-full relative shrink-0 text-[#4d523c] text-[14px] tracking-[0.28px] w-[min-content] whitespace-pre-wrap">
               {descriptionText}
             </div>
             <div className="content-stretch flex gap-[24px] items-start relative shrink-0">
-              <p className="font-['Simplon Norm','Inter',sans-serif] leading-[1.5] relative shrink-0 text-[#4d523c] text-[12px] tracking-[0.24px] whitespace-nowrap">{size}</p>
+              <p className="font-['Simplon Norm',sans-serif] leading-[1.5] relative shrink-0 text-[#4d523c] text-[12px] tracking-[0.24px] whitespace-nowrap">{size}</p>
             </div>
           </div>
         </div>
