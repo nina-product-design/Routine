@@ -24,6 +24,7 @@ export const ingredientBambooCharcoal: Ingredient = {
   name: "Bamboo Charcoal",
   benefit: "Root Detox",
   description: "Gently cleanses and detoxifies the scalp.",
+  extendedDescription: "Gently cleanses and detoxifies the scalp to help manage your {concern}.",
   image: BambooCharcoal,
 };
 
@@ -31,6 +32,7 @@ export const ingredientHyaluronicAcid: Ingredient = {
   name: "Hyaluronic Acid",
   benefit: "Hair Hydration",
   description: "Supports damaged hair by creating a protective outer layer that hydrates hair fibers.",
+  extendedDescription: "Hydrates hair fibers with a protective outer layer to help manage your {concern}.",
   image: HyaluronicAcid,
 };
 
@@ -38,6 +40,7 @@ export const ingredientAniseMyrtle: Ingredient = {
   name: "Anise Myrtle Extract",
   benefit: "Scalp Soothing",
   description: "Calms and soothes the scalp by helping boost its natural response to environmental stressors.",
+  extendedDescription: "Calms and soothes the scalp to help manage your {concern}.",
   image: WhiteFlowersWithLeaves,
 };
 
@@ -45,6 +48,7 @@ export const ingredientGlycerin: Ingredient = {
   name: "Glycerin",
   benefit: "Moisture Boost",
   description: "Exceptionally rich in humectants, it helps draw in moisture to deeply soften strands.",
+  extendedDescription: "Draws in moisture to deeply soften strands and help manage your {concern}.",
   image: Glycerin,
 };
 
@@ -52,6 +56,7 @@ export const ingredientEucalyptusOil: Ingredient = {
   name: "Eucalyptus Oil",
   benefit: "Invigorating Scent",
   description: "A freshly scented oil that promotes scalp health and refreshes roots.",
+  extendedDescription: "Promotes scalp health and refreshes roots to help manage your {concern}.",
   image: GreenTea,
 };
 
@@ -59,6 +64,7 @@ export const ingredientFermentedRiceWater: Ingredient = {
   name: "Fermented Rice Water",
   benefit: "Tamed Frizz",
   description: "Smooths and strengthens hair to help control frizz. Rich in amino acids.",
+  extendedDescription: "Smooths and strengthens hair with amino acids to help manage your {concern}.",
   image: FermentedRiceWater,
 };
 
@@ -66,6 +72,7 @@ export const ingredientGrapefruitOil: Ingredient = {
   name: "Grapefruit Oil",
   benefit: "Vitalizing Scent",
   description: "Naturally helps soothe scalp sensitivity and itching.",
+  extendedDescription: "Naturally soothes the scalp and relieves itching to help manage your {concern}.",
   image: Grapefruit,
 };
 
@@ -73,6 +80,7 @@ export const ingredientJojobaBeads: Ingredient = {
   name: "Jojoba Beads",
   benefit: "Gentle Exfoliation",
   description: "Gently exfoliates to detoxify roots and promotes scalp health. 100% natural & biodegradable.",
+  extendedDescription: "Gently exfoliates to detoxify roots and help manage your {concern}.",
   image: JojobaBeads,
 };
 
@@ -80,6 +88,7 @@ export const ingredientJujubeBark: Ingredient = {
   name: "Jujube Bark Extract",
   benefit: "Scalp Health",
   description: "Promotes scalp health and helps control flakes with natural scalp soothing.",
+  extendedDescription: "Promotes scalp health and controls flakes to help manage your {concern}.",
   image: Sandalwood,
 };
 
@@ -87,6 +96,7 @@ export const ingredientMacaRootBiotin: Ingredient = {
   name: "Maca Root + Biotin",
   benefit: "Hair Vitality",
   description: "Promotes naturally thriving hair by boosting density & strength.",
+  extendedDescription: "Boosts hair density and strength to help manage your {concern}.",
   image: MacaRoot,
 };
 
@@ -94,6 +104,7 @@ export const ingredientPanthenol: Ingredient = {
   name: "Panthenol",
   benefit: "Scalp Comfort",
   description: "Helps rebalance the scalp for less sensitivity & more relief.",
+  extendedDescription: "Rebalances the scalp for comfort, helping to manage your {concern}.",
   image: HyaluronicAcid,
 };
 
@@ -101,6 +112,7 @@ export const ingredientPinkClay: Ingredient = {
   name: "Pink Clay",
   benefit: "Scalp Support",
   description: "Helps refresh roots to naturally promote scalp health.",
+  extendedDescription: "Refreshes roots and promotes scalp health to help manage your {concern}.",
   image: PinkClay,
 };
 
@@ -108,6 +120,7 @@ export const ingredientKombuchaTea: Ingredient = {
   name: "Kombucha Tea",
   benefit: "Microbiome Balance",
   description: "Filled with botanic antioxidants that help combat oily roots.",
+  extendedDescription: "Botanic antioxidants combat oily roots to help manage your {concern}.",
   image: GreenTea,
 };
 
@@ -115,6 +128,7 @@ export const ingredientMacaRootPeptides: Ingredient = {
   name: "Maca Root + Peptides",
   benefit: "Hair Density",
   description: "Promotes optimal hair and scalp health for hair that appears fuller, denser, and stronger.",
+  extendedDescription: "Promotes fuller, denser, stronger-looking hair to help manage your {concern}.",
   image: MacaRootPeptides,
 };
 
@@ -122,6 +136,7 @@ export const ingredientRedAlgae: Ingredient = {
   name: "Red Algae Extract",
   benefit: "Pollution Shield",
   description: "Helps fight against oxidative stress to protect hair from pollution. Carefully sourced for coral preservation.",
+  extendedDescription: "Protects hair from pollution and oxidative stress to help manage your {concern}.",
   image: RedAlgae,
 };
 
@@ -129,6 +144,7 @@ export const ingredientRosehipExtract: Ingredient = {
   name: "Rosehip Extract",
   benefit: "Oil Control",
   description: "Helps regulate scalp sebum levels to control excess oiliness and promote a balanced, healthy scalp.",
+  extendedDescription: "Regulates scalp sebum to promote balance and help manage your {concern}.",
   image: RosehipExtract,
 };
 
@@ -136,6 +152,7 @@ export const ingredientRosemaryExtract: Ingredient = {
   name: "Rosemary Extract",
   benefit: "Root Revival",
   description: "With its characteristic herbal scent, this blend is boosted by potent botanic antioxidants known to promote scalp health.",
+  extendedDescription: "Potent antioxidants promote scalp health to help manage your {concern}.",
   image: GreenTea,
 };
 
@@ -143,6 +160,7 @@ export const ingredientSpirulina: Ingredient = {
   name: "Spirulina + Vitamin B6",
   benefit: "Root Refresh",
   description: "Balances and refreshes oily roots with a blend of botanical extracts.",
+  extendedDescription: "Balances and refreshes roots with botanical extracts to help manage your {concern}.",
   image: Spirulina,
 };
 

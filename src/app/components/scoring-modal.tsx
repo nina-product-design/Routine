@@ -139,6 +139,7 @@ interface ScoringModalProps {
   onClose: () => void;
   productName: string;
   concerns: string[];
+  initialTab?: number;
   ingredients?: { name: string; image: string; benefit: string }[];
 }
 
@@ -147,16 +148,17 @@ export default function ScoringModal({
   onClose,
   productName,
   concerns,
+  initialTab = 0,
   ingredients = [],
 }: ScoringModalProps) {
   const [activeTab, setActiveTab] = useState(0);
   const [cardHeight, setCardHeight] = useState<number | null>(null);
   const measureRef = useRef<HTMLDivElement>(null);
 
-  // Reset to first tab when opening
+  // Reset to initial tab when opening
   useEffect(() => {
     if (isOpen) {
-      setActiveTab(0);
+      setActiveTab(initialTab);
       setCardHeight(null); // reset so we re-measure
     }
   }, [isOpen]);

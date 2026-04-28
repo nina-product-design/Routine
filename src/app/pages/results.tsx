@@ -785,7 +785,7 @@ export default function Results() {
 
         {/* Dot Cloud Visualization — overlaps behind title */}
         <motion.div
-          className="px-[24px] py-[6px] -mt-[60px] relative z-0"
+          className="px-[24px] py-[6px] -mt-[35px] relative z-0"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.3 }}

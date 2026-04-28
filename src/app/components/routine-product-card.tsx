@@ -74,6 +74,7 @@ export interface Ingredient {
   name: string;
   benefit: string;
   description?: string;
+  extendedDescription?: string;
   image: string;
 }
 
@@ -330,6 +331,30 @@ function AddedToCartAccessory({ price }: { price: number }) {
   );
 }
 
+// ─── Ingredient Description with Concern Link ───────────
+function renderIngredientDescription(template: string, concern: string, onConcernClick: () => void) {
+  const placeholder = '{concern}';
+  const idx = template.indexOf(placeholder);
+  if (idx === -1) return <>{template}</>;
+  const before = template.slice(0, idx);
+  const after = template.slice(idx + placeholder.length);
+  const concernDisplay = concern.toLowerCase();
+  return (
+    <>
+      {before}
+      <span
+        className="underline font-['Simplon Norm',sans-serif] font-medium cursor-pointer"
+        onClick={(e) => { e.stopPropagation(); onConcernClick(); }}
+        role="button"
+        tabIndex={0}
+      >
+        {concernDisplay}
+      </span>
+      {after}
+    </>
+  );
+}
+
 // ─── Main Routine Product Card (Haircare/Subscription) ───
 export interface RoutineProductCardProps {
   productName: string;
@@ -338,7 +363,7 @@ export interface RoutineProductCardProps {
   size: string;
   badge?: string;
   concerns: string[];
-  ingredients: { name: string; image: string; benefit: string }[];
+  ingredients: Ingredient[];
   preferences: string;
   price: number;
   originalPrice: number;
@@ -371,6 +396,8 @@ export function RoutineProductCard({
   const [isFrequencyOpen, setIsFrequencyOpen] = useState(false);
   const [activeConcern, setActiveConcern] = useState<string | null>(null);
   const [isScoringOpen, setIsScoringOpen] = useState(false);
+  const [scoringInitialTab, setScoringInitialTab] = useState(0);
+  const [openIngredientIndex, setOpenIngredientIndex] = useState<number | null>(0);
 
   return (
     <div className="bg-white content-stretch flex flex-col gap-[24px] items-center relative rounded-[10px] w-[327px] pb-[24px]">
@@ -411,37 +438,49 @@ export function RoutineProductCard({
             </div>
           </div>
 
-          {/* Targeted Concerns */}
-          {concerns && concerns.length > 0 && (
-            <button
-              onClick={() => setIsScoringOpen(true)}
-              className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-full cursor-pointer text-left"
-            >
-              <p className="font-['Simplon Mono',monospace] font-medium leading-[14.4px] relative shrink-0 text-[#4d523c] text-[12px] tracking-[0.96px] uppercase whitespace-nowrap">FORMULATED TO TARGET</p>
-              <div className="content-start flex flex-wrap gap-[8px] items-start relative shrink-0">
-                {concerns.map((concern, i) => (
-                  <GoalPill key={i} text={concern} onClick={() => setIsScoringOpen(true)} />
-                ))}
-              </div>
-            </button>
-          )}
-
-          {/* Key Ingredients */}
+          {/* Key Ingredients — Accordion */}
           {ingredients && ingredients.length > 0 && (
-            <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-full">
+            <div className="content-stretch flex flex-col gap-[12px] items-start relative shrink-0 w-full">
               <p className="font-['Simplon Mono',monospace] font-medium leading-[1.2] min-w-full relative shrink-0 text-[#4d523c] text-[12px] tracking-[0.96px] uppercase w-[min-content]">your KEY INGREDIENTS</p>
-              <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-full">
-                {ingredients.map((ingredient, i) => (
-                  <div key={i} className="content-stretch flex gap-[8px] items-center relative shrink-0 w-full">
-                    <div className="h-[40px] relative shrink-0 w-[32px]">
-                      <img alt={ingredient.name} className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={ingredient.image} />
+              <div className="content-stretch flex flex-col gap-[12px] items-start relative shrink-0 w-full">
+                {ingredients.map((ingredient, i) => {
+                  const isOpen = openIngredientIndex === i;
+                  const linkedConcern = concerns?.[i % concerns.length];
+                  return (
+                    <div key={i} className="border-b border-[#eaeaea] content-stretch flex flex-col pb-[8px] pr-[8px] relative shrink-0 w-full">
+                      <button
+                        onClick={() => setOpenIngredientIndex(isOpen ? null : i)}
+                        className="content-stretch flex gap-[8px] items-center relative shrink-0 w-full cursor-pointer text-left"
+                      >
+                        <div className="h-[40px] relative shrink-0 w-[32px]">
+                          <img alt={ingredient.name} className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={ingredient.image} />
+                        </div>
+                        <p className="font-['Simplon Norm',sans-serif] font-medium leading-[1.5] text-[#4d523c] text-[12px] flex-1">{ingredient.name}</p>
+                        {isOpen ? (
+                          <svg width="12" height="2" viewBox="0 0 12 2" fill="none" className="shrink-0">
+                            <path d="M0 1H12" stroke="#323429" strokeLinecap="round" />
+                          </svg>
+                        ) : (
+                          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="shrink-0">
+                            <path d="M6 0V12" stroke="#323429" strokeLinecap="round" />
+                            <path d="M0 6H12" stroke="#323429" strokeLinecap="round" />
+                          </svg>
+                        )}
+                      </button>
+                      {isOpen && ingredient.extendedDescription && linkedConcern && (
+                        <div className="flex pl-[40px] pr-[24px] pt-[2px]">
+                          <p className="font-['Simplon Norm',sans-serif] text-[12px] text-[#4d523c] tracking-[0.24px] leading-[1.5]">
+                            {renderIngredientDescription(ingredient.extendedDescription, linkedConcern, () => {
+                              const tabIndex = concerns?.indexOf(linkedConcern) ?? 0;
+                              setScoringInitialTab(tabIndex >= 0 ? tabIndex : 0);
+                              setIsScoringOpen(true);
+                            })}
+                          </p>
+                        </div>
+                      )}
                     </div>
-                    <div className="content-stretch flex flex-col items-start leading-[1.5] relative shrink-0 text-[#4d523c] text-[12px] flex-1">
-                      <p className="font-['Simplon Norm',sans-serif] font-medium relative shrink-0 w-full">{ingredient.name}</p>
-                      <p className="font-['Simplon Norm',sans-serif] relative shrink-0 tracking-[0.24px] w-full">{ingredient.benefit}</p>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           )}
@@ -487,6 +526,7 @@ export function RoutineProductCard({
         onClose={() => setIsScoringOpen(false)}
         productName={productName}
         concerns={concerns}
+        initialTab={scoringInitialTab}
         ingredients={ingredients}
       />
     </div>
