@@ -409,8 +409,8 @@ export function RoutineProductCard({
           </div>
         </div>
         {badge && (
-          <div className="absolute backdrop-blur-[2px] bg-[rgba(255,255,255,0.5)] content-stretch flex items-center justify-center left-[8px] px-[12px] py-[4px] rounded-[20px] top-[8px]">
-            <p className="font-['Simplon Norm',sans-serif] leading-[1.5] relative shrink-0 text-[#4d523c] text-[14px] tracking-[0.28px] whitespace-nowrap">{badge}</p>
+          <div className="absolute backdrop-blur-[2px] bg-[rgba(255,255,255,0.5)] content-stretch flex items-center justify-center left-[8px] px-[8px] py-[4px] rounded-[4px] top-[8px]">
+            <p className="font-['Simplon Norm',sans-serif] leading-[1.5] relative shrink-0 text-[#4d523c] text-[12px] tracking-[0.24px] whitespace-nowrap">{badge}</p>
           </div>
         )}
         <div className="absolute right-[8px] top-[8px]">
@@ -564,8 +564,8 @@ export function RoutineProductCardAccessory({
           <img alt={productName} className="absolute inset-0 max-w-none object-cover pointer-events-none size-full rounded-tl-[10px] rounded-tr-[10px]" src={productImage} />
         </div>
         {badge && (
-          <div className="absolute backdrop-blur-[2px] bg-[rgba(255,255,255,0.5)] content-stretch flex items-center justify-center left-[8px] px-[12px] py-[4px] rounded-[20px] top-[8px]">
-            <p className="font-['Simplon Norm',sans-serif] leading-[1.5] relative shrink-0 text-[#4d523c] text-[14px] tracking-[0.28px] whitespace-nowrap">{badge}</p>
+          <div className="absolute backdrop-blur-[2px] bg-[rgba(255,255,255,0.5)] content-stretch flex items-center justify-center left-[8px] px-[8px] py-[4px] rounded-[4px] top-[8px]">
+            <p className="font-['Simplon Norm',sans-serif] leading-[1.5] relative shrink-0 text-[#4d523c] text-[12px] tracking-[0.24px] whitespace-nowrap">{badge}</p>
           </div>
         )}
         <div className="absolute right-[8px] top-[8px]">

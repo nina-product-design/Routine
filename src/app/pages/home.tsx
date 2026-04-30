@@ -440,7 +440,7 @@ export default function Home() {
           <p className="font-['Saol Text',serif] text-[32px] text-[#323429] tracking-[-0.96px] leading-[1.1] font-light">Maggie, your custom formulas are ready</p>
           <p className="font-['Simplon Norm',sans-serif] text-[14px] text-[#4d523c] tracking-[0.28px] leading-[1.5]">Personalized for your unique hair, goals, and lifestyle — for more benefits in every bottle.</p>
           {routineCartIds.some((id) => productFrequencies[id] && productFrequencies[id] !== "buy-once") && (
-            <div className="bg-[#ecff92] px-[8px] py-[4px] rounded-[6px] self-start">
+            <div className="bg-[#ecff92] p-[8px] rounded-[6px] self-start">
               <p className="font-['Simplon Mono',monospace] font-medium text-[#323429] text-[14px] tracking-[1.12px] leading-[1.2] uppercase">
                 60% off + free shipping unlocked
               </p>
@@ -575,7 +575,7 @@ export default function Home() {
                       >
                         <img alt={product.carouselName} className="absolute inset-0 object-cover size-full" src={product.carouselImage} />
                         {(product.upsellTag || product.isRecommended) && (
-                          <div className="absolute left-[13px] top-[12px] backdrop-blur-[2px] bg-white/50 px-[12px] py-[4px] rounded-[20px]">
+                          <div className="absolute left-[13px] top-[12px] backdrop-blur-[2px] bg-white/50 px-[8px] py-[4px] rounded-[4px]">
                             <p className="font-['Simplon Norm',sans-serif] text-[12px] text-[#4d523c] tracking-[0.24px] leading-[1.5] whitespace-nowrap">{product.isRecommended ? "Recommended" : product.upsellTag}</p>
                           </div>
                         )}

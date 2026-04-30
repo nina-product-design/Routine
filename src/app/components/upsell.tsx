@@ -106,7 +106,7 @@ export default function Upsell() {
                     src={product.carouselImage}
                   />
                   {(product.upsellTag || product.isRecommended) && (
-                    <div className="absolute left-[13px] top-[12px] backdrop-blur-[2px] bg-white/50 px-[12px] py-[4px] rounded-[20px]">
+                    <div className="absolute left-[13px] top-[12px] backdrop-blur-[2px] bg-white/50 px-[8px] py-[4px] rounded-[4px]">
                       <p className="font-['Simplon_Norm',sans-serif] text-[12px] text-[#4d523c] tracking-[0.24px] leading-[1.5] whitespace-nowrap">
                         {product.isRecommended ? "Recommended" : product.upsellTag}
                       </p>
